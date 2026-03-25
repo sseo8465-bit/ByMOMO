@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 // 결제 페이지 — v3 이솝 스타일 리모델링
 // ⑪ 유효성 검사: 필수값 체크 + 에러 시각화 + 정중한 어조 + 연락처 형식 + 금액 동적 연결
 // /state-management: 장바구니 금액이 결제 금액에 정확히 연동

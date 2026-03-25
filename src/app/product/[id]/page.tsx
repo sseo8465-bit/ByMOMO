@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 // 상품 상세 페이지 — 원재료 공개 + 장바구니 담기
 import Image from 'next/image';
 import Link from 'next/link';

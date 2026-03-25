@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 // 장바구니 페이지 — GiftPreview + BottomSheet (비회원 결제 플로우)
 import { useState } from 'react';
 import Image from 'next/image';

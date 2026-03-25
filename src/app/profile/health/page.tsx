@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 // 프로필 Step 2 페이지 — 건강 정보 입력 (나이, 체중, 못 먹는 재료)
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';

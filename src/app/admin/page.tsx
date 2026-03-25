@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 // 관리자 대시보드 — 통계 카드 + 최근 주문 테이블 (더미 데이터)
 import GNB from '@/shared/components/GNB';
 import Footer from '@/shared/components/Footer';

@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 // 마이페이지 — 로그인/비로그인 분기 (카카오 SDK 연동)
 import { useState } from 'react';
 import GNB from '@/shared/components/GNB';

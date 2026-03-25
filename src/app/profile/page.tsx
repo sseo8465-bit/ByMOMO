@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 // 프로필 Step 1 페이지 — 기본 정보 입력 (이름, 사진, 견종)
 // ⑥ 견종 기본값 "견종을 선택해 주세요" + 기타 선택 시 직접 입력 창
 import { useState } from 'react';

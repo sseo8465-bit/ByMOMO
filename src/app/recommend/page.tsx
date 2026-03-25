@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 // 맞춤 추천 결과 페이지 — 이솝 감성 리모델링 (v3)
 // ⑦ skipped 파라미터로 맞춤/건너뛰기 분기
 // ⑧ 뒤로가기 → 프로필 Step 3

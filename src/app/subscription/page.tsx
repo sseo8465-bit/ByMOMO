@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 // 구독 대기 신청 페이지 — 얼리버드 등록 폼
 import { useState } from 'react';
 import GNB from '@/shared/components/GNB';

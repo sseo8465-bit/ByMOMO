@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 // 프로필 Step 3 페이지 — 취향 입력 (건강 고민, 식감 선호)
 // ⑦ "맞춤 간식 보기" vs "건너뛰고 바로 결과 보기" 분기 구현
 import { useRouter } from 'next/navigation';

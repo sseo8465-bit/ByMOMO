@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 // 주문 완료 페이지 — CTA 우선순위: 홈 > 구독 알아보기
 import { useState } from 'react';
 import Link from 'next/link';

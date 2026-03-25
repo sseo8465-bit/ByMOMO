@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 // 회원가입 페이지 — 카카오 로그인 SDK 연동
 import { useRouter } from 'next/navigation';
 import GNB from '@/shared/components/GNB';
