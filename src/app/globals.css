@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand Colors — By MOMO 디자인 토큰 */
+  --warm-white: #FDFAF5;
+  --cream: #F5F0E8;
+  --oatmeal: #EDE6D8;
+  --warm-taupe: #8A7D6F;
+  --warm-taupe-light: #C8BEB3;
+  --warm-taupe-dark: #7D7269;
+  --walnut: #6B5344;
+  --walnut-light: #8C7A6A;
+  --walnut-dark: #4A3828;
+  --latte: #B8A48E;
+  --latte-light: #D4C8B8;
+  --latte-dark: #8C7B68;
+  --charcoal: #2C2C2C;
+  --warm-gray: #6B6560;
+  --light-gray: #918A82;
+  --white: #FFFFFF;
+
+  /* Semantic */
+  --background: var(--warm-white);
+  --foreground: var(--charcoal);
+  --kakao-yellow: #FEE500;
+  --kakao-text: #191919;
+
+  /* 이솝 + By MOMO 공통 디자인 토큰 */
+  --radius-soft: 6px;     /* 미세한 곡률 — 부드러움 유지 */
+  --radius-card: 8px;
+  --transition-gentle: 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-warm-white: var(--warm-white);
+  --color-cream: var(--cream);
+  --color-oatmeal: var(--oatmeal);
+  --color-warm-taupe: var(--warm-taupe);
+  --color-walnut: var(--walnut);
+  --color-walnut-dark: var(--walnut-dark);
+  --color-walnut-light: var(--walnut-light);
+  --color-latte: var(--latte);
+  --color-charcoal: var(--charcoal);
+  --color-warm-gray: var(--warm-gray);
+  --color-light-gray: var(--light-gray);
+  --color-kakao: var(--kakao-yellow);
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-ui: 'DM Sans', sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Mobile-first max-width container */
+.app-container {
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  background: var(--warm-white);
+  position: relative;
+}
+
+/* ── 이솝 감성: 부드러운 페이드인 전환 ── */
+/* 페이지 전환, 요소 등장 시 딱딱하지 않게 */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+/* 토스트 알림 페이드인/아웃 */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -12px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.animate-toast {
+  animation: toast-in 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+/* BottomSheet 슬라이드업 애니메이션 */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+/* 스크롤바 숨기기 (Best Picks 가로 스크롤 등) */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── 이솝 감성: 전역 부드러운 전환 ── */
+/* 모든 인터랙티브 요소에 gentle transition 적용 */
+a, button, input, select, textarea {
+  transition: all var(--transition-gentle);
+}
+
+/* ── 이미지 미세 곡률 — 날카롭지 않은 부드러움 ── */
+img {
+  border-radius: var(--radius-soft);
+}
