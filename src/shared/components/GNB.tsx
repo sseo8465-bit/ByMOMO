@@ -1,19 +1,28 @@
 'use client';
 
-// 전역 네비게이션 바 — 타이포그래피 기반 메뉴
+// ──────────────────────────────────────────────
+// GNB — 전역 네비게이션 바
+// 폰트 규칙: 로고만 세리프, 메뉴는 전부 DM Sans 통일
+// ──────────────────────────────────────────────
 import Link from 'next/link';
 
 interface GNBProps {
   activeItem?: 'story' | 'shop' | 'cart' | 'my';
 }
 
-export default function GNB({ activeItem }: GNBProps) {
-  const isActive = (item: string): boolean => activeItem === item;
+// ── 메뉴 항목 데이터 — 한 곳에서 관리 ──
+const MENU_ITEMS = [
+  { key: 'story', href: '/about', label: 'Story' },
+  { key: 'shop', href: '/profile', label: 'Shop' },
+  { key: 'cart', href: '/cart', label: 'Cart' },
+  { key: 'my', href: '/my', label: 'My' },
+] as const;
 
+export default function GNB({ activeItem }: GNBProps) {
   return (
     <nav className="border-b border-[var(--oatmeal)] bg-[var(--warm-white)]">
       <div className="flex items-center justify-between px-6 py-4">
-        {/* ── 로고 ── */}
+        {/* ── 로고 — 세리프 (Cormorant Garamond) ── */}
         <Link
           href="/"
           className="font-[var(--font-serif)] text-[17px] font-semibold text-[var(--walnut)] hover:text-[var(--walnut-dark)] transition-colors"
@@ -21,51 +30,21 @@ export default function GNB({ activeItem }: GNBProps) {
           By MOMO
         </Link>
 
-        {/* ── 메뉴 아이템 ── */}
-        <div className="flex items-center gap-6">
-          <Link
-            href="/about"
-            className={`font-[var(--font-ui)] text-[12px] font-medium transition-colors ${
-              isActive('story')
-                ? 'text-[var(--walnut)]'
-                : 'text-[var(--warm-gray)] hover:text-[var(--walnut)]'
-            }`}
-          >
-            Story
-          </Link>
-
-          <Link
-            href="/profile"
-            className={`font-[var(--font-ui)] text-[12px] font-medium transition-colors ${
-              isActive('shop')
-                ? 'text-[var(--walnut)]'
-                : 'text-[var(--warm-gray)] hover:text-[var(--walnut)]'
-            }`}
-          >
-            Shop
-          </Link>
-
-          <Link
-            href="/cart"
-            className={`font-[var(--font-serif)] text-[14px] italic transition-colors ${
-              isActive('cart')
-                ? 'text-[var(--walnut)]'
-                : 'text-[var(--warm-gray)] hover:text-[var(--walnut)]'
-            }`}
-          >
-            Cart
-          </Link>
-
-          <Link
-            href="/my"
-            className={`font-[var(--font-serif)] text-[14px] italic transition-colors ${
-              isActive('my')
-                ? 'text-[var(--walnut)]'
-                : 'text-[var(--warm-gray)] hover:text-[var(--walnut)]'
-            }`}
-          >
-            My
-          </Link>
+        {/* ── 메뉴 — 전부 DM Sans 12px 통일 ── */}
+        <div className="flex items-center gap-5">
+          {MENU_ITEMS.map(({ key, href, label }) => (
+            <Link
+              key={key}
+              href={href}
+              className={`font-[var(--font-ui)] text-[12px] tracking-[0.03em] transition-colors ${
+                activeItem === key
+                  ? 'text-[var(--walnut)] font-medium'
+                  : 'text-[var(--warm-gray)] font-normal hover:text-[var(--walnut)]'
+              }`}
+            >
+              {label}
+            </Link>
+          ))}
         </div>
       </div>
     </nav>
