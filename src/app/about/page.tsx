@@ -110,25 +110,42 @@ export default function AboutPage() {
         ))}
       </div>
 
-      {/* ── CS 섹션 — 문의 카드 ── */}
-      <section className="mx-6 mb-10 p-5 bg-[var(--cream)] rounded-xl text-center">
-        <p className="font-[var(--font-ui)] text-[10px] font-semibold tracking-[0.15em] uppercase text-[var(--warm-taupe)] mb-2">
+      {/* ══════════════════════════════════════════════
+          CS 섹션 — 문의 안내
+          배경: 투명 (Footer와 자연스럽게 이어짐)
+          버튼: 아웃라인 → 텍스트 링크로 변경 (세련미)
+          여백: 상하 넉넉하게 → 숨 쉬는 공간감
+          ══════════════════════════════════════════════ */}
+      <section className="px-6 pt-14 pb-16 text-center">
+        {/* 아이브로우 라벨 */}
+        <p className="font-[var(--font-ui)] text-[10px] font-semibold tracking-[0.15em] uppercase text-[var(--warm-taupe)] mb-6">
           Customer Support
         </p>
-        <p className="text-[13px] text-[var(--charcoal)] leading-[1.9] mb-4">
+
+        {/* 메인 안내 문구 — 간결하게 */}
+        <p className="font-[var(--font-serif)] text-[18px] text-[var(--walnut)] leading-[1.6] mb-3">
           문의는 카카오톡으로 받고 있습니다.
-          <br /><br />
+        </p>
+        <p className="text-[13px] text-[var(--warm-gray)] leading-[1.8] mb-8">
           아이의 이름과 연락처를 남겨주시면
           <br />
           순서대로 답변드리겠습니다.
         </p>
-        <p className="text-[11px] text-[var(--warm-taupe)] mt-2">
+
+        {/* CTA — 얇은 밑줄 텍스트 링크 (이솝 미니멀) */}
+        <a
+          href="https://pf.kakao.com/_placeholder"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block font-[var(--font-ui)] text-[13px] text-[var(--walnut)] tracking-[0.05em] underline underline-offset-4 decoration-[var(--walnut)]/40 hover:decoration-[var(--walnut)] transition-colors"
+        >
+          카카오톡 문의하기 →
+        </a>
+
+        {/* 응답 시간 안내 — CTA 아래 배치 */}
+        <p className="text-[11px] text-[var(--warm-taupe)] mt-6">
           발송 메시지 기준 24시간 이내 답변
         </p>
-        {/* CS 문의 버튼 — 카카오 노란색은 로그인 버튼에만 사용, 문의는 브랜드 컬러 */}
-        <button className="mx-auto block max-w-[240px] w-full py-3 bg-[var(--walnut)] text-[var(--cream)] rounded-lg text-[13px] font-semibold font-[var(--font-ui)] hover:bg-[var(--walnut-dark)] transition-colors">
-          카카오톡 문의하기
-        </button>
       </section>
 
       <Footer />
