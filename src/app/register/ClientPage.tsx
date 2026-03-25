@@ -400,7 +400,7 @@ export default function RegisterClientPage() {
           {/* ── 결과 메시지 (성공/에러) ── */}
           {submitMessage && (
             <p className={`font-[var(--font-ui)] text-[11px] tracking-[0.02em] mb-6 leading-[1.6] ${
-              submitSuccess ? 'text-[var(--walnut)]' : 'text-[var(--walnut)]'
+              submitSuccess ? 'text-[var(--walnut)]' : 'text-[var(--warm-taupe)]'
             }`}>
               {submitMessage}
             </p>

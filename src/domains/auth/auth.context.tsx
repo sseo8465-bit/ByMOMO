@@ -185,7 +185,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return { success: false, error: '이미 가입된 이메일입니다. 로그인을 이용해 주세요.' };
       }
       if (error.message.includes('password')) {
-        return { success: false, error: '비밀번호는 6자 이상이어야 합니다.' };
+        return { success: false, error: '비밀번호는 8자 이상이어야 합니다.' };
       }
       return { success: false, error: '회원가입 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.' };
     }
@@ -244,7 +244,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // ── 로그아웃 (Supabase + 카카오 모두 처리) ──
   const logout = useCallback(async () => {
     // Supabase 로그아웃
-    await supabase.auth.signOut();
+    if (isSupabaseConfigured) {
+      await supabase.auth.signOut();
+    }
 
     // 카카오 로그아웃
     if (typeof window !== 'undefined' && window.Kakao && window.Kakao.Auth.getAccessToken()) {
@@ -261,11 +263,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       : authState.user.data.name || authState.user.data.email
     : null;
 
-  const userEmail = authState.user
-    ? authState.user.provider === 'kakao'
-      ? authState.user.data.email
-      : authState.user.data.email
-    : null;
+  const userEmail = authState.user?.data.email ?? null;
 
   return (
     <AuthContext.Provider
