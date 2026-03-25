@@ -1,8 +1,7 @@
 'use client';
 
-
 // 프로필 Step 1 페이지 — 기본 정보 입력 (이름, 사진, 견종)
-// ⑥ 견종 기본값 "견종을 선택해 주세요" + 기타 선택 시 직접 입력 창
+// 반응형 + 이솝 스타일: bottom-line 인풋, 축소 폰트, 넓은 여백
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -14,13 +13,14 @@ export default function ProfileStep1() {
   const router = useRouter();
   const { profile, updateProfile } = useProfile();
   const [photoPreview, setPhotoPreview] = useState<string | null>(profile.photo);
-  // 기타 견종 직접 입력 상태
   const [customBreed, setCustomBreed] = useState('');
   const [isCustomBreed, setIsCustomBreed] = useState(false);
-
-  // 에러 상태 관리
   const [errors, setErrors] = useState<{ name?: string; breed?: string }>({});
   const [touched, setTouched] = useState(false);
+
+  // 이솝 스타일 인풋 공통 클래스
+  const inputBase = 'w-full bg-transparent border-0 border-b border-[var(--oatmeal)] focus:border-[var(--walnut)] outline-none py-3 text-[13px] font-[var(--font-ui)] tracking-[0.02em] transition-colors placeholder:text-[var(--warm-taupe-light)]';
+  const inputError = 'border-b-[1.5px] border-[var(--walnut)]';
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -35,7 +35,6 @@ export default function ProfileStep1() {
     }
   };
 
-  // 견종 선택 핸들러 — "기타" 선택 시 직접 입력 모드 전환
   const handleBreedChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     if (value === '기타') {
@@ -50,7 +49,6 @@ export default function ProfileStep1() {
     if (touched) validate();
   };
 
-  // 기타 견종 직접 입력 핸들러
   const handleCustomBreedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setCustomBreed(value);
@@ -58,7 +56,6 @@ export default function ProfileStep1() {
     if (touched) validate();
   };
 
-  // 유효성 검사
   const validate = () => {
     const newErrors: { name?: string; breed?: string } = {};
     if (!profile.name.trim()) newErrors.name = '아이의 이름을 알려주세요.';
@@ -75,20 +72,20 @@ export default function ProfileStep1() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8 max-w-[480px] mx-auto">
       {/* ── 섹션 헤더 ── */}
       <div className="text-center pt-4">
-        <h2 className="font-[var(--font-serif)] text-[22px] font-medium text-[var(--walnut)] leading-[1.5]">
+        <h2 className="font-[var(--font-serif)] text-[20px] md:text-[24px] font-medium text-[var(--walnut)] leading-[1.5] tracking-[0.02em]">
           우리 아이를 소개해 주세요.
         </h2>
-        <p className="text-[13px] text-[var(--warm-gray)] mt-2">
+        <p className="text-[11px] text-[var(--warm-gray)] mt-3 tracking-[0.03em]">
           맞춤 간식을 위해 기본 정보가 필요합니다.
         </p>
       </div>
 
-      {/* ── 이름 입력 섹션 ── */}
-      <div className="flex flex-col gap-1.5">
-        <label className="font-[var(--font-ui)] text-[12px] font-medium text-[var(--walnut)] tracking-[0.02em]">
+      {/* ── 이름 입력 ── */}
+      <div className="flex flex-col gap-2">
+        <label className="font-[var(--font-ui)] text-[10px] font-semibold text-[var(--warm-taupe)] tracking-[0.12em] uppercase">
           이름 *
         </label>
         <input
@@ -99,24 +96,20 @@ export default function ProfileStep1() {
             updateProfile({ name: e.target.value });
             if (touched) validate();
           }}
-          className={`rounded-lg border ${
-            touched && errors.name
-              ? 'border-[1.5px] border-[var(--walnut)]'
-              : 'border-[var(--oatmeal)] focus:border-[var(--walnut)]'
-          } outline-none py-3 px-4 text-[14px] font-[var(--font-ui)] transition-colors`}
+          className={`${inputBase} ${touched && errors.name ? inputError : ''}`}
         />
         {touched && errors.name && (
-          <p className="text-[11px] text-[var(--walnut)] font-[var(--font-ui)]">{errors.name}</p>
+          <p className="text-[10px] text-[var(--walnut)] font-[var(--font-ui)] tracking-[0.02em]">{errors.name}</p>
         )}
       </div>
 
-      {/* ── 사진 업로드 섹션 ── */}
-      <div className="flex flex-col gap-1.5">
-        <label className="font-[var(--font-ui)] text-[12px] font-medium text-[var(--walnut)] tracking-[0.02em]">
+      {/* ── 사진 업로드 ── */}
+      <div className="flex flex-col gap-2">
+        <label className="font-[var(--font-ui)] text-[10px] font-semibold text-[var(--warm-taupe)] tracking-[0.12em] uppercase">
           사진 (선택)
         </label>
         <div
-          className="relative rounded-lg border border-dashed border-[var(--warm-taupe-light)] flex items-center justify-center overflow-hidden cursor-pointer hover:bg-[var(--cream)] transition-colors h-[160px]"
+          className="relative border border-dashed border-[var(--warm-taupe-light)] flex items-center justify-center overflow-hidden cursor-pointer hover:bg-[var(--cream)] transition-colors h-[160px] md:h-[200px]"
         >
           <input
             type="file"
@@ -133,30 +126,26 @@ export default function ProfileStep1() {
             />
           ) : (
             <div className="text-center">
-              <p className="text-[10px] text-[var(--warm-taupe)]">
+              <p className="text-[10px] text-[var(--warm-taupe)] tracking-[0.03em]">
                 사진을 선택해 주세요
               </p>
             </div>
           )}
         </div>
-        <p className="text-[11px] text-[var(--warm-taupe)]">
+        <p className="text-[10px] text-[var(--warm-taupe)] tracking-[0.03em]">
           (선택) 나중에 추가할 수 있습니다
         </p>
       </div>
 
-      {/* ── 견종 선택 섹션 — 기타 선택 시 직접 입력 ── */}
-      <div className="flex flex-col gap-1.5">
-        <label className="font-[var(--font-ui)] text-[12px] font-medium text-[var(--walnut)] tracking-[0.02em]">
+      {/* ── 견종 선택 ── */}
+      <div className="flex flex-col gap-2">
+        <label className="font-[var(--font-ui)] text-[10px] font-semibold text-[var(--warm-taupe)] tracking-[0.12em] uppercase">
           견종 *
         </label>
         <select
           value={isCustomBreed ? '기타' : profile.breed}
           onChange={handleBreedChange}
-          className={`rounded-lg border ${
-            touched && errors.breed && !isCustomBreed
-              ? 'border-[1.5px] border-[var(--walnut)]'
-              : 'border-[var(--oatmeal)] focus:border-[var(--walnut)]'
-          } outline-none py-3 px-4 text-[14px] font-[var(--font-ui)] transition-colors bg-white cursor-pointer`}
+          className={`${inputBase} bg-transparent cursor-pointer ${touched && errors.breed && !isCustomBreed ? inputError : ''}`}
         >
           <option value="">견종을 선택해 주세요</option>
           {MOCK_BREEDS.map((breed) => (
@@ -164,7 +153,6 @@ export default function ProfileStep1() {
           ))}
         </select>
 
-        {/* 기타 선택 시 직접 입력 필드 */}
         {isCustomBreed && (
           <input
             type="text"
@@ -172,16 +160,12 @@ export default function ProfileStep1() {
             value={customBreed}
             onChange={handleCustomBreedChange}
             autoFocus
-            className={`mt-2 rounded-lg border ${
-              touched && errors.breed
-                ? 'border-[1.5px] border-[var(--walnut)]'
-                : 'border-[var(--oatmeal)] focus:border-[var(--walnut)]'
-            } outline-none py-3 px-4 text-[14px] font-[var(--font-ui)] transition-colors`}
+            className={`mt-2 ${inputBase} ${touched && errors.breed ? inputError : ''}`}
           />
         )}
 
         {touched && errors.breed && (
-          <p className="text-[11px] text-[var(--walnut)] font-[var(--font-ui)]">{errors.breed}</p>
+          <p className="text-[10px] text-[var(--walnut)] font-[var(--font-ui)] tracking-[0.02em]">{errors.breed}</p>
         )}
       </div>
 

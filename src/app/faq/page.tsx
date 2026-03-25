@@ -1,13 +1,9 @@
-// ──────────────────────────────────────────────
-// FAQ 페이지 — 자주 묻는 질문과 답변
-// Footer 네비게이션 링크(/faq)에서 진입
-// ──────────────────────────────────────────────
+// FAQ 페이지 — 반응형 + 이솝 스타일
 import GNB from '@/shared/components/GNB';
 import Footer from '@/shared/components/Footer';
 
 export const dynamic = 'force-dynamic';
 
-// ── FAQ 항목 데이터 — 한 곳에서 관리 ──
 const FAQ_ITEMS = [
   {
     question: '수제간식의 유통기한은 어떻게 되나요?',
@@ -36,32 +32,28 @@ export default function FaqPage() {
     <>
       <GNB />
 
-      {/* ── 페이지 헤더 — 이솝 스타일 크림 배경 ── */}
-      <section className="bg-[var(--cream)] px-6 pt-8 pb-6 text-center">
-        {/* 아이브로우 라벨 */}
+      {/* ── 페이지 헤더 ── */}
+      <section className="bg-[var(--cream)] page-padding pt-10 pb-8 md:pt-14 md:pb-10 text-center">
         <p className="font-[var(--font-ui)] text-[10px] font-semibold tracking-[0.15em] uppercase text-[var(--warm-taupe)] mb-3">
           Support
         </p>
-        {/* 페이지 타이틀 */}
-        <h1 className="font-[var(--font-serif)] text-[28px] font-semibold text-[var(--walnut)] leading-[1.3]">
+        <h1 className="font-[var(--font-serif)] text-[24px] md:text-[30px] font-semibold text-[var(--walnut)] leading-[1.3] tracking-[0.02em]">
           자주 묻는 질문
         </h1>
       </section>
 
-      {/* ── FAQ 본문 — FAQ_ITEMS 배열에서 자동 생성 ── */}
-      <section className="px-6 py-10">
-        <div className="space-y-6">
+      {/* ── FAQ 본문 ── */}
+      <section className="page-padding section-spacing">
+        <div className="max-w-[680px] mx-auto space-y-0">
           {FAQ_ITEMS.map((item, index) => (
             <div
               key={index}
-              className="border-b border-[var(--oatmeal)] pb-6 last:border-b-0"
+              className="border-b border-[var(--oatmeal)] py-7 md:py-8 first:pt-0"
             >
-              {/* 질문 */}
-              <h3 className="font-[var(--font-ui)] text-[14px] font-medium text-[var(--walnut)] mb-2 leading-[1.5]">
+              <h3 className="font-[var(--font-ui)] text-[12px] md:text-[13px] font-medium text-[var(--walnut)] mb-3 leading-[1.6] tracking-[0.02em]">
                 Q. {item.question}
               </h3>
-              {/* 답변 */}
-              <p className="text-[13px] text-[var(--warm-gray)] font-[var(--font-ui)] leading-[1.8]">
+              <p className="text-[11px] md:text-[12px] text-[var(--warm-gray)] font-[var(--font-ui)] leading-[1.9] tracking-[0.02em]">
                 {item.answer}
               </p>
             </div>

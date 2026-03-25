@@ -22,8 +22,8 @@ interface BenefitListProps {
 export default function BenefitList({ className = '' }: BenefitListProps) {
   return (
     // 혜택 카드 — 크림색 배경, 둥근 모서리
-    <div className={`bg-[var(--cream)] rounded-xl p-5 ${className}`}>
-      <ul className="flex flex-col gap-2 text-[14px] text-[var(--charcoal)]">
+    <div className={`bg-[var(--cream)] rounded-none p-6 ${className}`}>
+      <ul className="flex flex-col gap-2.5 text-[12px] text-[var(--charcoal)] tracking-[0.02em]">
         {BENEFIT_ITEMS.map((benefitText) => (
           <li key={benefitText} className="flex items-start gap-2">
             {/* 체크 아이콘 — 이모지 대신 SVG 사용 (브랜드 톤 유지) */}

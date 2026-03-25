@@ -1,7 +1,4 @@
-// ──────────────────────────────────────────────
-// 개인정보처리방침 페이지 — 개인정보 수집·이용·파기 안내
-// Footer 약관 링크(/privacy)에서 진입
-// ──────────────────────────────────────────────
+// 개인정보처리방침 페이지 — 반응형 + 이솝 스타일
 import GNB from '@/shared/components/GNB';
 import Footer from '@/shared/components/Footer';
 
@@ -12,24 +9,19 @@ export default function PrivacyPage() {
     <>
       <GNB />
 
-      {/* ── 페이지 헤더 — 이솝 스타일 크림 배경 ── */}
-      <section className="bg-[var(--cream)] px-6 pt-8 pb-6 text-center">
-        {/* 아이브로우 라벨 */}
+      <section className="bg-[var(--cream)] page-padding pt-10 pb-8 md:pt-14 md:pb-10 text-center">
         <p className="font-[var(--font-ui)] text-[10px] font-semibold tracking-[0.15em] uppercase text-[var(--warm-taupe)] mb-3">
           Privacy Policy
         </p>
-        {/* 페이지 타이틀 */}
-        <h1 className="font-[var(--font-serif)] text-[28px] font-semibold text-[var(--walnut)] leading-[1.3]">
+        <h1 className="font-[var(--font-serif)] text-[24px] md:text-[30px] font-semibold text-[var(--walnut)] leading-[1.3] tracking-[0.02em]">
           개인정보처리방침
         </h1>
       </section>
 
-      {/* ── 방침 본문 ── */}
-      <section className="px-6 py-10">
-        <div className="text-[13px] text-[var(--warm-gray)] font-[var(--font-ui)] leading-[1.8] space-y-6">
-          {/* 수집 항목 */}
+      <section className="page-padding section-spacing">
+        <div className="max-w-[680px] mx-auto text-[11px] md:text-[12px] text-[var(--warm-gray)] font-[var(--font-ui)] leading-[1.9] tracking-[0.02em] space-y-8">
           <div>
-            <h2 className="font-[var(--font-ui)] text-[14px] font-medium text-[var(--walnut)] mb-2">
+            <h2 className="font-[var(--font-ui)] text-[12px] md:text-[13px] font-medium text-[var(--walnut)] mb-3">
               1. 수집하는 개인정보 항목
             </h2>
             <p>
@@ -38,9 +30,8 @@ export default function PrivacyPage() {
             </p>
           </div>
 
-          {/* 이용 목적 */}
           <div>
-            <h2 className="font-[var(--font-ui)] text-[14px] font-medium text-[var(--walnut)] mb-2">
+            <h2 className="font-[var(--font-ui)] text-[12px] md:text-[13px] font-medium text-[var(--walnut)] mb-3">
               2. 개인정보의 이용 목적
             </h2>
             <p>
@@ -49,9 +40,8 @@ export default function PrivacyPage() {
             </p>
           </div>
 
-          {/* 보유 및 파기 */}
           <div>
-            <h2 className="font-[var(--font-ui)] text-[14px] font-medium text-[var(--walnut)] mb-2">
+            <h2 className="font-[var(--font-ui)] text-[12px] md:text-[13px] font-medium text-[var(--walnut)] mb-3">
               3. 개인정보의 보유 및 파기
             </h2>
             <p>
@@ -60,9 +50,8 @@ export default function PrivacyPage() {
             </p>
           </div>
 
-          {/* 준비 중 안내 */}
-          <div className="bg-[var(--cream)] rounded-[var(--radius-card)] p-5 text-center">
-            <p className="text-[12px] text-[var(--warm-taupe)]">
+          <div className="bg-[var(--cream)] p-6 text-center">
+            <p className="text-[10px] text-[var(--warm-taupe)] tracking-[0.03em]">
               상세 방침은 정식 오픈 시 업데이트됩니다.
             </p>
           </div>

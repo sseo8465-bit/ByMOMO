@@ -1,7 +1,4 @@
-// ──────────────────────────────────────────────
-// 이용약관 페이지 — 서비스 이용약관 전문 표시
-// Footer 약관 링크(/terms)에서 진입
-// ──────────────────────────────────────────────
+// 이용약관 페이지 — 반응형 + 이솝 스타일
 import GNB from '@/shared/components/GNB';
 import Footer from '@/shared/components/Footer';
 
@@ -12,24 +9,19 @@ export default function TermsPage() {
     <>
       <GNB />
 
-      {/* ── 페이지 헤더 — 이솝 스타일 크림 배경 ── */}
-      <section className="bg-[var(--cream)] px-6 pt-8 pb-6 text-center">
-        {/* 아이브로우 라벨 — 사이트 전체 통일 패턴 */}
+      <section className="bg-[var(--cream)] page-padding pt-10 pb-8 md:pt-14 md:pb-10 text-center">
         <p className="font-[var(--font-ui)] text-[10px] font-semibold tracking-[0.15em] uppercase text-[var(--warm-taupe)] mb-3">
           Legal
         </p>
-        {/* 페이지 타이틀 — 세리프 */}
-        <h1 className="font-[var(--font-serif)] text-[28px] font-semibold text-[var(--walnut)] leading-[1.3]">
+        <h1 className="font-[var(--font-serif)] text-[24px] md:text-[30px] font-semibold text-[var(--walnut)] leading-[1.3] tracking-[0.02em]">
           이용약관
         </h1>
       </section>
 
-      {/* ── 약관 본문 ── */}
-      <section className="px-6 py-10">
-        <div className="text-[13px] text-[var(--warm-gray)] font-[var(--font-ui)] leading-[1.8] space-y-6">
-          {/* 제1조 목적 */}
+      <section className="page-padding section-spacing">
+        <div className="max-w-[680px] mx-auto text-[11px] md:text-[12px] text-[var(--warm-gray)] font-[var(--font-ui)] leading-[1.9] tracking-[0.02em] space-y-8">
           <div>
-            <h2 className="font-[var(--font-ui)] text-[14px] font-medium text-[var(--walnut)] mb-2">
+            <h2 className="font-[var(--font-ui)] text-[12px] md:text-[13px] font-medium text-[var(--walnut)] mb-3">
               제1조 (목적)
             </h2>
             <p>
@@ -38,9 +30,8 @@ export default function TermsPage() {
             </p>
           </div>
 
-          {/* 제2조 정의 */}
           <div>
-            <h2 className="font-[var(--font-ui)] text-[14px] font-medium text-[var(--walnut)] mb-2">
+            <h2 className="font-[var(--font-ui)] text-[12px] md:text-[13px] font-medium text-[var(--walnut)] mb-3">
               제2조 (정의)
             </h2>
             <p>
@@ -49,9 +40,8 @@ export default function TermsPage() {
             </p>
           </div>
 
-          {/* 준비 중 안내 */}
-          <div className="bg-[var(--cream)] rounded-[var(--radius-card)] p-5 text-center">
-            <p className="text-[12px] text-[var(--warm-taupe)]">
+          <div className="bg-[var(--cream)] p-6 text-center">
+            <p className="text-[10px] text-[var(--warm-taupe)] tracking-[0.03em]">
               상세 약관은 정식 오픈 시 업데이트됩니다.
             </p>
           </div>
