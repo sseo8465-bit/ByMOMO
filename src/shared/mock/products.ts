@@ -16,7 +16,7 @@ export const MOCK_PRODUCTS: Product[] = [
     proteinType: 'duck',
     ingredients: ['오리가슴살', '고구마', '블루베리'],
     // 원재료 스틸라이프: 오리 가슴살 슬라이스 + 고구마 칩 클로즈업
-    imageUrl: 'https://images.unsplash.com/photo-1632158741406-8e5f06fbbfb9?w=600&h=500&fit=crop&crop=center',
+    imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?w=600&h=500&fit=crop&crop=center',
     imageAlt: '오리 가슴살과 고구마 원재료 클로즈업',
   },
   {
@@ -38,7 +38,7 @@ export const MOCK_PRODUCTS: Product[] = [
     proteinType: 'mixed',
     ingredients: ['오리가슴살', '연어', '소고기', '고구마', '블루베리'],
     // 원재료 스틸라이프: 크래프트 선물 박스 + 말린 과일/간식 구성
-    imageUrl: 'https://images.unsplash.com/photo-1607919658560-4f42d9e5db4f?w=600&h=500&fit=crop&crop=center',
+    imageUrl: 'https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=600&h=500&fit=crop&crop=center',
     imageAlt: '프리미엄 선물 세트 구성품',
   },
   {

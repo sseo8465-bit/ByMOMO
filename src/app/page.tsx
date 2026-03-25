@@ -17,7 +17,7 @@ export default function HomePage() {
       <section className="relative overflow-hidden">
         <div className="relative h-[280px] md:h-[480px] lg:h-[560px]">
           <Image
-            src="https://images.unsplash.com/photo-1606851091851-e8d30a41a341?w=1400&h=700&fit=crop&crop=center"
+            src="https://images.unsplash.com/photo-1606914501449-5a96b6ce24ca?w=1400&h=700&fit=crop&crop=center"
             alt="최상급 원재료 스틸라이프 — 연어, 블루베리, 귀리"
             fill
             sizes="100vw"
