@@ -9,7 +9,7 @@
 // ──────────────────────────────────────────────
 
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import type { AppUser, AuthState, ByMomoUser, KakaoUser, SignUpPayload } from './auth.types';
 
 // ── 카카오 SDK 타입 ──
@@ -73,6 +73,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // ── Supabase 세션 복원 + 리스너 ──
   useEffect(() => {
+    if (!isSupabaseConfigured) {
+      // Supabase 미설정 시 로딩만 해제
+      setAuthState((prev) => ({ ...prev, isLoading: false }));
+      return;
+    }
+
     // 최초 세션 확인
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
@@ -126,6 +132,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // ── 이메일 로그인 (Supabase Auth) ──
   const loginWithEmail = useCallback(async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
+    if (!isSupabaseConfigured) {
+      return { success: false, error: '로그인 서비스 준비 중입니다. 카카오 로그인 또는 비회원 주문을 이용해 주세요.' };
+    }
+
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
@@ -153,6 +163,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // ── 회원가입 (Supabase Auth + user_metadata) ──
   const signUp = useCallback(async (payload: SignUpPayload): Promise<{ success: boolean; error?: string }> => {
+    if (!isSupabaseConfigured) {
+      return { success: false, error: '회원가입 서비스 준비 중입니다. 잠시 후 다시 시도해 주세요.' };
+    }
+
     const { data, error } = await supabase.auth.signUp({
       email: payload.email,
       password: payload.password,
