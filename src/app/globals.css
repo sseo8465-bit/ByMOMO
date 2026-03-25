@@ -26,9 +26,14 @@
   --kakao-text: #191919;
 
   /* 이솝 + By MOMO 공통 디자인 토큰 */
-  --radius-soft: 6px;     /* 미세한 곡률 — 부드러움 유지 */
+  --radius-soft: 6px;
   --radius-card: 8px;
   --transition-gentle: 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* Responsive spacing scale */
+  --space-page-x: clamp(1.5rem, 5vw, 6rem);
+  --space-section-y: clamp(2.5rem, 6vw, 5rem);
+  --space-content-max: 1200px;
 }
 
 @theme inline {
@@ -55,21 +60,34 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-ui), var(--font-sans);
-  line-height: 1.6;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.01em;
 }
 
-/* Mobile-first max-width container */
+/* ── Responsive full-width container ── */
+/* 430px 제한 제거 → 전체 너비 활용, max-width로 콘텐츠 제한 */
 .app-container {
-  max-width: 430px;
+  width: 100%;
+  max-width: var(--space-content-max);
   margin: 0 auto;
   min-height: 100dvh;
   background: var(--warm-white);
   position: relative;
 }
 
+/* ── 반응형 유틸리티 ── */
+.page-padding {
+  padding-left: var(--space-page-x);
+  padding-right: var(--space-page-x);
+}
+
+.section-spacing {
+  padding-top: var(--space-section-y);
+  padding-bottom: var(--space-section-y);
+}
+
 /* ── 이솝 감성: 부드러운 페이드인 전환 ── */
-/* 페이지 전환, 요소 등장 시 딱딱하지 않게 */
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -115,7 +133,7 @@ body {
   animation: slide-up 0.3s ease-out;
 }
 
-/* 스크롤바 숨기기 (Best Picks 가로 스크롤 등) */
+/* 스크롤바 숨기기 */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -124,13 +142,12 @@ body {
   display: none;
 }
 
-/* ── 이솝 감성: 전역 부드러운 전환 ── */
-/* 모든 인터랙티브 요소에 gentle transition 적용 */
+/* ── 전역 부드러운 전환 ── */
 a, button, input, select, textarea {
   transition: all var(--transition-gentle);
 }
 
-/* ── 이미지 미세 곡률 — 날카롭지 않은 부드러움 ── */
+/* ── 이미지 — 곡률 제거 (이솝 스타일: 각진 이미지) ── */
 img {
-  border-radius: var(--radius-soft);
+  border-radius: 0;
 }

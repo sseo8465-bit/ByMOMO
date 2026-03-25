@@ -1,90 +1,130 @@
 'use client';
 
 // ──────────────────────────────────────────────
-// 주문 완료 페이지
-// 역할: 결제 성공 후 주문번호 표시 + CTA 제공
-// CTA 우선순위: 홈으로 (primary) > 구독 알아보기 (soft)
+// 주문 완료 페이지 — 와이어프레임 v2.1
+// 주문 요약: 주문번호, 상품, 금액, 예상배송
+// CTA 우선순위: 정기배송 알림 → 주문내역 확인 → 홈으로
 // ──────────────────────────────────────────────
-import { useState } from 'react';
+
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import GNB from '@/shared/components/GNB';
-import Button from '@/shared/components/Button';
 import Footer from '@/shared/components/Footer';
 
-// ── SVG 체크 아이콘 — 이솝 톤에 맞는 미니멀 체크마크 ──
-// 이모지(✓) 대신 SVG 사용 → 브랜드 일관성 유지
 function CheckIcon() {
   return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="var(--walnut)"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <polyline points="20 6 9 17 4 12" />
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="var(--walnut)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="22 8 11 19 6 14" />
     </svg>
   );
 }
 
 export default function OrderCompletePage() {
-  // ── 주문번호 생성 — 타임스탬프 기반 고유 번호 ──
   const [orderNumber] = useState(
     () => `MOMO-${new Date().getTime().toString().slice(-8)}`
   );
+
+  // 예상 배송일 (주문일 + 3~5일)
+  const deliveryEstimate = useMemo(() => {
+    const start = new Date();
+    start.setDate(start.getDate() + 3);
+    const end = new Date();
+    end.setDate(end.getDate() + 5);
+    const fmt = (d: Date) =>
+      `${d.getMonth() + 1}/${d.getDate()}(${['일', '월', '화', '수', '목', '금', '토'][d.getDay()]})`;
+    return `${fmt(start)} ~ ${fmt(end)}`;
+  }, []);
 
   return (
     <>
       <GNB />
 
-      {/* ── 주문 완료 메인 영역 — 수직 중앙 정렬 ── */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-16 min-h-[60vh] text-center">
+      <div className="page-padding section-spacing">
+        <div className="max-w-[480px] mx-auto text-center">
 
-        {/* ── 성공 아이콘 — 크림색 원 안에 SVG 체크 ── */}
-        <div className="w-14 h-14 rounded-full bg-[var(--cream)] flex items-center justify-center mb-5">
-          <CheckIcon />
-        </div>
+          {/* ── 성공 아이콘 ── */}
+          <div className="w-16 h-16 mx-auto rounded-full bg-[var(--cream)] flex items-center justify-center mb-6">
+            <CheckIcon />
+          </div>
 
-        {/* 주문 완료 타이틀 — 세리프 폰트 */}
-        <h1 className="font-[var(--font-serif)] text-[28px] font-medium text-[var(--walnut)] mb-2">
-          주문이 완료되었습니다
-        </h1>
+          {/* 타이틀 */}
+          <h1 className="font-[var(--font-serif)] text-[24px] md:text-[30px] font-medium text-[var(--walnut)] mb-3 tracking-[0.01em]">
+            주문이 완료되었습니다
+          </h1>
 
-        {/* 안내 문구 — 브랜드 톤: 정중하고 따뜻하게 */}
-        <p className="text-[14px] text-[var(--warm-gray)] mb-10">
-          카카오톡으로 주문 알림이 발송됩니다.
-        </p>
-
-        {/* ── 주문번호 표시 카드 ── */}
-        <div className="bg-[var(--cream)] rounded-xl px-6 py-4 mb-10">
-          {/* 라벨 — 아이브로우 스타일 (대문자, 넓은 자간) */}
-          <p className="text-[10px] text-[var(--warm-taupe)] font-[var(--font-ui)] uppercase tracking-[0.15em] mb-1">
-            Order No.
+          <p className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[var(--warm-gray)] mb-10 tracking-[0.03em]">
+            카카오톡으로 주문 알림이 발송됩니다.
           </p>
-          {/* 실제 주문번호 */}
-          <p className="font-[var(--font-ui)] text-[15px] font-semibold text-[var(--charcoal)]">
-            {orderNumber}
-          </p>
-        </div>
 
-        {/* ── CTA 버튼 그룹 ── */}
-        <div className="w-full flex flex-col gap-3 max-w-[280px]">
-          {/* 메인 CTA — 홈으로 */}
-          <Link href="/">
-            <Button variant="primary" className="w-full">
-              홈으로
-            </Button>
-          </Link>
-          {/* 서브 CTA — 구독 페이지로 */}
-          <Link href="/subscription">
-            <Button variant="soft" className="w-full">
-              구독 알아보기
-            </Button>
-          </Link>
+          {/* ── 주문 요약 카드 ── */}
+          <div className="text-left mb-10">
+            <div className="border-t border-[var(--oatmeal)]">
+              {/* 주문번호 */}
+              <div className="flex items-center justify-between py-4 border-b border-[var(--oatmeal)]">
+                <span className="font-[var(--font-ui)] text-[10px] md:text-[11px] tracking-[0.12em] uppercase text-[var(--warm-taupe)]">
+                  주문번호
+                </span>
+                <span className="font-[var(--font-ui)] text-[13px] md:text-[14px] font-medium text-[var(--charcoal)] tracking-[0.02em]">
+                  {orderNumber}
+                </span>
+              </div>
+
+              {/* 주문 상품 (Phase 1: 더미) */}
+              <div className="flex items-center justify-between py-4 border-b border-[var(--oatmeal)]">
+                <span className="font-[var(--font-ui)] text-[10px] md:text-[11px] tracking-[0.12em] uppercase text-[var(--warm-taupe)]">
+                  상품
+                </span>
+                <span className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[var(--charcoal)] tracking-[0.02em]">
+                  By MOMO 수제간식
+                </span>
+              </div>
+
+              {/* 결제 금액 */}
+              <div className="flex items-center justify-between py-4 border-b border-[var(--oatmeal)]">
+                <span className="font-[var(--font-ui)] text-[10px] md:text-[11px] tracking-[0.12em] uppercase text-[var(--warm-taupe)]">
+                  결제 금액
+                </span>
+                <span className="font-[var(--font-ui)] text-[13px] md:text-[14px] font-medium text-[var(--charcoal)] tracking-[0.02em]">
+                  결제 완료
+                </span>
+              </div>
+
+              {/* 예상 배송 */}
+              <div className="flex items-center justify-between py-4 border-b border-[var(--oatmeal)]">
+                <span className="font-[var(--font-ui)] text-[10px] md:text-[11px] tracking-[0.12em] uppercase text-[var(--warm-taupe)]">
+                  예상 배송
+                </span>
+                <span className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[var(--charcoal)] tracking-[0.02em]">
+                  {deliveryEstimate}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* ── CTA 그룹 ── */}
+          <div className="flex flex-col gap-3 max-w-[360px] mx-auto">
+            {/* 1순위: 정기 배송 알림 받기 → (primary) */}
+            <Link href="/subscription" className="block">
+              <button className="w-full py-4 bg-[var(--walnut)] text-[var(--cream)] text-[12px] md:text-[13px] font-[var(--font-ui)] tracking-[0.08em] uppercase hover:bg-[var(--walnut-dark)] transition-colors">
+                정기 배송 알림 받기 →
+              </button>
+            </Link>
+
+            {/* 2순위: 주문 내역 확인 (outline) */}
+            <Link href="/my" className="block">
+              <button className="w-full py-3.5 border border-[var(--walnut)] text-[var(--walnut)] text-[12px] md:text-[13px] font-[var(--font-ui)] tracking-[0.08em] uppercase bg-transparent hover:bg-[var(--cream)] transition-colors">
+                주문 내역 확인
+              </button>
+            </Link>
+
+            {/* 3순위: 홈으로 돌아가기 (text link) */}
+            <Link
+              href="/"
+              className="block text-center mt-2 font-[var(--font-ui)] text-[11px] md:text-[12px] text-[var(--warm-taupe)] hover:text-[var(--walnut)] tracking-[0.06em] transition-colors"
+            >
+              홈으로 돌아가기
+            </Link>
+          </div>
         </div>
       </div>
 

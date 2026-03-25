@@ -44,7 +44,9 @@ export default function RootLayout({
       </head>
       <body>
         <Providers>
-          <div className="app-container">{children}</div>
+          <div className="app-container">
+            {children}
+          </div>
         </Providers>
       </body>
     </html>
