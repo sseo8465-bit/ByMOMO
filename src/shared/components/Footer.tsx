@@ -1,3 +1,5 @@
+'use client';
+
 // 사이트 푸터 — 회사 정보 + 링크 네비게이션
 import Link from 'next/link';
 

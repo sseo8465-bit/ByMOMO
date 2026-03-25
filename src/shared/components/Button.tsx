@@ -1,3 +1,5 @@
+'use client';
+
 // 재사용 가능한 버튼 컴포넌트 — 여러 스타일 변형 지원
 interface ButtonProps {
   variant: 'primary' | 'secondary' | 'kakao' | 'soft' | 'ghost';

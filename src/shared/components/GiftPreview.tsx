@@ -1,6 +1,7 @@
+'use client';
+
 // 선물 포장 프리뷰 카드 — 와이어프레임 v2.1 일치
 // 장바구니 페이지 내 선물 포장 미리보기 (이솝 감성)
-'use client';
 
 import Image from 'next/image';
 import { useCart } from '@/domains/cart/cart.context';
