@@ -1,4 +1,15 @@
+// ──────────────────────────────────────────────
 // 스텝 인디케이터 — 프로필 입력 플로우 진행 상태 표시
+// 사용처: /profile, /profile/health, /profile/preference
+// ──────────────────────────────────────────────
+
+// ── 완료 체크 SVG 아이콘 — 이모지 대신 브랜드 일관성 유지 ──
+const CheckIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+    <path d="M2.5 6L5 8.5L9.5 3.5" stroke="var(--cream)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
 interface StepIndicatorProps {
   currentStep: number;
   totalSteps?: number;
@@ -30,7 +41,7 @@ export default function StepIndicator({
                       : 'bg-[var(--oatmeal)] text-[var(--warm-taupe)]'
                 }`}
               >
-                {isCompleted ? '✓' : step}
+                {isCompleted ? <CheckIcon /> : step}
               </div>
               {labels[i] && (
                 <span
