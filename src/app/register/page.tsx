@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
+
 import ClientPage from './ClientPage';
 
-export default function Page() {
+export default function RegisterPage() {
   return <ClientPage />;
 }

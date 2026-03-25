@@ -43,7 +43,7 @@ export default function BottomSheet({ isOpen, onClose, children, title }: Bottom
       {/* ── 시트 ── */}
       <div
         ref={sheetRef}
-        className="relative w-full max-w-[430px] bg-[var(--warm-white)] rounded-t-2xl px-6 pb-8 pt-4 animate-slide-up"
+        className="relative w-full max-w-[600px] bg-[var(--warm-white)] rounded-t-none px-[var(--space-page-x)] pb-10 pt-5 animate-slide-up"
       >
         {/* ── 드래그 핸들 ── */}
         <div className="flex justify-center mb-4">

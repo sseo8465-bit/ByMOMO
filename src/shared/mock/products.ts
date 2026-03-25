@@ -1,4 +1,10 @@
+// ──────────────────────────────────────────────
 // 더미 상품 데이터 (Phase 1 전용)
+// ──────────────────────────────────────────────
+// 이미지: 동물 사진 대신 원재료 스틸라이프(정물) 이미지 사용
+// → 이솝/PVCS급 고감도 비주얼 톤 유지
+// 가격·이름 수정 시 이 파일만 변경하면 전체 반영됨
+// ──────────────────────────────────────────────
 import type { Product } from '@/shared/types';
 
 export const MOCK_PRODUCTS: Product[] = [
@@ -9,8 +15,9 @@ export const MOCK_PRODUCTS: Product[] = [
     price: 18000,
     proteinType: 'duck',
     ingredients: ['오리가슴살', '고구마', '블루베리'],
-    imageUrl: 'https://images.unsplash.com/photo-1615497001839-b0a0eac3274c?w=600&h=500&fit=crop&crop=center',
-    imageAlt: '오리 트릿 간식',
+    // 원재료 스틸라이프: 오리 가슴살 슬라이스 + 고구마 칩 클로즈업
+    imageUrl: 'https://images.unsplash.com/photo-1632158741406-8e5f06fbbfb9?w=600&h=500&fit=crop&crop=center',
+    imageAlt: '오리 가슴살과 고구마 원재료 클로즈업',
   },
   {
     id: 'salmon-omega',
@@ -19,8 +26,9 @@ export const MOCK_PRODUCTS: Product[] = [
     price: 22000,
     proteinType: 'salmon',
     ingredients: ['연어', '귀리', '아마씨'],
-    imageUrl: 'https://images.unsplash.com/photo-1574781330855-d0db8cc6a79c?w=600&h=500&fit=crop&crop=center',
-    imageAlt: '연어 트릿 간식',
+    // 원재료 스틸라이프: 연어 필렛 매크로 촬영
+    imageUrl: 'https://images.unsplash.com/photo-1499125562588-29fb8a56b5d5?w=600&h=500&fit=crop&crop=center',
+    imageAlt: '신선한 연어 필렛 클로즈업',
   },
   {
     id: 'birthday-set',
@@ -29,8 +37,9 @@ export const MOCK_PRODUCTS: Product[] = [
     price: 42000,
     proteinType: 'mixed',
     ingredients: ['오리가슴살', '연어', '소고기', '고구마', '블루베리'],
-    imageUrl: 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=600&h=500&fit=crop&crop=center',
-    imageAlt: '생일 선물 세트',
+    // 원재료 스틸라이프: 크래프트 선물 박스 + 말린 과일/간식 구성
+    imageUrl: 'https://images.unsplash.com/photo-1607919658560-4f42d9e5db4f?w=600&h=500&fit=crop&crop=center',
+    imageAlt: '프리미엄 선물 세트 구성품',
   },
   {
     id: 'beef-senior',
@@ -39,8 +48,9 @@ export const MOCK_PRODUCTS: Product[] = [
     price: 20000,
     proteinType: 'beef',
     ingredients: ['소고기', '단호박', '글루코사민'],
-    imageUrl: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=600&h=500&fit=crop&crop=center',
-    imageAlt: '소고기 시니어 간식',
+    // 원재료 스틸라이프: 소고기 칩 + 단호박 슬라이스
+    imageUrl: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=600&h=500&fit=crop&crop=center',
+    imageAlt: '소고기와 단호박 원재료 클로즈업',
   },
 ];
 
