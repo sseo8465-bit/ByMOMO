@@ -11,7 +11,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: 'duck-single',
     name: '오리 트릿 (단일 단백질)',
-    description: '단일 단백질 오리고기로만 만든 저알러지 간식. 알러지가 있는 아이도 안심하고 먹을 수 있습니다.',
+    description: '오리고기 하나로만 정성껏 만들었어요. 예민한 아이도 편하게 먹을 수 있도록, 재료를 최대한 단순하게 골랐습니다.',
     price: 18000,
     proteinType: 'duck',
     ingredients: ['오리가슴살', '고구마', '블루베리'],
@@ -22,7 +22,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: 'salmon-omega',
     name: '연어 트릿 (오메가3)',
-    description: '오메가3가 풍부한 연어로 만든 피부·모질 개선 간식. 건조한 피부와 윤기 없는 털에 좋습니다.',
+    description: '윤기 없는 털, 건조한 피부가 걱정되셨다면. 연어의 좋은 기름이 아이의 피부와 털을 부드럽게 가꿔줍니다.',
     price: 22000,
     proteinType: 'salmon',
     ingredients: ['연어', '귀리', '아마씨'],
@@ -33,7 +33,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: 'birthday-set',
     name: '생일 선물 세트',
-    description: '생일, 입양 기념일에 딱 맞는 프리미엄 선물 세트. 오리·연어·소고기 트릿 3종 + 선물 박스 포장.',
+    description: '생일이든 입양 기념일이든, 특별한 날엔 특별한 선물을. 오리·연어·소고기 트릿 3종을 정성스럽게 박스에 담았습니다.',
     price: 42000,
     proteinType: 'mixed',
     ingredients: ['오리가슴살', '연어', '소고기', '고구마', '블루베리'],
@@ -44,7 +44,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: 'beef-senior',
     name: '소고기 트릿 (시니어)',
-    description: '시니어 반려견을 위한 부드러운 소고기 간식. 관절 건강에 도움이 되는 글루코사민 함유.',
+    description: '나이 든 아이일수록 부드러운 게 좋더라고요. 씹기 편한 소고기에, 관절에 좋은 성분까지 함께 담았습니다.',
     price: 20000,
     proteinType: 'beef',
     ingredients: ['소고기', '단호박', '글루코사민'],

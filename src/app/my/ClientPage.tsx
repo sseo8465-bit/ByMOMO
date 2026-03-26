@@ -25,6 +25,10 @@ import { useAuth } from '@/domains/auth/auth.context';
 // 관리자 비밀번호 — Phase 2에서 DB role 기반으로 전환 예정
 const ADMIN_PASSWORD = 'momo2026';
 
+// ── 공통 input 스타일 상수 (C-1: 인라인 반복 제거) ──
+const INPUT_BASE =
+  'w-full bg-transparent border-0 border-b border-b-[var(--oatmeal)] focus:border-b-[var(--walnut)] outline-none py-3 text-[13px] font-[var(--font-ui)] font-light text-[var(--walnut-dark)] placeholder:text-[var(--warm-taupe)] tracking-[0.04em] leading-[1.8] transition-colors';
+
 export default function MyPage() {
   const { isLoggedIn, user, loginWithEmail, loginWithKakao, logout, isLoading, displayName, userEmail } = useAuth();
   const router = useRouter();
@@ -102,7 +106,7 @@ export default function MyPage() {
       <>
         <GNB activeItem="my" />
         <div className="flex-1 flex items-center justify-center min-h-[60vh]">
-          <p className="font-[var(--font-ui)] text-[12px] text-[var(--warm-gray)] tracking-[0.04em]">로딩 중...</p>
+          <p className="font-[var(--font-ui)] text-[12px] text-[var(--warm-taupe)] tracking-[0.04em]">로딩 중...</p>
         </div>
         <Footer />
       </>
@@ -153,7 +157,9 @@ export default function MyPage() {
                 {['주문 내역', '구독 관리', '반려견 프로필'].map((label) => (
                   <button
                     key={label}
-                    className="w-full flex items-center justify-between py-4 border-b border-[var(--oatmeal)] font-[var(--font-ui)] text-[13px] md:text-[14px] text-[var(--charcoal)] hover:text-[var(--walnut)] tracking-[0.02em] transition-colors"
+                    type="button"
+                    className="w-full flex items-center justify-between py-4 border-b border-[var(--oatmeal)] font-[var(--font-ui)] text-[13px] md:text-[14px] text-[var(--walnut-dark)] cursor-default opacity-50 tracking-[0.02em] transition-colors"
+                    title="준비 중입니다"
                   >
                     {label}
                     <span className="text-[var(--warm-taupe)]">→</span>
@@ -174,14 +180,17 @@ export default function MyPage() {
           ) : (
             /* ===== 비로그인 상태 — PVCS 스타일 ===== */
             <div>
-              {/* 페이지 타이틀 */}
-              <div className="text-center mb-10 md:mb-14">
+              {/* 페이지 타이틀 — A-2: 이솝 타이포 + 서브카피 / A-3: 상단 여백 2배 */}
+              <div className="text-center mb-20 md:mb-28">
                 <p className="font-[var(--font-ui)] text-[10px] md:text-[11px] tracking-[0.2em] uppercase text-[var(--warm-taupe)] mb-3">
                   Login
                 </p>
-                <h1 className="font-[var(--font-serif)] text-[24px] md:text-[30px] font-medium text-[var(--walnut)] tracking-[0.01em]">
+                <h1 className="font-[var(--font-serif)] text-[24px] md:text-[30px] font-medium text-[var(--walnut)] tracking-[0.15em]">
                   회원 로그인
                 </h1>
+                <p className="font-[var(--font-ui)] text-[12px] font-light text-[var(--warm-taupe)] mt-2.5 tracking-[0.04em]">
+                  By MOMO가 정성껏 골라드릴게요
+                </p>
               </div>
 
               {/* ── 이메일/비밀번호 로그인 폼 ── */}
@@ -197,7 +206,7 @@ export default function MyPage() {
                     onChange={(e) => { setEmail(e.target.value); setLoginError(''); }}
                     placeholder="이메일 주소를 입력해 주세요"
                     required
-                    className="w-full bg-transparent border-0 border-b border-b-[var(--oatmeal)] focus:border-b-[var(--walnut)] outline-none py-3 text-[13px] font-[var(--font-ui)] font-light text-[var(--charcoal)] placeholder:text-[var(--warm-taupe-light)] tracking-[0.02em] transition-colors"
+                    className={INPUT_BASE}
                   />
                 </div>
 
@@ -212,7 +221,7 @@ export default function MyPage() {
                     onChange={(e) => { setPassword(e.target.value); setLoginError(''); }}
                     placeholder="비밀번호를 입력해 주세요"
                     required
-                    className="w-full bg-transparent border-0 border-b border-b-[var(--oatmeal)] focus:border-b-[var(--walnut)] outline-none py-3 text-[13px] font-[var(--font-ui)] font-light text-[var(--charcoal)] placeholder:text-[var(--warm-taupe-light)] tracking-[0.02em] transition-colors"
+                    className={INPUT_BASE}
                   />
                 </div>
 
@@ -227,7 +236,7 @@ export default function MyPage() {
                 <button
                   type="submit"
                   disabled={isLoginLoading}
-                  className="w-full py-3.5 bg-[var(--walnut)] text-[var(--cream)] text-[12px] font-[var(--font-ui)] font-medium tracking-[0.08em] uppercase hover:bg-[var(--walnut-dark)] disabled:opacity-60 transition-colors"
+                  className="w-full py-3 rounded-[2px] bg-[var(--walnut)] text-[var(--cream)] text-[12px] font-[var(--font-ui)] font-medium tracking-[0.08em] uppercase hover:bg-[var(--walnut-dark)] disabled:opacity-60 transition-colors"
                 >
                   {isLoginLoading ? '로그인 중...' : 'Login'}
                 </button>
@@ -243,29 +252,31 @@ export default function MyPage() {
                 </span>
               </div>
 
-              {/* ── 구분선 ── */}
+              {/* ── 구분선 — A-4: "또는 간편 로그인" ── */}
               <div className="flex items-center gap-4 mb-6">
                 <div className="flex-1 border-t border-[var(--oatmeal)]" />
                 <span className="font-[var(--font-ui)] text-[10px] tracking-[0.1em] uppercase text-[var(--warm-taupe)]">
-                  또는
+                  또는 간편 로그인
                 </span>
                 <div className="flex-1 border-t border-[var(--oatmeal)]" />
               </div>
 
-              {/* ── 비회원 주문하기 — Outline 스타일 (보조 위계) ── */}
-              <Link href="/checkout" className="block mb-3">
-                <button className="w-full py-3.5 border border-[var(--walnut)] text-[var(--walnut)] text-[12px] font-[var(--font-ui)] font-medium tracking-[0.08em] uppercase bg-transparent hover:bg-[var(--cream)] transition-colors">
-                  비회원 주문하기
-                </button>
-              </Link>
-
-              {/* ── 카카오 로그인 — Outline 스타일 (보조 위계) ── */}
+              {/* ── 카카오 로그인 — B-3: type="button" 추가 ── */}
               <button
+                type="button"
                 onClick={loginWithKakao}
-                className="w-full py-3.5 border border-[#FEE500] bg-transparent text-[var(--charcoal)] text-[12px] font-[var(--font-ui)] font-medium tracking-[0.06em] hover:bg-[#FEE500]/10 transition-colors mb-8"
+                className="w-full py-3 rounded-[2px] border border-[#FEE500] bg-transparent text-[var(--walnut-dark)] text-[12px] font-[var(--font-ui)] font-medium tracking-[0.06em] hover:bg-[#FEE500]/10 transition-colors mb-8"
               >
                 카카오로 시작하기
               </button>
+
+              {/* ── 비회원 주문하기 — A-4: 별도 섹션 분리 / B-1: Link+button 중첩 제거 ── */}
+              <Link
+                href="/checkout"
+                className="block w-full py-3 rounded-[2px] border border-[var(--walnut)] text-[var(--walnut)] text-[12px] font-[var(--font-ui)] font-medium tracking-[0.08em] uppercase text-center bg-transparent hover:bg-[var(--cream)] transition-colors"
+              >
+                비회원 주문하기
+              </Link>
 
               {/* ── 아이디/비밀번호 찾기 링크 ── */}
               <div className="flex items-center justify-center gap-4">
@@ -302,7 +313,7 @@ export default function MyPage() {
                         value={orderIdInput}
                         onChange={(e) => setOrderIdInput(e.target.value)}
                         required
-                        className="flex-1 bg-transparent border-0 border-b border-b-[var(--oatmeal)] focus:border-b-[var(--walnut)] outline-none py-3 text-[13px] font-[var(--font-ui)] font-light text-[var(--charcoal)] placeholder:text-[var(--warm-taupe-light)] tracking-[0.02em] transition-colors"
+                        className={`flex-1 ${INPUT_BASE}`}
                       />
                       <button
                         type="submit"

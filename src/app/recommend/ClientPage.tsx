@@ -20,13 +20,13 @@ import type { Product } from '@/shared/types';
 // ── 건강 고민 → 추천 큐레이션 문구 매핑 ──
 // user-research-synthesis: "뭉치의 눈물 자국을 지워줄 레시피" 같은 구체적 큐레이션
 const CURATION_PHRASES: Record<string, string> = {
-  '피부·모질': '건강한 피부와 윤기 나는 털을 위한',
-  '관절·뼈': '튼튼한 관절과 활발한 산책을 위한',
-  '소화·장건강': '편안한 소화와 장 건강을 위한',
-  '심장': '건강한 심장 박동을 위한',
-  '비만·체중관리': '균형 잡힌 체중 관리를 위한',
-  '구강': '깨끗한 치아 건강을 위한',
-  '눈·시력': '맑은 눈을 위한',
+  '피부·모질': '윤기 나는 털과 건강한 피부를 위해 골라본',
+  '관절·뼈': '산책이 즐거운 날을 위해 골라본',
+  '소화·장건강': '편안한 하루를 위해 골라본',
+  '심장': '건강한 매일을 위해 골라본',
+  '비만·체중관리': '가벼운 몸과 즐거운 산책을 위해 골라본',
+  '구강': '깨끗한 입 안을 위해 골라본',
+  '눈·시력': '맑은 눈을 위해 골라본',
 };
 
 // ── 건강 고민 → 태그 매핑 ──
@@ -72,9 +72,9 @@ export default function RecommendPage() {
   const curationText = useMemo(() => {
     if (profile.healthConcerns.length > 0) {
       const phrase = CURATION_PHRASES[profile.healthConcerns[0]];
-      if (phrase) return `${profile.name || '우리 아이'}의 ${phrase} 레시피`;
+      if (phrase) return `${profile.name || '우리 아이'}를 위해 ${phrase} 간식`;
     }
-    return `${profile.name || '우리 아이'}를 위해 엄선한 레시피`;
+    return `${profile.name || '우리 아이'}를 위해 정성껏 골라봤어요`;
   }, [profile]);
 
   useEffect(() => {
@@ -156,11 +156,10 @@ export default function RecommendPage() {
 
         {isSkipped && (
           <p className="text-[11px] text-[var(--warm-taupe)] mt-4 tracking-[0.03em]">
-            더 정확한 추천은{' '}
+            우리 아이 취향까지 알려주시면 더 잘 골라드릴 수 있어요.{' '}
             <Link href="/profile/preference" className="underline text-[var(--walnut)] hover:text-[var(--walnut-dark)]">
-              취향 입력
+              취향 알려주기
             </Link>
-            을 완료해 주세요.
           </p>
         )}
       </section>
@@ -204,7 +203,7 @@ export default function RecommendPage() {
 
                   {/* 상품명 */}
                   <Link href={`/product/${product.id}`}>
-                    <h3 className="font-[var(--font-serif)] text-[15px] md:text-[17px] font-medium text-[var(--charcoal)] mb-2 tracking-[0.01em] hover:text-[var(--walnut)] transition-colors">
+                    <h3 className="font-[var(--font-serif)] text-[15px] md:text-[17px] font-medium text-[var(--walnut-dark)] mb-2 tracking-[0.01em] hover:text-[var(--walnut)] transition-colors">
                       {product.name}
                     </h3>
                   </Link>
@@ -240,7 +239,7 @@ export default function RecommendPage() {
               href="/profile/preference"
               className="font-[var(--font-ui)] text-[11px] text-[var(--warm-taupe)] hover:text-[var(--walnut)] tracking-[0.06em] transition-colors"
             >
-              추천 조건 변경하기 →
+              다시 골라보기 →
             </Link>
           </div>
         </section>
@@ -248,10 +247,10 @@ export default function RecommendPage() {
         /* 빈 상태 */
         <div className="text-center page-padding py-20">
           <p className="font-[var(--font-serif)] text-[18px] md:text-[22px] text-[var(--walnut)] mb-3">
-            조건에 딱 맞는 간식을 찾지 못했습니다.
+            아직 딱 맞는 간식을 못 찾았어요.
           </p>
-          <p className="text-[12px] text-[var(--warm-gray)] mb-8 tracking-[0.03em]">
-            제외 성분이나 취향을 조정하시면 더 다양한 추천을 받으실 수 있습니다.
+          <p className="text-[12px] text-[var(--warm-taupe)] mb-8 tracking-[0.03em]">
+            제외한 재료나 취향을 조금 바꿔주시면 더 골라드릴 수 있어요.
           </p>
           <Link
             href="/profile/preference"
@@ -267,17 +266,19 @@ export default function RecommendPage() {
         <div className="sticky bottom-0 bg-[var(--warm-white)]/95 backdrop-blur-sm border-t border-[var(--oatmeal)] page-padding py-4">
           <div className="max-w-[480px] mx-auto">
             {addedCount > 0 ? (
-              <Link href="/cart" className="block">
-                <button className="w-full py-3.5 bg-[var(--walnut)] text-[var(--cream)] text-[12px] md:text-[13px] font-[var(--font-ui)] font-medium tracking-[0.06em] uppercase hover:bg-[var(--walnut-dark)] transition-colors">
-                  장바구니 보기 ({addedCount})
-                </button>
+              <Link
+                href="/cart"
+                className="block w-full py-3.5 rounded-[2px] bg-[var(--walnut)] text-[var(--cream)] text-[12px] md:text-[13px] font-[var(--font-ui)] font-medium tracking-[0.06em] uppercase text-center hover:bg-[var(--walnut-dark)] transition-colors"
+              >
+                장바구니 보기 ({addedCount})
               </Link>
             ) : (
               <button
+                type="button"
                 onClick={handleAddAll}
-                className="w-full py-3.5 bg-[var(--walnut)] text-[var(--cream)] text-[12px] md:text-[13px] font-[var(--font-ui)] font-medium tracking-[0.06em] uppercase hover:bg-[var(--walnut-dark)] transition-colors"
+                className="w-full py-3.5 rounded-[2px] bg-[var(--walnut)] text-[var(--cream)] text-[12px] md:text-[13px] font-[var(--font-ui)] font-medium tracking-[0.06em] uppercase hover:bg-[var(--walnut-dark)] transition-colors"
               >
-                모든 추천 간식 담기 ({recommendations.length})
+                골라본 간식 모두 담기 ({recommendations.length})
               </button>
             )}
           </div>

@@ -78,8 +78,8 @@ export default function ProfileStep1() {
         <h2 className="font-[var(--font-serif)] text-[20px] md:text-[24px] font-medium text-[var(--walnut)] leading-[1.5] tracking-[0.02em]">
           우리 아이를 소개해 주세요.
         </h2>
-        <p className="text-[11px] text-[var(--warm-gray)] mt-3 tracking-[0.03em]">
-          맞춤 간식을 위해 기본 정보가 필요합니다.
+        <p className="text-[11px] text-[var(--warm-taupe)] mt-3 tracking-[0.03em]">
+          이름만 알려주셔도, 정성껏 골라드릴게요.
         </p>
       </div>
 

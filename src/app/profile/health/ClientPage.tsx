@@ -1,6 +1,6 @@
 'use client';
 
-// 프로필 Step 2 페이지 — 건강 정보 입력 (나이, 체중, 못 먹는 재료)
+// 프로필 Step 2 페이지 — 건강 정보 입력 (나이, 체중, 알러지 / 싫어하는 재료)
 // 반응형 + 이솝 스타일: bottom-line 인풋, 축소 폰트
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -48,10 +48,10 @@ export default function ProfileStep2() {
       {/* ── 섹션 헤더 ── */}
       <div className="text-center pt-4">
         <h2 className="font-[var(--font-serif)] text-[20px] md:text-[24px] font-medium text-[var(--walnut)] leading-[1.5] tracking-[0.02em]">
-          건강 정보
+          우리 아이, 조금 더 알려주세요.
         </h2>
-        <p className="text-[11px] text-[var(--warm-gray)] mt-3 tracking-[0.03em]">
-          안전한 간식 추천에만 사용됩니다.
+        <p className="text-[11px] text-[var(--warm-taupe)] mt-3 tracking-[0.03em]">
+          더 잘 맞는 간식을 골라드리는 데 참고할게요.
         </p>
       </div>
 
@@ -100,10 +100,10 @@ export default function ProfileStep2() {
         </div>
       </div>
 
-      {/* ── 못 먹는 재료 ── */}
+      {/* ── 알러지 / 싫어하는 재료 ── */}
       <div className="flex flex-col gap-3">
         <label className="font-[var(--font-ui)] text-[10px] font-semibold text-[var(--warm-taupe)] tracking-[0.12em] uppercase">
-          못 먹는 재료 (해당 시 선택)
+          알러지 / 싫어하는 재료
         </label>
         <div className="flex flex-wrap gap-2.5">
           {MOCK_ALLERGIES.map((allergy) => (

@@ -32,19 +32,17 @@ export default function ProfileStep3() {
       {/* ── 섹션 헤더 ── */}
       <div className="text-center pt-4">
         <h2 className="font-[var(--font-serif)] text-[20px] md:text-[24px] font-medium text-[var(--walnut)] leading-[1.5] tracking-[0.02em]">
-          조금 더 세밀하게,
-          <br />
-          아이의 취향을 담아주세요.
+          혹시 걱정되는 부분이 있으신가요?
         </h2>
-        <p className="text-[11px] text-[var(--warm-gray)] mt-3 tracking-[0.03em]">
-          (선택 사항) 생략하셔도 무방합니다.
+        <p className="text-[11px] text-[var(--warm-taupe)] mt-3 tracking-[0.03em]">
+          선택하지 않으셔도 괜찮아요. 우리가 잘 골라드릴게요.
         </p>
       </div>
 
       {/* ── 건강 고민 (복수 선택) ── */}
       <div className="flex flex-col gap-3">
         <label className="font-[var(--font-ui)] text-[10px] font-semibold text-[var(--warm-taupe)] tracking-[0.12em] uppercase">
-          건강 고민
+          걱정되는 부분
         </label>
         <div className="flex flex-wrap gap-2.5">
           {MOCK_HEALTH_CONCERNS.map((concern) => (
@@ -66,7 +64,7 @@ export default function ProfileStep3() {
       {/* ── 식감 선호 ── */}
       <div className="flex flex-col gap-3">
         <label className="font-[var(--font-ui)] text-[10px] font-semibold text-[var(--warm-taupe)] tracking-[0.12em] uppercase">
-          식감 선호
+          좋아하는 식감
         </label>
         <div className="flex flex-col gap-2">
           {MOCK_TEXTURES.map((texture) => (
@@ -91,7 +89,7 @@ export default function ProfileStep3() {
           onClick={handleRecommend}
           className="w-full py-4 bg-[var(--walnut)] text-[var(--cream)] text-[13px] font-[var(--font-ui)] font-medium tracking-[0.04em] hover:bg-[var(--walnut-dark)] transition-colors"
         >
-          {profile.name || '우리 아이'}의 맞춤 간식 보기
+          {profile.name || '우리 아이'}에게 골라본 간식 보기
         </button>
         <button
           onClick={handleSkip}
