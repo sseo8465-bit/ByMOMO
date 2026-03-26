@@ -188,9 +188,6 @@ export default function MyPage() {
                 <h1 className="font-[var(--font-serif)] text-[24px] md:text-[30px] font-medium text-[var(--walnut)] tracking-[0.15em]">
                   회원 로그인
                 </h1>
-                <p className="font-[var(--font-ui)] text-[12px] font-light text-[var(--warm-taupe)] mt-2.5 tracking-[0.04em]">
-                  By MOMO가 정성껏 골라드릴게요
-                </p>
               </div>
 
               {/* ── 이메일/비밀번호 로그인 폼 ── */}

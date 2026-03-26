@@ -48,10 +48,10 @@ export default function ProfileStep2() {
       {/* ── 섹션 헤더 ── */}
       <div className="text-center pt-4">
         <h2 className="font-[var(--font-serif)] text-[20px] md:text-[24px] font-medium text-[var(--walnut)] leading-[1.5] tracking-[0.02em]">
-          우리 아이, 조금 더 알려주세요.
+          건강 정보
         </h2>
         <p className="text-[11px] text-[var(--warm-taupe)] mt-3 tracking-[0.03em]">
-          더 잘 맞는 간식을 찾는 데 참고할게요.
+          안전한 간식 추천에만 사용됩니다.
         </p>
       </div>
 

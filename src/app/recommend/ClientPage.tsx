@@ -40,6 +40,73 @@ const HEALTH_TAG_MAP: Record<string, { label: string; keywords: string[] }> = {
   '눈·시력': { label: '눈 건강', keywords: [] },
 };
 
+// ── 큐레이션 근거(Reason-to-believe) 생성 ──
+// 프로필 데이터를 기반으로 "왜 이 간식들을 골랐는지" 에디토리얼 스타일로 설명
+const PROTEIN_LABEL: Record<string, string> = {
+  duck: '오리', salmon: '연어', beef: '소고기', chicken: '닭고기',
+};
+
+const CONCERN_RATIONALE: Record<string, string> = {
+  '피부·모질': '오메가3가 풍부한 연어 성분이 피부와 털에 도움을 줄 수 있어요.',
+  '관절·뼈': '글루코사민이 포함된 간식을 우선 배치했어요.',
+  '소화·장건강': '소화에 부드러운 단호박, 고구마 재료를 중심으로 구성했어요.',
+  '심장': '오메가 지방산이 풍부한 재료 위주로 구성했어요.',
+  '비만·체중관리': '단일 단백질 기반의 가벼운 간식을 우선 배치했어요.',
+  '구강': '씹는 과정에서 치석 관리에 도움이 되는 간식을 골랐어요.',
+  '눈·시력': '블루베리 등 항산화 성분이 포함된 간식을 골랐어요.',
+};
+
+function generateCurationRationale(
+  profile: { name: string; dislikedIngredients: string[]; healthConcerns: string[]; age: number | null },
+  recommendations: Product[],
+): string | null {
+  const sentences: string[] = [];
+
+  const hasExclusions =
+    profile.dislikedIngredients.length > 0 &&
+    !profile.dislikedIngredients.includes('없음');
+  const hasHealthConcerns =
+    profile.healthConcerns.length > 0 &&
+    !profile.healthConcerns.includes('해당 없음');
+  const isSenior = profile.age !== null && profile.age >= 7;
+
+  if (!hasExclusions && !hasHealthConcerns && !isSenior) return null;
+
+  // 1. 제외 성분 근거
+  if (hasExclusions) {
+    const excluded = profile.dislikedIngredients;
+    const usedProteins = [
+      ...new Set(
+        recommendations
+          .filter((p) => p.proteinType !== 'mixed')
+          .map((p) => PROTEIN_LABEL[p.proteinType])
+          .filter(Boolean),
+      ),
+    ];
+    if (usedProteins.length > 0) {
+      sentences.push(
+        `${excluded.join(', ')} 대신 ${usedProteins.join('과 ')}을 중심으로 구성했어요.`,
+      );
+    } else {
+      sentences.push(`${excluded.join(', ')}이 포함되지 않은 간식만 엄선했어요.`);
+    }
+  }
+
+  // 2. 건강 고민 근거
+  if (hasHealthConcerns) {
+    const primaryConcern = profile.healthConcerns[0];
+    const rationale = CONCERN_RATIONALE[primaryConcern];
+    if (rationale) sentences.push(rationale);
+  }
+
+  // 3. 시니어 근거
+  if (isSenior) {
+    sentences.push('부드럽고 소화가 편한 간식 위주로 구성했어요.');
+  }
+
+  return sentences.join(' ');
+}
+
 function getProductTags(product: Product, healthConcerns: string[], dislikedIngredients: string[]): string[] {
   const tags: string[] = [];
   healthConcerns.forEach((concern) => {
@@ -76,6 +143,12 @@ export default function RecommendPage() {
     }
     return `${profile.name || '우리 아이'}를 위해 하나하나 골라봤어요`;
   }, [profile]);
+
+  // 큐레이션 근거 (Reason-to-believe)
+  const curationRationale = useMemo(
+    () => generateCurationRationale(profile, recommendations),
+    [profile, recommendations],
+  );
 
   useEffect(() => {
     if (toastMessage) {
@@ -135,6 +208,13 @@ export default function RecommendPage() {
           {profile.age ? ` · ${profile.age}세` : ''}
           {profile.weight ? ` · ${profile.weight}kg` : ''}
         </p>
+
+        {/* ── 큐레이션 근거 (Reason-to-believe) — 에디토리얼 큐레이터 노트 ── */}
+        {curationRationale && !isSkipped && (
+          <p className="max-w-[420px] mx-auto mt-6 font-[var(--font-ui)] text-[11px] md:text-[12px] text-[var(--warm-taupe)] leading-[1.8] tracking-[0.03em]">
+            {curationRationale}
+          </p>
+        )}
 
         {/* 제외 성분 */}
         {profile.dislikedIngredients.length > 0 && (
