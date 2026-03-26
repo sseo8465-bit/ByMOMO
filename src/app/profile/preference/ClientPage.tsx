@@ -35,7 +35,7 @@ export default function ProfileStep3() {
           혹시 걱정되는 부분이 있으신가요?
         </h2>
         <p className="text-[11px] text-[var(--warm-taupe)] mt-3 tracking-[0.03em]">
-          선택하지 않으셔도 괜찮아요. 우리가 잘 골라드릴게요.
+          선택하지 않으셔도 괜찮아요.
         </p>
       </div>
 
@@ -89,7 +89,7 @@ export default function ProfileStep3() {
           onClick={handleRecommend}
           className="w-full py-4 bg-[var(--walnut)] text-[var(--cream)] text-[13px] font-[var(--font-ui)] font-medium tracking-[0.04em] hover:bg-[var(--walnut-dark)] transition-colors"
         >
-          {profile.name || '우리 아이'}에게 골라본 간식 보기
+          {profile.name || '우리 아이'}의 간식 보러 가기
         </button>
         <button
           onClick={handleSkip}

@@ -20,13 +20,13 @@ import type { Product } from '@/shared/types';
 // ── 건강 고민 → 추천 큐레이션 문구 매핑 ──
 // user-research-synthesis: "뭉치의 눈물 자국을 지워줄 레시피" 같은 구체적 큐레이션
 const CURATION_PHRASES: Record<string, string> = {
-  '피부·모질': '윤기 나는 털과 건강한 피부를 위해 골라본',
-  '관절·뼈': '산책이 즐거운 날을 위해 골라본',
-  '소화·장건강': '편안한 하루를 위해 골라본',
-  '심장': '건강한 매일을 위해 골라본',
-  '비만·체중관리': '가벼운 몸과 즐거운 산책을 위해 골라본',
-  '구강': '깨끗한 입 안을 위해 골라본',
-  '눈·시력': '맑은 눈을 위해 골라본',
+  '피부·모질': '윤기 나는 털과 건강한 피부를 위한 간식',
+  '관절·뼈': '산책이 즐거운 날을 위한 간식',
+  '소화·장건강': '편안한 하루를 위한 간식',
+  '심장': '건강한 매일을 위한 간식',
+  '비만·체중관리': '가벼운 몸과 즐거운 산책을 위한 간식',
+  '구강': '깨끗한 입 안을 위한 간식',
+  '눈·시력': '맑은 눈을 위한 간식',
 };
 
 // ── 건강 고민 → 태그 매핑 ──
@@ -72,9 +72,9 @@ export default function RecommendPage() {
   const curationText = useMemo(() => {
     if (profile.healthConcerns.length > 0) {
       const phrase = CURATION_PHRASES[profile.healthConcerns[0]];
-      if (phrase) return `${profile.name || '우리 아이'}를 위해 ${phrase} 간식`;
+      if (phrase) return `${profile.name || '우리 아이'}의 ${phrase}`;
     }
-    return `${profile.name || '우리 아이'}를 위해 정성껏 골라봤어요`;
+    return `${profile.name || '우리 아이'}를 위해 하나하나 골라봤어요`;
   }, [profile]);
 
   useEffect(() => {
@@ -156,7 +156,7 @@ export default function RecommendPage() {
 
         {isSkipped && (
           <p className="text-[11px] text-[var(--warm-taupe)] mt-4 tracking-[0.03em]">
-            우리 아이 취향까지 알려주시면 더 잘 골라드릴 수 있어요.{' '}
+            우리 아이 취향까지 알려주시면 더 잘 맞는 간식을 찾아드릴 수 있어요.{' '}
             <Link href="/profile/preference" className="underline text-[var(--walnut)] hover:text-[var(--walnut-dark)]">
               취향 알려주기
             </Link>
@@ -250,7 +250,7 @@ export default function RecommendPage() {
             아직 딱 맞는 간식을 못 찾았어요.
           </p>
           <p className="text-[12px] text-[var(--warm-taupe)] mb-8 tracking-[0.03em]">
-            제외한 재료나 취향을 조금 바꿔주시면 더 골라드릴 수 있어요.
+            제외한 재료나 취향을 조금 바꿔주시면 더 찾아드릴 수 있어요.
           </p>
           <Link
             href="/profile/preference"
@@ -278,7 +278,7 @@ export default function RecommendPage() {
                 onClick={handleAddAll}
                 className="w-full py-3.5 rounded-[2px] bg-[var(--walnut)] text-[var(--cream)] text-[12px] md:text-[13px] font-[var(--font-ui)] font-medium tracking-[0.06em] uppercase hover:bg-[var(--walnut-dark)] transition-colors"
               >
-                골라본 간식 모두 담기 ({recommendations.length})
+                추천 간식 모두 담기 ({recommendations.length})
               </button>
             )}
           </div>
