@@ -11,7 +11,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: 'duck-single',
     name: '오리 트릿 (단일 단백질)',
-    description: '오리고기 하나로만 정성껏 만들었어요. 예민한 아이도 편하게 먹을 수 있도록, 재료를 최대한 단순하게 골랐습니다.',
+    description: '오리고기 하나로만 정성껏 만들었습니다. 예민한 아이도 편하게 먹을 수 있도록, 재료를 최대한 단순하게 구성했습니다.',
     price: 18000,
     proteinType: 'duck',
     ingredients: ['오리가슴살', '고구마', '블루베리'],
@@ -26,9 +26,9 @@ export const MOCK_PRODUCTS: Product[] = [
     price: 22000,
     proteinType: 'salmon',
     ingredients: ['연어', '귀리', '아마씨'],
-    // 원재료 스틸라이프: 연어 필렛 매크로 촬영
-    imageUrl: 'https://images.unsplash.com/photo-1499125562588-29fb8a56b5d5?w=600&h=500&fit=crop&crop=center',
-    imageAlt: '신선한 연어 필렛 클로즈업',
+    // 원재료 스틸라이프: 연어 슬라이스 밝은 톤
+    imageUrl: 'https://images.unsplash.com/photo-1559058789-672da06263d8?w=600&h=500&fit=crop&crop=center',
+    imageAlt: '밝은 배경 위 연어 슬라이스',
   },
   {
     id: 'birthday-set',
@@ -37,9 +37,9 @@ export const MOCK_PRODUCTS: Product[] = [
     price: 42000,
     proteinType: 'mixed',
     ingredients: ['오리가슴살', '연어', '소고기', '고구마', '블루베리'],
-    // 원재료 스틸라이프: 크래프트 선물 박스 + 말린 과일/간식 구성
-    imageUrl: 'https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=600&h=500&fit=crop&crop=center',
-    imageAlt: '프리미엄 선물 세트 구성품',
+    // 원재료 스틸라이프: 밝은 톤 선물 박스 구성
+    imageUrl: 'https://images.unsplash.com/photo-1764764138587-189f22804ec4?w=600&h=500&fit=crop&crop=center',
+    imageAlt: '밝은 배경 위 프리미엄 선물 세트',
   },
   {
     id: 'beef-senior',

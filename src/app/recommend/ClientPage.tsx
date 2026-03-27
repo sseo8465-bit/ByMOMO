@@ -29,15 +29,15 @@ const CURATION_PHRASES: Record<string, string> = {
   '눈·시력': '맑은 눈을 위한 간식',
 };
 
-// ── 건강 고민 → 태그 매핑 ──
+// ── 건강 고민 → 태그 매핑 (기대효과 중심 순화) ──
 const HEALTH_TAG_MAP: Record<string, { label: string; keywords: string[] }> = {
-  '피부·모질': { label: '피부·모질 개선', keywords: ['연어', '오메가'] },
-  '관절·뼈': { label: '관절 건강', keywords: ['글루코사민'] },
-  '소화·장건강': { label: '소화 건강', keywords: ['단호박', '고구마'] },
-  '심장': { label: '심장 건강', keywords: ['오메가'] },
-  '비만·체중관리': { label: '체중 관리', keywords: ['저알러지'] },
-  '구강': { label: '구강 건강', keywords: [] },
-  '눈·시력': { label: '눈 건강', keywords: [] },
+  '피부·모질': { label: '윤기 나는 털을 위해', keywords: ['연어', '오메가'] },
+  '관절·뼈': { label: '가벼운 산책을 위해', keywords: ['글루코사민'] },
+  '소화·장건강': { label: '편안한 소화를 위해', keywords: ['단호박', '고구마'] },
+  '심장': { label: '건강한 매일을 위해', keywords: ['오메가'] },
+  '비만·체중관리': { label: '가벼운 몸을 위해', keywords: ['저알러지'] },
+  '구강': { label: '깨끗한 입 안을 위해', keywords: [] },
+  '눈·시력': { label: '맑은 눈을 위해', keywords: [] },
 };
 
 // ── 큐레이션 근거(Reason-to-believe) 생성 ──
@@ -119,8 +119,8 @@ function getProductTags(product: Product, healthConcerns: string[], dislikedIngr
     );
     if (hasMatch) tags.push(mapping.label);
   });
-  if (dislikedIngredients.length > 0) tags.push('알러지 성분 제외');
-  if (product.proteinType !== 'mixed') tags.push('단일 단백질');
+  if (dislikedIngredients.length > 0) tags.push('가려움 없는 편안한 간식');
+  if (product.proteinType !== 'mixed') tags.push('예민한 아이도 안심');
   return [...new Set(tags)];
 }
 
@@ -135,14 +135,16 @@ export default function RecommendPage() {
 
   const recommendations = useMemo(() => getRecommendations(profile), [profile]);
 
-  // 큐레이션 문구 생성
+  // 큐레이션 문구 생성 — profile.name 개인화 극대화
+  const dogName = profile.name || '우리 아이';
+
   const curationText = useMemo(() => {
     if (profile.healthConcerns.length > 0) {
       const phrase = CURATION_PHRASES[profile.healthConcerns[0]];
-      if (phrase) return `${profile.name || '우리 아이'}의 ${phrase}`;
+      if (phrase) return `${dogName}, ${phrase}`;
     }
-    return `${profile.name || '우리 아이'}를 위해 하나하나 골라봤어요`;
-  }, [profile]);
+    return `${dogName}를 위해 하나하나 찾아봤어요`;
+  }, [profile, dogName]);
 
   // 큐레이션 근거 (Reason-to-believe)
   const curationRationale = useMemo(
@@ -160,7 +162,7 @@ export default function RecommendPage() {
   const handleQuickAdd = useCallback((product: Product) => {
     addItem({ product, quantity: 1 });
     setAddedItems((prev) => new Set(prev).add(product.id));
-    setToastMessage('장바구니에 담겼습니다');
+    setToastMessage('장바구니에 담았어요');
     setTimeout(() => {
       setAddedItems((prev) => {
         const next = new Set(prev);
@@ -175,7 +177,7 @@ export default function RecommendPage() {
       if (!addedItems.has(product.id)) addItem({ product, quantity: 1 });
     });
     setAddedItems(new Set(recommendations.map((p) => p.id)));
-    setToastMessage('모든 추천 간식이 담겼습니다');
+    setToastMessage('추천 간식을 모두 담았어요');
   }, [recommendations, addedItems, addItem]);
 
   const addedCount = addedItems.size;
@@ -211,7 +213,7 @@ export default function RecommendPage() {
 
         {/* ── 큐레이션 근거 (Reason-to-believe) — 에디토리얼 큐레이터 노트 ── */}
         {curationRationale && !isSkipped && (
-          <p className="max-w-[420px] mx-auto mt-6 font-[var(--font-ui)] text-[11px] md:text-[12px] text-[var(--warm-taupe)] leading-[1.8] tracking-[0.03em]">
+          <p className="max-w-[420px] mx-auto mt-6 font-[var(--font-ui)] text-[14px] md:text-[14px] text-[var(--warm-taupe)] leading-[1.7] tracking-[0.03em]">
             {curationRationale}
           </p>
         )}
@@ -235,8 +237,8 @@ export default function RecommendPage() {
         )}
 
         {isSkipped && (
-          <p className="text-[11px] text-[var(--warm-taupe)] mt-4 tracking-[0.03em]">
-            우리 아이 취향까지 알려주시면 더 잘 맞는 간식을 찾아드릴 수 있어요.{' '}
+          <p className="text-[13px] text-[var(--warm-taupe)] mt-4 tracking-[0.03em] leading-[1.6]">
+            {dogName}의 취향까지 알려주시면 더 잘 맞는 간식을 찾아드릴 수 있어요.{' '}
             <Link href="/profile/preference" className="underline text-[var(--walnut)] hover:text-[var(--walnut-dark)]">
               취향 알려주기
             </Link>
@@ -297,15 +299,15 @@ export default function RecommendPage() {
                   <button
                     onClick={() => handleQuickAdd(product)}
                     disabled={isAdded}
-                    className={`font-[var(--font-ui)] text-[10px] md:text-[11px] tracking-[0.08em] uppercase transition-colors ${
+                    className={`font-[var(--font-ui)] text-[12px] md:text-[13px] tracking-[0.06em] transition-colors ${
                       isAdded
                         ? 'text-[var(--warm-taupe)] cursor-default'
-                        : 'text-[var(--walnut)] hover:text-[var(--walnut-dark)] cursor-pointer'
+                        : 'text-[var(--walnut-dark)] font-medium hover:text-[var(--walnut)] cursor-pointer'
                     }`}
                   >
                     {isAdded
-                      ? '담겼습니다'
-                      : `장바구니 담기 — ₩${product.price.toLocaleString('ko-KR')}`
+                      ? `${dogName}의 장바구니에 담겼어요`
+                      : `담기 — ₩${product.price.toLocaleString('ko-KR')}`
                     }
                   </button>
                 </article>
@@ -319,7 +321,7 @@ export default function RecommendPage() {
               href="/profile/preference"
               className="font-[var(--font-ui)] text-[11px] text-[var(--warm-taupe)] hover:text-[var(--walnut)] tracking-[0.06em] transition-colors"
             >
-              다시 골라보기 →
+              다시 찾아보기 →
             </Link>
           </div>
         </section>
@@ -327,9 +329,9 @@ export default function RecommendPage() {
         /* 빈 상태 */
         <div className="text-center page-padding py-20">
           <p className="font-[var(--font-serif)] text-[18px] md:text-[22px] text-[var(--walnut)] mb-3">
-            아직 딱 맞는 간식을 못 찾았어요.
+            {dogName}에게 딱 맞는 간식을 아직 못 찾았어요.
           </p>
-          <p className="text-[12px] text-[var(--warm-taupe)] mb-8 tracking-[0.03em]">
+          <p className="text-[14px] text-[var(--warm-taupe)] mb-8 tracking-[0.03em] leading-[1.6]">
             제외한 재료나 취향을 조금 바꿔주시면 더 찾아드릴 수 있어요.
           </p>
           <Link
@@ -348,7 +350,7 @@ export default function RecommendPage() {
             {addedCount > 0 ? (
               <Link
                 href="/cart"
-                className="block w-full py-3.5 rounded-[2px] bg-[var(--walnut)] text-[var(--cream)] text-[12px] md:text-[13px] font-[var(--font-ui)] font-medium tracking-[0.06em] uppercase text-center hover:bg-[var(--walnut-dark)] transition-colors"
+                className="block w-full py-3.5 rounded-[2px] bg-[var(--walnut-dark)] text-[var(--cream)] text-[13px] md:text-[14px] font-[var(--font-ui)] font-semibold tracking-[0.06em] uppercase text-center hover:bg-[var(--walnut)] transition-colors"
               >
                 장바구니 보기 ({addedCount})
               </Link>
@@ -356,9 +358,9 @@ export default function RecommendPage() {
               <button
                 type="button"
                 onClick={handleAddAll}
-                className="w-full py-3.5 rounded-[2px] bg-[var(--walnut)] text-[var(--cream)] text-[12px] md:text-[13px] font-[var(--font-ui)] font-medium tracking-[0.06em] uppercase hover:bg-[var(--walnut-dark)] transition-colors"
+                className="w-full py-3.5 rounded-[2px] bg-[var(--walnut-dark)] text-[var(--cream)] text-[13px] md:text-[14px] font-[var(--font-ui)] font-semibold tracking-[0.06em] uppercase hover:bg-[var(--walnut)] transition-colors"
               >
-                추천 간식 모두 담기 ({recommendations.length})
+                {profile.name ? `${profile.name}의 추천 간식 모두 담기` : '추천 간식 모두 담기'} ({recommendations.length})
               </button>
             )}
           </div>

@@ -169,7 +169,7 @@ export default function ShopCollectionPage() {
                     }`}
                   >
                     {isAdded
-                      ? '담겼습니다'
+                      ? '장바구니에 담겼어요'
                       : `장바구니 담기 — ₩${product.price.toLocaleString('ko-KR')}`
                     }
                   </button>

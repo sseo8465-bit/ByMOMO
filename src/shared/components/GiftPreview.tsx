@@ -33,8 +33,8 @@ export default function GiftPreview({ className = '' }: GiftPreviewProps) {
       {/* 선물 포장 이미지 */}
       <div className="relative h-[140px] md:h-[180px]">
         <Image
-          src="https://images.unsplash.com/photo-1513519245088-0e12902e35a6?w=600&h=280&fit=crop&crop=center"
-          alt="By MOMO 선물 포장 — 크래프트 박스와 리본"
+          src="https://plus.unsplash.com/premium_photo-1760697912204-d7a02a1b4e79?w=600&h=280&fit=crop&crop=center"
+          alt="By MOMO 선물 포장 — 화이트 박스와 브라운 리본"
           fill
           className="object-cover"
           sizes="(max-width: 768px) 100vw, 50vw"

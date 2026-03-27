@@ -38,7 +38,7 @@ export default function AboutPage() {
             <br />
             못 먹는 건 덜어내고,
             <br />
-            오직 모모에게 필요한 것으로 가득 채운
+            모모에게 필요한 것만으로 가득 채운
             <br />
             &ldquo;단 하나뿐인 레시피&rdquo;.
           </p>
@@ -66,14 +66,14 @@ export default function AboutPage() {
       {/* ── Pull Quote 섹션 ── */}
       <section className="page-padding section-spacing text-center">
         <p className="font-[var(--font-serif)] text-[20px] md:text-[26px] text-[var(--walnut)] italic leading-[1.5] mb-3 tracking-[0.02em]">
-          가장 좋은 성분은,
+          좋은 성분은,
           <br />
           보호자의 마음으로 고른 재료입니다.
         </p>
         <p className="text-[12px] md:text-[13px] text-[var(--warm-gray)] leading-[1.7] tracking-[0.03em]">
           세상에 단 하나뿐인 아이에게 전하는
           <br />
-          가장 안심되는 선물.
+          안심할 수 있는 선물.
         </p>
       </section>
 
@@ -93,7 +93,7 @@ export default function AboutPage() {
             },
             {
               title: "내 아이에게 맞춘 레시피",
-              desc: "프로파일에 맞춰 간식 커스터마이징해 드립니다.",
+              desc: "프로파일에 따라 간식을 따로 구성해 드립니다.",
             },
             {
               title: "누구에게나 특별하도록",
