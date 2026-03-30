@@ -62,18 +62,26 @@ export default function Footer() {
           {/* ── Hairline 구분선 ── */}
           <div className="border-t border-[var(--oatmeal)] mb-10" />
 
-          {/* ── 사업자 정보 ── */}
+          {/* ── 사업자 필수 정보 (전자상거래법 의무 표시) ── */}
           <div className="text-[11px] text-[var(--warm-taupe)] space-y-0.5 mb-8 text-center leading-[1.8] tracking-[0.02em]">
-            <p>상호: By MOMO | 사업자번호: 000-00-00000</p>
-            <p>대표: 홍길동 | 서울시 강남구 테헤란로</p>
+            <p>상호: By MOMO (바이모모)</p>
+            <p>대표: 안서영 | 사업자등록번호: 000-00-00000</p>
+            <p>통신판매업 신고번호: 제0000-서울강남-00000호</p>
+            <p>주소: 서울특별시 강남구 테헤란로 000, 0층</p>
+            <p>대표전화: 070-0000-0000 | 이메일: hello@bymomo.kr</p>
           </div>
 
-          {/* ── 약관 링크 ── */}
+          {/* ── 약관 링크 — 개인정보처리방침은 법적 권고에 따라 강조(Semi-bold) ── */}
           <div className="flex justify-center gap-4 text-[11px] text-[var(--warm-taupe)] mb-4 tracking-[0.02em]">
             {LEGAL_LINKS.map(({ href, label }, index) => (
               <span key={href} className="flex items-center gap-4">
                 {index > 0 && <span className="text-[var(--oatmeal)]">·</span>}
-                <Link href={href} className="hover:text-[var(--walnut)] transition-colors">
+                <Link
+                  href={href}
+                  className={`hover:text-[var(--walnut)] transition-colors ${
+                    label === '개인정보처리방침' ? 'font-semibold text-[var(--charcoal)]' : ''
+                  }`}
+                >
                   {label}
                 </Link>
               </span>

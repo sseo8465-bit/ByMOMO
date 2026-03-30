@@ -68,7 +68,8 @@ export default function CartPage() {
     <>
       <GNB activeItem="cart" />
 
-      <div className="page-padding section-spacing">
+      {/* lg:pb-0 — 모바일에서는 Bottom Sticky CTA 높이만큼 여백 확보 */}
+      <div className="page-padding section-spacing pb-36 lg:pb-[var(--space-section-y)]">
         {/* ── 페이지 타이틀 ── */}
         <p className="font-[var(--font-ui)] text-[10px] font-semibold tracking-[0.15em] uppercase text-[var(--warm-taupe)] mb-3">
           Cart
@@ -191,6 +192,24 @@ export default function CartPage() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* ── 모바일 Bottom Sticky CTA — 엄지손가락으로 누르기 편한 위치 ── */}
+      <div className="fixed bottom-0 left-0 right-0 lg:hidden z-40 bg-[var(--warm-white)] border-t border-[var(--oatmeal)] px-5 py-4 safe-area-bottom">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-[12px] text-[var(--warm-gray)] font-[var(--font-ui)] tracking-[0.03em]">
+            총 {items.length}개 상품
+          </span>
+          <span className="text-[15px] font-[var(--font-ui)] font-semibold text-[var(--charcoal)]">
+            {formatPrice(totalAmount)}
+          </span>
+        </div>
+        <button
+          onClick={handleCheckout}
+          className="w-full min-h-[54px] py-4 bg-[var(--walnut-dark)] text-[var(--cream)] text-[14px] font-[var(--font-ui)] font-semibold tracking-[0.04em] hover:bg-[var(--walnut)] active:scale-[0.97] active:brightness-90 transition-colors"
+        >
+          결제하기
+        </button>
       </div>
 
       {/* ── 비회원 결제 BottomSheet (회원 혜택 안내 모달) ── */}

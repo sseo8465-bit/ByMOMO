@@ -147,7 +147,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return { success: false, error: '로그인 서비스 준비 중입니다. 카카오 로그인 또는 비회원 주문을 이용해 주세요.' };
     }
 
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    let data, error;
+    try {
+      ({ data, error } = await supabase.auth.signInWithPassword({ email, password }));
+    } catch (networkError) {
+      return { success: false, error: '네트워크 연결을 확인해 주세요. 잠시 후 다시 시도해 주세요.' };
+    }
 
     if (error) {
       // Supabase 에러 메시지를 브랜드 톤으로 변환
@@ -178,18 +183,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return { success: false, error: '회원가입 서비스 준비 중입니다. 잠시 후 다시 시도해 주세요.' };
     }
 
-    const { data, error } = await supabase.auth.signUp({
-      email: payload.email,
-      password: payload.password,
-      options: {
-        data: {
-          name: payload.name,
-          phone: payload.phone,
-          address: payload.address,
-          dogName: payload.dogName || '',
+    let data, error;
+    try {
+      ({ data, error } = await supabase.auth.signUp({
+        email: payload.email,
+        password: payload.password,
+        options: {
+          data: {
+            name: payload.name,
+            phone: payload.phone,
+            address: payload.address,
+            dogName: payload.dogName || '',
+          },
         },
-      },
-    });
+      }));
+    } catch (networkError) {
+      return { success: false, error: '네트워크 연결을 확인해 주세요. 잠시 후 다시 시도해 주세요.' };
+    }
 
     if (error) {
       if (error.message.includes('already registered') || error.message.includes('already been registered')) {

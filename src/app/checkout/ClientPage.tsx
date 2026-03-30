@@ -87,6 +87,8 @@ export default function CheckoutPage() {
 
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('kakao');
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [agreedToPrivacy, setAgreedToPrivacy] = useState(false);
+  const [agreedToRefund, setAgreedToRefund] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -140,7 +142,9 @@ export default function CheckoutPage() {
       REGEX.phone.test(formData.recipientPhone) &&
       REGEX.address.test(formData.shippingAddress.trim()) &&
       !REGEX.consonantOnly.test(formData.shippingAddress.trim()) &&
-      agreedToTerms
+      agreedToTerms &&
+      agreedToPrivacy &&
+      agreedToRefund
     );
   }, [formData, agreedToTerms]);
 
@@ -321,40 +325,108 @@ export default function CheckoutPage() {
             </div>
           </section>
 
-          {/* ── 약관 동의 ── */}
-          <div className="mb-10">
-            <label className="flex items-start gap-3 cursor-pointer">
-              <span
-                onClick={() => setAgreedToTerms(!agreedToTerms)}
-                className={`w-[16px] h-[16px] flex-shrink-0 border mt-0.5 flex items-center justify-center transition-colors cursor-pointer ${
-                  agreedToTerms
-                    ? 'border-[var(--walnut)] bg-[var(--walnut)]'
-                    : 'border-[var(--warm-taupe-light)]'
-                }`}
-                role="checkbox"
-                aria-checked={agreedToTerms}
-              >
-                {agreedToTerms && (
-                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="var(--cream)" strokeWidth="1.5" strokeLinecap="round">
-                    <polyline points="8 3 4 8 2 6" />
-                  </svg>
-                )}
-              </span>
-              <span
-                onClick={() => setAgreedToTerms(!agreedToTerms)}
-                className="font-[var(--font-ui)] text-[13px] md:text-[14px] text-[var(--warm-gray)] tracking-[0.02em] leading-[1.6] cursor-pointer"
-              >
-                주문 내용을 확인했습니다.
-              </span>
-            </label>
-          </div>
+          {/* ── 약관 동의 (전자상거래법 필수 동의 항목) ── */}
+          <section className="mb-10">
+            <p className="font-[var(--font-ui)] text-[10px] md:text-[11px] tracking-[0.15em] uppercase text-[var(--warm-taupe)] mb-4">
+              Agreement
+            </p>
 
-          {/* ── 신뢰 배지 (Trust Badges) ── */}
+            <div className="flex flex-col gap-4">
+              {/* 이용약관 동의 */}
+              <label className="flex items-start gap-3 cursor-pointer">
+                <span
+                  onClick={() => setAgreedToTerms(!agreedToTerms)}
+                  className={`w-[16px] h-[16px] flex-shrink-0 border mt-0.5 flex items-center justify-center transition-colors cursor-pointer ${
+                    agreedToTerms
+                      ? 'border-[var(--walnut)] bg-[var(--walnut)]'
+                      : 'border-[var(--warm-taupe-light)]'
+                  }`}
+                  role="checkbox"
+                  aria-checked={agreedToTerms}
+                >
+                  {agreedToTerms && (
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="var(--cream)" strokeWidth="1.5" strokeLinecap="round">
+                      <polyline points="8 3 4 8 2 6" />
+                    </svg>
+                  )}
+                </span>
+                <span
+                  onClick={() => setAgreedToTerms(!agreedToTerms)}
+                  className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[var(--warm-gray)] tracking-[0.02em] leading-[1.6] cursor-pointer"
+                >
+                  <a href="/terms" target="_blank" className="underline underline-offset-4 decoration-[var(--warm-gray)]/40 hover:text-[var(--walnut)]">이용약관</a>에 동의합니다. (필수)
+                </span>
+              </label>
+
+              {/* 개인정보 수집·이용 동의 */}
+              <label className="flex items-start gap-3 cursor-pointer">
+                <span
+                  onClick={() => setAgreedToPrivacy(!agreedToPrivacy)}
+                  className={`w-[16px] h-[16px] flex-shrink-0 border mt-0.5 flex items-center justify-center transition-colors cursor-pointer ${
+                    agreedToPrivacy
+                      ? 'border-[var(--walnut)] bg-[var(--walnut)]'
+                      : 'border-[var(--warm-taupe-light)]'
+                  }`}
+                  role="checkbox"
+                  aria-checked={agreedToPrivacy}
+                >
+                  {agreedToPrivacy && (
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="var(--cream)" strokeWidth="1.5" strokeLinecap="round">
+                      <polyline points="8 3 4 8 2 6" />
+                    </svg>
+                  )}
+                </span>
+                <span
+                  onClick={() => setAgreedToPrivacy(!agreedToPrivacy)}
+                  className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[var(--warm-gray)] tracking-[0.02em] leading-[1.6] cursor-pointer"
+                >
+                  <a href="/privacy" target="_blank" className="underline underline-offset-4 decoration-[var(--warm-gray)]/40 hover:text-[var(--walnut)] font-medium">개인정보 수집·이용</a>에 동의합니다. (필수)
+                </span>
+              </label>
+
+              {/* 청약철회 안내 확인 */}
+              <label className="flex items-start gap-3 cursor-pointer">
+                <span
+                  onClick={() => setAgreedToRefund(!agreedToRefund)}
+                  className={`w-[16px] h-[16px] flex-shrink-0 border mt-0.5 flex items-center justify-center transition-colors cursor-pointer ${
+                    agreedToRefund
+                      ? 'border-[var(--walnut)] bg-[var(--walnut)]'
+                      : 'border-[var(--warm-taupe-light)]'
+                  }`}
+                  role="checkbox"
+                  aria-checked={agreedToRefund}
+                >
+                  {agreedToRefund && (
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="var(--cream)" strokeWidth="1.5" strokeLinecap="round">
+                      <polyline points="8 3 4 8 2 6" />
+                    </svg>
+                  )}
+                </span>
+                <span
+                  onClick={() => setAgreedToRefund(!agreedToRefund)}
+                  className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[var(--warm-gray)] tracking-[0.02em] leading-[1.6] cursor-pointer"
+                >
+                  주문 내용을 확인했으며, 청약철회(7일 이내 환불) 안내에 동의합니다. (필수)
+                </span>
+              </label>
+            </div>
+
+            {/* 청약철회 요약 안내 */}
+            <div className="mt-4 bg-[var(--cream)] p-4">
+              <p className="font-[var(--font-ui)] text-[10px] md:text-[11px] text-[var(--warm-gray)] leading-[1.8] tracking-[0.02em]">
+                상품 수령 후 7일 이내 청약철회가 가능합니다. 단, 포장을 개봉하였거나
+                시식한 경우, 반려동물 식품의 위생·안전 특성상 교환 및 반품이 제한될 수 있습니다.
+              </p>
+            </div>
+          </section>
+
+          {/* ── 신뢰 배지 (Trust Badges) + 결제 보안 고지 ── */}
           <div className="mb-5 flex flex-col gap-2">
             {[
               '제조 후 3일 이내 발송',
               '수의사 자문 레시피',
               '모든 주문 선물 포장 포함',
+              '고객님의 결제 정보는 암호화되어 안전하게 보호됩니다',
             ].map((badge) => (
               <div key={badge} className="flex items-center gap-2">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" className="flex-shrink-0">

@@ -146,7 +146,7 @@ function generateCurationRationale(
 
   // 3. 시니어 — 식감 배려
   if (isSenior) {
-    lines.push(`나이가 있는 ${dogName}를 위해, 가장 부드러운 식감으로 준비했습니다.`);
+    lines.push(`나이가 있는 ${dogName}를 위해, 한결 부드러운 식감으로 준비했습니다.`);
   }
 
   // 4. 다정한 마무리 (건강 고민이 있으면 closing, 없으면 범용)
@@ -199,7 +199,7 @@ export default function RecommendPage() {
       const phrase = CURATION_PHRASES[profile.healthConcerns[0]];
       if (phrase) return `${dogName}, ${phrase}`;
     }
-    return `${dogName}를 위해 하나하나 찾아봤어요`;
+    return `${dogName}에게 하나하나 골라봤어요`;
   }, [profile, dogName]);
 
   // 큐레이션 근거 (Reason-to-believe)
@@ -270,11 +270,18 @@ export default function RecommendPage() {
         {/* ── 큐레이션 근거 (Reason-to-believe) — 이솝 에디토리얼 큐레이터 노트 ── */}
         {curationRationale && !isSkipped && (
           <div className="max-w-[420px] mx-auto mt-6 font-[var(--font-ui)] text-[14px] md:text-[15px] text-[var(--charcoal)] leading-[1.8] tracking-[0.03em]">
-            {curationRationale.split('\n').map((line, i) => (
-              <p key={i} className={i > 0 ? 'mt-2' : ''}>
-                {line}
-              </p>
-            ))}
+            {curationRationale.split('\n').map((line, i, arr) => {
+              const isFirst = i === 0;
+              const isLast = i === arr.length - 1;
+              return (
+                <p
+                  key={i}
+                  className={`${i > 0 ? 'mt-2' : ''} ${isFirst ? 'font-medium' : ''} ${isLast ? 'underline underline-offset-4 decoration-[var(--oatmeal)]' : ''}`}
+                >
+                  {line}
+                </p>
+              );
+            })}
           </div>
         )}
 
@@ -319,10 +326,10 @@ export default function RecommendPage() {
                   {/* 추천 태그 */}
                   {productTags.length > 0 && (
                     <div className="flex flex-wrap justify-center gap-1.5 mb-4">
-                      {productTags.map((tag) => (
+                      {productTags.map((tag, idx) => (
                         <span
                           key={tag}
-                          className="font-[var(--font-ui)] text-[9px] md:text-[10px] tracking-[0.1em] uppercase text-[var(--walnut)] font-medium"
+                          className={`font-[var(--font-ui)] text-[9px] md:text-[10px] tracking-[0.1em] uppercase text-[var(--walnut)] ${idx === 0 ? 'font-semibold underline underline-offset-4 decoration-[var(--oatmeal)]' : 'font-medium'}`}
                         >
                           {tag}
                         </span>
@@ -381,7 +388,7 @@ export default function RecommendPage() {
               href="/profile/preference"
               className="font-[var(--font-ui)] text-[11px] text-[var(--warm-taupe)] hover:text-[var(--walnut)] tracking-[0.06em] transition-colors"
             >
-              다시 찾아보기 →
+              조건 바꿔보기 →
             </Link>
           </div>
         </section>
@@ -389,10 +396,10 @@ export default function RecommendPage() {
         /* 빈 상태 */
         <div className="text-center page-padding py-20">
           <p className="font-[var(--font-serif)] text-[18px] md:text-[22px] text-[var(--walnut)] mb-3">
-            {dogName}에게 딱 맞는 간식을 아직 못 찾았어요.
+            {dogName}에게 딱 맞는 간식을 아직 준비하지 못했어요.
           </p>
           <p className="text-[14px] text-[var(--warm-taupe)] mb-8 tracking-[0.03em] leading-[1.6]">
-            제외한 재료나 취향을 조금 바꿔주시면 더 찾아드릴 수 있어요.
+            제외한 재료나 취향을 바꿔주시면 더 골라드릴 수 있어요.
           </p>
           <Link
             href="/profile/preference"
@@ -420,7 +427,7 @@ export default function RecommendPage() {
                 onClick={handleAddAll}
                 className="w-full py-3.5 rounded-[2px] bg-[var(--walnut-dark)] text-[var(--cream)] text-[13px] md:text-[14px] font-[var(--font-ui)] font-semibold tracking-[0.06em] uppercase hover:bg-[var(--walnut)] transition-colors"
               >
-                {profile.name ? `${profile.name}의 추천 간식 모두 담기` : '추천 간식 모두 담기'} ({recommendations.length})
+                {profile.name ? `${profile.name}${pickJosa(profile.name, '을', '를')} 위해 고른 간식 모두 담기` : '고른 간식 모두 담기'} ({recommendations.length})
               </button>
             )}
           </div>

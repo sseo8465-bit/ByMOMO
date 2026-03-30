@@ -6,7 +6,11 @@
 - **스타일링**: Tailwind CSS 4 (PostCSS, `@import "tailwindcss"` 방식)
 - **상태관리**: Context API + custom hooks (외부 라이브러리 없음)
 - **배포**: Vercel (GitHub 연동 자동 배포)
-- **인증**: 카카오 로그인 SDK (`NEXT_PUBLIC_KAKAO_APP_KEY`)
+- **인증**: 이중 인증 시스템
+  - Supabase Auth: 이메일/비밀번호 (signUp, signInWithPassword). `@supabase/ssr` 패키지, 쿠키 기반 세션
+  - 카카오 SDK: 소셜 로그인 (`NEXT_PUBLIC_KAKAO_APP_KEY`). Phase 3에서 Supabase OAuth 전환 예정
+  - 서버 보호: `middleware.ts`(JWT 검증) + Server Component(`checkIsAdmin()`) 이중 검증
+  - Admin 권한: `app_metadata.role === 'admin'` — Supabase SQL로 부여
 - **이미지**: 상품 이미지는 Unsplash 무료 사진 (`images.unsplash.com`만 허용, `plus.unsplash.com` 금지). 비주얼 컴포넌트(GiftPreview 등)는 CSS/SVG 기반으로 전환 중
 - **Supabase**: `@supabase/supabase-js` + `src/lib/supabase.ts`. **Phase 2 진입 — Supabase 프로젝트 연결 완료** (Project ID: yunmdbmzkjhlgeubrxrp, 리전: Seoul). `isSupabaseConfigured` = `true`. 이메일 Auth(signUp, signInWithPassword) 활성화됨. 카카오 OAuth는 기존 SDK 유지 (Supabase OAuth 전환은 Phase 3)
 - **Phase 2 진행 중**: 토스페이먼츠 (PG) 연동 예정
@@ -114,6 +118,21 @@ src/
 - Reason-to-believe 패턴: 프로필 데이터 기반 동적 큐레이션 근거는 `CONCERN_RATIONALE` Record + `generateCurationRationale()` 함수로 구현하라. 새 건강 고민 항목 추가 시 이 Record도 함께 업데이트하라. (`recommend/ClientPage.tsx` 참조)
 - **홈 page.tsx 예외**: 홈(`src/app/page.tsx`)만 유일하게 Server Component에서 직접 UI를 렌더링한다 (Image, Link, GNB, Footer 직접 import). 신규 페이지는 반드시 `page.tsx`(Server) → `ClientPage.tsx`(`'use client'`) 분리 패턴을 따르라. 홈을 참고하지 말고 `shop/`, `recommend/` 등의 패턴을 따르라.
 - **Supabase 가드 패턴**: `src/lib/supabase.ts`의 `isSupabaseConfigured` 플래그를 Supabase API 호출 전 반드시 체크하라. `false`일 때 API 호출 시 placeholder URL로 네트워크 에러 발생. (`src/lib/supabase.ts` 참조)
+- **Supabase 서버 클라이언트**: `src/lib/supabase-server.ts` — middleware.ts, Server Component 전용. `createSupabaseServerClient()`는 쿠키 기반 세션 유지. `checkIsAdmin()`으로 admin 역할 검증. 클라이언트사이드에서는 `src/lib/supabase.ts` 사용.
+- **Admin 권한 보호 (3중 계층)**:
+  - 1차 Client: `useAuth().isAdmin` 체크
+  - 2차 Middleware: `/admin` 접근 시 JWT 검증 + `app_metadata.role` 확인 (가장 강력, `src/middleware.ts`)
+  - 3차 Server Component: `checkIsAdmin()` 재검증 (`admin/page.tsx`)
+  - 참고: `docs/admin-auth-setup-guide.md`
+- **Daum 우편번호 API 패턴** (`register/ClientPage.tsx`):
+  - `window.daum.Postcode` 타입은 `declare global` 블록으로 선언
+  - 스크립트 로드: `document.getElementById('daum-postcode-script')` 체크 후 동적 추가
+  - 주소 선택 완료 → `zipCode` + `address` 자동 입력 → `addressDetail`로 focus 이동
+  - ESC 키 / 배경 클릭으로 모달 닫기
+- **마케팅 동의 분리 패턴** (2026-03-30):
+  - `agreedToMarketingSms` + `agreedToMarketingEmail` 두 개 상태로 분리 관리
+  - 전체 동의: `allAgreed = agreedToTerms && agreedToPrivacy && agreedToMarketingSms && agreedToMarketingEmail`
+  - 신규 폼에서 마케팅 동의 필드 추가 시 반드시 SMS/이메일 분리 패턴을 따르라
 - **`rounded-[2px]` 예외**: `rounded-none` 원칙의 유일한 허용 예외. 하단 고정 CTA 등 미세 곡률이 필요한 경우에만 `rounded-[2px]`까지 허용. `rounded-md` 이상은 금지.
 
 ### 브랜드 디자인 토큰 (globals.css :root)
@@ -187,6 +206,8 @@ src/
 - **Supabase 클라이언트**: `src/lib/supabase.ts` — Supabase 연동 시 이 파일의 `isSupabaseConfigured` 가드 패턴을 따르라.
 - **배포**: Vercel 자동 배포 (GitHub main 브랜치 push → 자동 빌드). 수동 배포 불필요.
 - **비개발자 수정 매뉴얼**: `../bymomo-web-수정-매뉴얼.md` — 서영이 직접 카피/가격을 수정할 때 참조하는 가이드.
+- **관리자 권한 설정**: `docs/admin-auth-setup-guide.md` — admin 역할 부여 단계별 가이드 (비개발자용).
+- **서버사이드 Supabase**: `src/lib/supabase-server.ts` — middleware.ts, Server Component 전용. `checkIsAdmin()` 서버 검증 함수 포함.
 
 ## Common Pitfalls
 
@@ -266,3 +287,13 @@ src/
 - **URL 형식**: `https://images.unsplash.com/photo-{timestamp}-{hash}?w=600&h=500&fit=crop&crop=center` — w/h/fit/crop 파라미터 통일.
 - **프리미엄 사진 주의**: `plus.unsplash.com/premium_photo-` 도메인은 Unsplash+ 유료 사진이므로 사용 금지. 무료 사진만 사용하라.
 - **한계**: "건조 간식 + 재료 가니쉬 + 밝은 배경" 조합은 Unsplash에 존재하지 않음 → AI 이미지 생성 또는 실제 촬영 필요.
+
+### ⚠️ 마케팅 동의 필드 분리 주의 (2026-03-30 추가)
+- **패턴**: `register/ClientPage.tsx`에서 `agreedToMarketingSms` + `agreedToMarketingEmail` 두 개 필드로 분리 관리
+- **주의**: 비회원 주문, 프로필 수정 등 다른 폼에서 마케팅 동의가 필요할 때 반드시 SMS/이메일 분리 패턴을 따르라. 단일 `agreedToMarketing` 사용 금지.
+- **전체 동의 로직**: `allAgreed = agreedToTerms && agreedToPrivacy && agreedToMarketingSms && agreedToMarketingEmail` (4개 항목)
+
+### ⚠️ 개인정보 동의 거부 시 가입불가 고지 필수 (2026-03-30 추가)
+- **근거**: 개인정보보호법 제16조 3항 — 필수 동의 거부 시 서비스 제한이 있음을 반드시 고지해야 함
+- **구현**: `PRIVACY_POLICY` 텍스트 최하단에 "※ 동의를 거부할 수 있으나 거부시 회원 가입이 불가능합니다." 문구 포함
+- **법정 보유기간 근거**: 전자상거래법 제6조 조문 번호가 각 항목에 병기되어 있는지 확인하라

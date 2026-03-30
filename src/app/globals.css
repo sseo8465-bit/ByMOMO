@@ -142,6 +142,11 @@ body {
   display: none;
 }
 
+/* ── 모바일 Bottom Sticky CTA safe-area (노치 대응) ── */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 /* ── 전역 부드러운 전환 ── */
 a, button, input, select, textarea {
   transition: all var(--transition-gentle);

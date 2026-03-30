@@ -29,7 +29,8 @@ export default function ProfileLayout({ children }: ProfileLayoutProps) {
         <StepIndicator currentStep={getCurrentStep()} />
       </div>
 
-      <div className="px-6 py-10">
+      {/* ── 페이지 전환 시 부드러운 fade-in 효과 — key로 리렌더 트리거 ── */}
+      <div key={pathname} className="px-6 py-10 animate-fade-in">
         {children}
       </div>
 
