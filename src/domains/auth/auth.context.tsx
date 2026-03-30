@@ -45,6 +45,8 @@ interface AuthContextType extends AuthState {
   displayName: string | null;
   /** 현재 사용자의 이메일 */
   userEmail: string | null;
+  /** 현재 사용자가 관리자(admin)인지 여부 — app_metadata.role 기반 */
+  isAdmin: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -70,6 +72,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user: null,
     isLoading: true,
   });
+  // ── admin 역할 여부 (app_metadata.role === 'admin') ──
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // ── Supabase 세션 복원 + 리스너 ──
   useEffect(() => {
@@ -87,8 +91,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           user: { provider: 'email', data: mapSupabaseUser(session.user) },
           isLoading: false,
         });
+        // JWT 내 app_metadata에서 admin role 확인
+        setIsAdmin(session.user.app_metadata?.role === 'admin');
       } else {
         setAuthState((prev) => ({ ...prev, isLoading: false }));
+        setIsAdmin(false);
       }
     });
 
@@ -100,12 +107,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           user: { provider: 'email', data: mapSupabaseUser(session.user) },
           isLoading: false,
         });
+        // 세션 갱신 시 admin role 재확인
+        setIsAdmin(session.user.app_metadata?.role === 'admin');
       } else {
         // 카카오 로그인 상태이면 유지
         setAuthState((prev) => {
           if (prev.user?.provider === 'kakao') return prev;
           return { isLoggedIn: false, user: null, isLoading: false };
         });
+        // 카카오 로그인은 admin 아님 (Supabase Auth 전용)
+        setIsAdmin(false);
       }
     });
 
@@ -254,6 +265,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     setAuthState({ isLoggedIn: false, user: null, isLoading: false });
+    setIsAdmin(false);
   }, []);
 
   // ── 파생 값: 표시 이름, 이메일 ──
@@ -275,6 +287,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         logout,
         displayName,
         userEmail,
+        isAdmin,
       }}
     >
       {children}

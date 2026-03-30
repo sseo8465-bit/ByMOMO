@@ -69,7 +69,7 @@ const ERROR_MESSAGES = {
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
   return (
-    <p className="font-[var(--font-ui)] text-[10px] md:text-[11px] text-[var(--walnut)] mt-1.5 tracking-[0.02em]">
+    <p className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[var(--walnut)] mt-1.5 tracking-[0.02em]">
       {message}
     </p>
   );
@@ -342,20 +342,39 @@ export default function CheckoutPage() {
               </span>
               <span
                 onClick={() => setAgreedToTerms(!agreedToTerms)}
-                className="font-[var(--font-ui)] text-[11px] md:text-[12px] text-[var(--warm-gray)] tracking-[0.02em] leading-[1.6] cursor-pointer"
+                className="font-[var(--font-ui)] text-[13px] md:text-[14px] text-[var(--warm-gray)] tracking-[0.02em] leading-[1.6] cursor-pointer"
               >
                 주문 내용을 확인했습니다.
               </span>
             </label>
           </div>
 
+          {/* ── 신뢰 배지 (Trust Badges) ── */}
+          <div className="mb-5 flex flex-col gap-2">
+            {[
+              '제조 후 3일 이내 발송',
+              '수의사 자문 레시피',
+              '모든 주문 선물 포장 포함',
+            ].map((badge) => (
+              <div key={badge} className="flex items-center gap-2">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" className="flex-shrink-0">
+                  <circle cx="7" cy="7" r="6.5" stroke="var(--walnut)" strokeWidth="0.8" />
+                  <path d="M4 7L6.2 9.2L10 4.8" stroke="var(--walnut)" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[var(--warm-gray)] tracking-[0.02em]">
+                  {badge}
+                </span>
+              </div>
+            ))}
+          </div>
+
           {/* ── 결제 버튼 ── */}
           <button
             onClick={handlePayment}
             disabled={!isFormValid || isSubmitting}
-            className={`w-full py-4 text-[12px] md:text-[13px] font-[var(--font-ui)] tracking-[0.08em] uppercase transition-colors ${
+            className={`w-full py-4 text-[13px] md:text-[14px] font-[var(--font-ui)] font-semibold tracking-[0.06em] uppercase transition-colors ${
               isFormValid && !isSubmitting
-                ? 'bg-[var(--walnut)] text-[var(--cream)] hover:bg-[var(--walnut-dark)] cursor-pointer'
+                ? 'bg-[var(--walnut-dark)] text-[var(--cream)] hover:bg-[var(--walnut)] cursor-pointer'
                 : 'bg-[var(--oatmeal)] text-[var(--warm-taupe-light)] cursor-not-allowed'
             }`}
           >

@@ -12,7 +12,8 @@
 //   프로필 헤더 + 메뉴 리스트 + 로그아웃
 //
 // [관리자 비밀 통로]
-//   "운영" 5회 탭 → 비밀번호 입력 → /admin
+//   "운영" 5회 탭 → Supabase app_metadata.role 확인 → /admin
+//   비밀번호 클라이언트 노출 없음 (서버사이드 검증)
 // ──────────────────────────────────────────────
 
 import { useState } from 'react';
@@ -22,15 +23,12 @@ import GNB from '@/shared/components/GNB';
 import Footer from '@/shared/components/Footer';
 import { useAuth } from '@/domains/auth/auth.context';
 
-// 관리자 비밀번호 — Phase 2에서 DB role 기반으로 전환 예정
-const ADMIN_PASSWORD = 'momo2026';
-
 // ── 공통 input 스타일 상수 (C-1: 인라인 반복 제거) ──
 const INPUT_BASE =
   'w-full bg-transparent border-0 border-b border-b-[var(--oatmeal)] focus:border-b-[var(--walnut)] outline-none py-3 text-[13px] font-[var(--font-ui)] font-light text-[var(--walnut-dark)] placeholder:text-[var(--warm-taupe)] tracking-[0.04em] leading-[1.8] transition-colors';
 
 export default function MyPage() {
-  const { isLoggedIn, user, loginWithEmail, loginWithKakao, logout, isLoading, displayName, userEmail } = useAuth();
+  const { isLoggedIn, user, loginWithEmail, loginWithKakao, logout, isLoading, displayName, userEmail, isAdmin } = useAuth();
   const router = useRouter();
 
   // ── 로그인 폼 상태 ──
@@ -41,9 +39,7 @@ export default function MyPage() {
 
   // ── 관리자 비밀 통로 상태 ──
   const [adminTapCount, setAdminTapCount] = useState(0);
-  const [showAdminInput, setShowAdminInput] = useState(false);
-  const [adminPw, setAdminPw] = useState('');
-  const [adminError, setAdminError] = useState('');
+  const [adminMessage, setAdminMessage] = useState('');
 
   // ── 비회원 주문 조회 상태 ──
   const [orderIdInput, setOrderIdInput] = useState('');
@@ -71,23 +67,25 @@ export default function MyPage() {
   };
 
   // ── 관리자 비밀 통로: "운영" 텍스트 5회 탭 ──
+  // 서버사이드 검증: Supabase app_metadata.role === 'admin' 확인
   const handleAdminTap = () => {
     const newCount = adminTapCount + 1;
     setAdminTapCount(newCount);
     if (newCount >= 5) {
-      setShowAdminInput(true);
       setAdminTapCount(0);
-    }
-  };
-
-  // ── 관리자 비밀번호 확인 ──
-  const handleAdminLogin = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (adminPw === ADMIN_PASSWORD) {
+      // 로그인 여부 + admin role 확인
+      if (!isLoggedIn) {
+        setAdminMessage('로그인이 필요합니다.');
+        setTimeout(() => setAdminMessage(''), 3000);
+        return;
+      }
+      if (!isAdmin) {
+        setAdminMessage('관리자 권한이 없습니다.');
+        setTimeout(() => setAdminMessage(''), 3000);
+        return;
+      }
+      // admin 확인 완료 → /admin 이동 (Middleware에서도 이중 검증)
       router.push('/admin');
-    } else {
-      setAdminError('비밀번호가 일치하지 않습니다.');
-      setAdminPw('');
     }
   };
 
@@ -328,6 +326,7 @@ export default function MyPage() {
 
           {/* ══════════════════════════════════════════════ */}
           {/* 관리자 비밀 통로 — 모든 상태에서 최하단에 표시 */}
+          {/* 5회 탭 → Supabase Auth role 자동 확인 → /admin    */}
           {/* ══════════════════════════════════════════════ */}
           <div className="mt-16 text-center">
             <button
@@ -338,22 +337,10 @@ export default function MyPage() {
               운영
             </button>
 
-            {showAdminInput && (
-              <form onSubmit={handleAdminLogin} className="mt-4 max-w-[240px] mx-auto">
-                <input
-                  type="password"
-                  value={adminPw}
-                  onChange={(e) => { setAdminPw(e.target.value); setAdminError(''); }}
-                  placeholder="관리자 비밀번호"
-                  autoFocus
-                  className="w-full bg-transparent border-0 border-b border-b-[var(--oatmeal)] focus:border-b-[var(--walnut)] outline-none py-2 text-[12px] font-[var(--font-ui)] text-center text-[var(--charcoal)] placeholder:text-[var(--warm-taupe-light)] tracking-[0.04em] transition-colors"
-                />
-                {adminError && (
-                  <p className="font-[var(--font-ui)] text-[10px] text-[var(--walnut)] mt-2 tracking-[0.02em]">
-                    {adminError}
-                  </p>
-                )}
-              </form>
+            {adminMessage && (
+              <p className="font-[var(--font-ui)] text-[10px] text-[var(--walnut)] mt-2 tracking-[0.02em] animate-fade-in">
+                {adminMessage}
+              </p>
             )}
           </div>
         </div>

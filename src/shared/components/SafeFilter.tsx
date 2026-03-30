@@ -13,7 +13,7 @@ export default function SafeFilter({ dogName, excludedIngredients }: SafeFilterP
         Safe Filter
       </p>
       <p className="text-[15px] text-[var(--charcoal)] leading-[1.7] mb-3">
-        {dogName ? `${dogName}에게 맞지 않는 성분을 제외했습니다.` : '맞지 않는 성분을 제외했습니다.'}
+        {dogName ? `${dogName}에게 맞지 않는 성분을 제외했어요.` : '맞지 않는 성분을 제외했어요.'}
       </p>
       <div className="flex flex-wrap gap-3">
         {excludedIngredients.map((ingredient) => (

@@ -22,7 +22,7 @@ export default function Button({
     'transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 tracking-[0.04em]';
 
   const variantClasses: Record<string, string> = {
-    primary: `${baseClasses} w-full bg-[var(--walnut)] text-[var(--cream)] rounded-none py-4 text-[13px] font-[var(--font-ui)] font-medium hover:bg-[var(--walnut-dark)] disabled:opacity-50 disabled:cursor-not-allowed`,
+    primary: `${baseClasses} w-full bg-[var(--walnut-dark)] text-[var(--cream)] rounded-none py-4 text-[14px] font-[var(--font-ui)] font-semibold hover:bg-[var(--walnut)] disabled:opacity-50 disabled:cursor-not-allowed`,
     secondary: `${baseClasses} border border-[var(--walnut)] text-[var(--walnut)] bg-transparent rounded-none py-4 px-6 text-[13px] font-[var(--font-ui)] font-medium hover:bg-[var(--cream)] disabled:opacity-50 disabled:cursor-not-allowed`,
     kakao: `${baseClasses} w-full bg-[#FEE500] text-[#191919] rounded-none py-4 text-[13px] font-[var(--font-ui)] font-semibold hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed`,
     soft: `${baseClasses} inline-block bg-[var(--cream)] text-[var(--walnut)] rounded-none px-6 py-3 text-[13px] font-[var(--font-ui)] font-medium hover:bg-[var(--oatmeal)] disabled:opacity-50 disabled:cursor-not-allowed`,

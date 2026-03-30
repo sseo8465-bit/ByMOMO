@@ -30,7 +30,7 @@ export default function HomePage() {
               내 아이를 위한
               <br />단 하나뿐인 선물
             </h1>
-            <p className="text-[12px] md:text-[14px] text-[var(--warm-taupe-light)] leading-[1.7] mb-6 tracking-[0.03em]">
+            <p className="text-[14px] md:text-[15px] text-[var(--warm-taupe-light)] leading-[1.7] mb-6 tracking-[0.03em]">
               알러지·나이·체중을 확인한 안심 간식만 추천합니다.
             </p>
             <Link
@@ -64,10 +64,10 @@ export default function HomePage() {
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
               </div>
-              <p className="text-[12px] font-medium text-[var(--charcoal)] leading-tight mb-1.5 tracking-[0.02em]">
+              <p className="text-[14px] font-medium text-[var(--charcoal)] leading-tight mb-1.5 tracking-[0.02em]">
                 {product.name}
               </p>
-              <p className="text-[11px] font-[var(--font-ui)] text-[var(--warm-taupe)] tracking-[0.03em]">
+              <p className="text-[13px] font-[var(--font-ui)] text-[var(--warm-taupe)] tracking-[0.03em]">
                 ₩{product.price.toLocaleString("ko-KR")}
               </p>
             </Link>
@@ -85,7 +85,7 @@ export default function HomePage() {
           ].map((text) => (
             <div
               key={text}
-              className="py-3.5 md:py-4 border-b border-[var(--oatmeal)] text-[10px] md:text-[11px] text-[var(--warm-gray)] text-center tracking-[0.06em]"
+              className="py-3.5 md:py-4 border-b border-[var(--oatmeal)] text-[12px] md:text-[13px] text-[var(--warm-gray)] text-center tracking-[0.06em]"
             >
               {text}
             </div>
@@ -98,7 +98,7 @@ export default function HomePage() {
         <p className="font-[var(--font-ui)] text-[10px] font-semibold tracking-[0.15em] uppercase text-[var(--warm-taupe)] mb-5">
           Our Story
         </p>
-        <p className="font-[var(--font-serif)] text-[20px] md:text-[26px] text-[var(--walnut)] italic leading-[1.5] mb-6 tracking-[0.02em]">
+        <p className="font-[var(--font-serif)] text-[20px] md:text-[26px] text-[var(--walnut)] italic leading-[1.6] mb-6 tracking-[0.02em]">
           &ldquo;내 아이를 위한 고집이,
           <br />
           당신의 아이를 위한

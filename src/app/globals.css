@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  /* Brand Colors — By MOMO 디자인 토큰 */
+  /* Brand Colors — By MOMO 디자인 토큰 (WCAG AA 대비 강화) */
   --warm-white: #FDFAF5;
-  --cream: #F5F0E8;
+  --cream: #F8F4ED;
   --oatmeal: #EDE6D8;
-  --warm-taupe: #8A7D6F;
+  --warm-taupe: #7A6D5F;
   --warm-taupe-light: #C8BEB3;
-  --warm-taupe-dark: #7D7269;
+  --warm-taupe-dark: #6B5F52;
   --walnut: #6B5344;
   --walnut-light: #8C7A6A;
-  --walnut-dark: #4A3828;
+  --walnut-dark: #3D2A1A;
   --latte: #B8A48E;
   --latte-light: #D4C8B8;
   --latte-dark: #8C7B68;
-  --charcoal: #2C2C2C;
-  --warm-gray: #6B6560;
-  --light-gray: #918A82;
+  --charcoal: #2D221B;
+  --warm-gray: #5A4E45;
+  --light-gray: #7D7269;
   --white: #FFFFFF;
 
   /* Semantic */

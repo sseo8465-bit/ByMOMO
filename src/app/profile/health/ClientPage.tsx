@@ -50,8 +50,8 @@ export default function ProfileStep2() {
         <h2 className="font-[var(--font-serif)] text-[20px] md:text-[24px] font-medium text-[var(--walnut)] leading-[1.5] tracking-[0.02em]">
           건강 정보
         </h2>
-        <p className="text-[11px] text-[var(--warm-taupe)] mt-3 tracking-[0.03em]">
-          안전한 간식 추천에만 사용됩니다.
+        <p className="text-[13px] text-[var(--warm-taupe)] mt-3 tracking-[0.03em] leading-[1.6]">
+          안전한 간식 추천에만 사용해요.
         </p>
       </div>
 

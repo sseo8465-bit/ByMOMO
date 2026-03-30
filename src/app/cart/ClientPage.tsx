@@ -50,8 +50,8 @@ export default function CartPage() {
       <>
         <GNB activeItem="cart" />
         <div className="flex-1 flex flex-col items-center justify-center page-padding py-20 min-h-[60vh]">
-          <p className="text-[13px] text-[var(--warm-gray)] mb-8 tracking-[0.03em]">
-            장바구니가 비어 있습니다.
+          <p className="text-[14px] text-[var(--warm-gray)] mb-8 tracking-[0.03em]">
+            장바구니가 비어 있어요.
           </p>
           <Link href="/profile">
             <Button variant="primary" className="min-w-[200px]">

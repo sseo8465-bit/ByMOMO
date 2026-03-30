@@ -78,7 +78,7 @@ export default function ProfileStep1() {
         <h2 className="font-[var(--font-serif)] text-[20px] md:text-[24px] font-medium text-[var(--walnut)] leading-[1.5] tracking-[0.02em]">
           우리 아이를 소개해 주세요.
         </h2>
-        <p className="text-[11px] text-[var(--warm-taupe)] mt-3 tracking-[0.03em]">
+        <p className="text-[13px] text-[var(--warm-taupe)] mt-3 tracking-[0.03em] leading-[1.6]">
           이름만 알려주셔도, 정성껏 골라드릴게요.
         </p>
       </div>
@@ -132,8 +132,8 @@ export default function ProfileStep1() {
             </div>
           )}
         </div>
-        <p className="text-[10px] text-[var(--warm-taupe)] tracking-[0.03em]">
-          (선택) 나중에 추가할 수 있습니다
+        <p className="text-[12px] text-[var(--warm-taupe)] tracking-[0.03em]">
+          나중에 추가할 수 있어요.
         </p>
       </div>
 

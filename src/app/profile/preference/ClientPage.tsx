@@ -34,7 +34,7 @@ export default function ProfileStep3() {
         <h2 className="font-[var(--font-serif)] text-[20px] md:text-[24px] font-medium text-[var(--walnut)] leading-[1.5] tracking-[0.02em]">
           혹시 걱정되는 부분이 있으신가요?
         </h2>
-        <p className="text-[11px] text-[var(--warm-taupe)] mt-3 tracking-[0.03em]">
+        <p className="text-[13px] text-[var(--warm-taupe)] mt-3 tracking-[0.03em] leading-[1.6]">
           선택하지 않으셔도 괜찮아요.
         </p>
       </div>
@@ -87,13 +87,13 @@ export default function ProfileStep3() {
       <div className="flex flex-col gap-3 mt-4">
         <button
           onClick={handleRecommend}
-          className="w-full py-4 bg-[var(--walnut)] text-[var(--cream)] text-[13px] font-[var(--font-ui)] font-medium tracking-[0.04em] hover:bg-[var(--walnut-dark)] transition-colors"
+          className="w-full py-4 bg-[var(--walnut-dark)] text-[var(--cream)] text-[14px] font-[var(--font-ui)] font-semibold tracking-[0.04em] hover:bg-[var(--walnut)] transition-colors"
         >
           {profile.name || '우리 아이'}를 위한 간식 보기
         </button>
         <button
           onClick={handleSkip}
-          className="w-full py-3 bg-transparent text-[var(--warm-gray)] text-[11px] font-[var(--font-ui)] text-center tracking-[0.03em] hover:text-[var(--walnut)] transition-colors"
+          className="w-full py-3 bg-transparent text-[var(--warm-gray)] text-[13px] font-[var(--font-ui)] text-center tracking-[0.03em] hover:text-[var(--walnut)] transition-colors"
         >
           건너뛰고 바로 결과 보기
         </button>

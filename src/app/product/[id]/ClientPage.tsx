@@ -130,7 +130,7 @@ export default function ProductDetailPage() {
         <GNB />
         <div className="flex-1 flex items-center justify-center page-padding py-20">
           <div className="text-center">
-            <p className="text-[13px] text-[var(--warm-gray)] mb-6">상품을 찾을 수 없습니다.</p>
+            <p className="text-[14px] text-[var(--warm-gray)] mb-6">상품을 찾을 수 없어요.</p>
             <button
               onClick={() => router.back()}
               className="font-[var(--font-ui)] text-[11px] tracking-[0.1em] uppercase text-[var(--walnut)] hover:text-[var(--walnut-dark)]"
@@ -201,7 +201,7 @@ export default function ProductDetailPage() {
           </p>
 
           {/* 설명 */}
-          <p className="text-[12px] md:text-[13px] text-[var(--warm-gray)] leading-[1.8] mb-8 tracking-[0.02em]">
+          <p className="text-[14px] md:text-[15px] text-[var(--warm-gray)] leading-[1.7] mb-8 tracking-[0.02em]">
             {product.description}
           </p>
 
@@ -300,7 +300,7 @@ export default function ProductDetailPage() {
                             {info?.benefit || '영양 보충'}
                           </span>
                         </div>
-                        <p className="text-[11px] md:text-[12px] text-[var(--warm-gray)] leading-[1.7] tracking-[0.02em]">
+                        <p className="text-[13px] md:text-[14px] text-[var(--warm-gray)] leading-[1.7] tracking-[0.02em]">
                           {info?.detail || '엄선된 원재료로 반려견의 건강한 식단을 보완합니다.'}
                         </p>
                       </div>
@@ -342,7 +342,7 @@ export default function ProductDetailPage() {
                 <p className="font-[var(--font-ui)] text-[10px] md:text-[11px] tracking-[0.15em] uppercase text-[var(--warm-taupe)] mb-5">
                   Storage
                 </p>
-                <div className="space-y-3 text-[12px] md:text-[13px] text-[var(--warm-gray)] leading-[1.8] tracking-[0.02em]">
+                <div className="space-y-3 text-[14px] md:text-[14px] text-[var(--warm-gray)] leading-[1.7] tracking-[0.02em]">
                   <p>직사광선을 피해 서늘한 곳에 보관해 주세요.</p>
                   <p>개봉 후에는 밀봉하여 냉장 보관을 권장합니다.</p>
                   <p>개봉 후 2주 이내에 급여해 주세요.</p>
@@ -354,7 +354,7 @@ export default function ProductDetailPage() {
                 <p className="font-[var(--font-ui)] text-[10px] md:text-[11px] tracking-[0.15em] uppercase text-[var(--warm-taupe)] mb-5">
                   Precautions
                 </p>
-                <div className="space-y-3 text-[12px] md:text-[13px] text-[var(--warm-gray)] leading-[1.8] tracking-[0.02em]">
+                <div className="space-y-3 text-[14px] md:text-[14px] text-[var(--warm-gray)] leading-[1.7] tracking-[0.02em]">
                   <p>간식은 1일 칼로리의 10% 이내로 급여해 주세요.</p>
                   <p>처음 급여 시 소량부터 시작하여 알러지 반응을 확인해 주세요.</p>
                   <p>급여 중 이상 증상이 있을 경우 급여를 중단하고 수의사와 상담해 주세요.</p>
@@ -372,7 +372,7 @@ export default function ProductDetailPage() {
 
               {reviews.length === 0 ? (
                 <p className="text-[13px] text-[var(--warm-gray)] text-center py-12">
-                  아직 리뷰가 없습니다. 첫 번째 리뷰를 남겨주세요.
+                  아직 리뷰가 없어요. 첫 번째 리뷰를 남겨주세요.
                 </p>
               ) : (
                 <div className="space-y-0">
@@ -399,7 +399,7 @@ export default function ProductDetailPage() {
                       </div>
 
                       {/* 리뷰 본문 */}
-                      <p className="text-[12px] md:text-[13px] text-[var(--warm-gray)] leading-[1.8] tracking-[0.02em]">
+                      <p className="text-[14px] md:text-[14px] text-[var(--warm-gray)] leading-[1.7] tracking-[0.02em]">
                         {review.text}
                       </p>
                     </div>

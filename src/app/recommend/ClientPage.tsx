@@ -46,21 +46,59 @@ const PROTEIN_LABEL: Record<string, string> = {
   duck: '오리', salmon: '연어', beef: '소고기', chicken: '닭고기',
 };
 
-const CONCERN_RATIONALE: Record<string, string> = {
-  '피부·모질': '오메가3가 풍부한 연어 성분이 피부와 털에 도움을 줄 수 있어요.',
-  '관절·뼈': '글루코사민이 포함된 간식을 우선 배치했어요.',
-  '소화·장건강': '소화에 부드러운 단호박, 고구마 재료를 중심으로 구성했어요.',
-  '심장': '오메가 지방산이 풍부한 재료 위주로 구성했어요.',
-  '비만·체중관리': '단일 단백질 기반의 가벼운 간식을 우선 배치했어요.',
-  '구강': '씹는 과정에서 치석 관리에 도움이 되는 간식을 골랐어요.',
-  '눈·시력': '블루베리 등 항산화 성분이 포함된 간식을 골랐어요.',
+// 한국어 조사 헬퍼 — 받침 유무에 따라 은/는, 을/를, 과/와 분기
+function hasJongseong(str: string): boolean {
+  const lastChar = str.charCodeAt(str.length - 1);
+  if (lastChar < 0xAC00 || lastChar > 0xD7A3) return false;
+  return (lastChar - 0xAC00) % 28 !== 0;
+}
+function pickJosa(word: string, withJong: string, withoutJong: string): string {
+  return hasJongseong(word) ? withJong : withoutJong;
+}
+
+// ── 건강 고민 → 큐레이션 근거 ──
+// 톤: 이솝 미니멀리즘. 합니다체 + 짧은 문장. 한 문장이 한 줄을 넘지 않도록.
+// 구조: { benefit: 성분 효과 문장, closing: 반려견 이름 포함 다정한 마무리 }
+const CONCERN_RATIONALE: Record<string, { benefit: string; closing: string }> = {
+  '피부·모질': {
+    benefit: '오메가3의 영양이 {name}의 모질을 윤기 있게 가꿔줄 거예요.',
+    closing: '건강한 털이 말해주는 변화를 경험해 보세요.',
+  },
+  '관절·뼈': {
+    benefit: '글루코사민이 {name}의 관절을 부드럽게 지탱합니다.',
+    closing: '가벼운 산책이 다시 즐거워지길 바랍니다.',
+  },
+  '소화·장건강': {
+    benefit: '예민한 속을 달래주는 단호박과 고구마의 조화입니다.',
+    closing: '{name}의 소화가 한결 가벼워지는 것을 경험해 보세요.',
+  },
+  '심장': {
+    benefit: '오메가 지방산이 {name}의 심장 건강을 든든히 채웁니다.',
+    closing: '매일의 활력이 달라지길 바랍니다.',
+  },
+  '비만·체중관리': {
+    benefit: '단일 단백질 기반, 가볍지만 충분한 영양을 담았습니다.',
+    closing: '{name}의 몸이 한결 가벼워지길 바랍니다.',
+  },
+  '구강': {
+    benefit: '씹는 과정에서 자연스러운 치석 관리를 돕습니다.',
+    closing: '{name}의 깨끗한 입 안을 위해 준비했습니다.',
+  },
+  '눈·시력': {
+    benefit: '블루베리의 항산화 성분을 듬뿍 담았습니다.',
+    closing: '{name}의 맑은 눈이 오래도록 빛나길 바랍니다.',
+  },
 };
 
+// ── 큐레이션 근거 생성 ──
+// 톤: 이솝 미니멀리즘. 합니다체. 짧은 문장. 접속사로 잇지 않고 마침표로 끊기.
+// 리듬: 제외 성분 → 성분 효과 → 시니어 배려 → 다정한 마무리
 function generateCurationRationale(
   profile: { name: string; dislikedIngredients: string[]; healthConcerns: string[]; age: number | null },
   recommendations: Product[],
 ): string | null {
-  const sentences: string[] = [];
+  const lines: string[] = [];
+  const dogName = profile.name || '우리 아이';
 
   const hasExclusions =
     profile.dislikedIngredients.length > 0 &&
@@ -72,7 +110,7 @@ function generateCurationRationale(
 
   if (!hasExclusions && !hasHealthConcerns && !isSenior) return null;
 
-  // 1. 제외 성분 근거
+  // 1. 제외 성분 — "~ 대신, ~를 담았습니다."
   if (hasExclusions) {
     const excluded = profile.dislikedIngredients;
     const usedProteins = [
@@ -83,28 +121,46 @@ function generateCurationRationale(
           .filter(Boolean),
       ),
     ];
+    const excludedText = excluded.join(', ');
     if (usedProteins.length > 0) {
-      sentences.push(
-        `${excluded.join(', ')} 대신 ${usedProteins.join('과 ')}을 중심으로 구성했어요.`,
-      );
+      const last = usedProteins[usedProteins.length - 1];
+      const proteinJoined = usedProteins.length > 1
+        ? usedProteins.slice(0, -1).map((p, i, arr) =>
+            i === arr.length - 1 ? `${p}${pickJosa(p, '과', '와')} ` : `${p}, `
+          ).join('') + last
+        : last;
+      lines.push(`${excludedText} 대신, 신선한 ${proteinJoined}${pickJosa(last, '을', '를')} 담았습니다.`);
     } else {
-      sentences.push(`${excluded.join(', ')}이 포함되지 않은 간식만 엄선했어요.`);
+      lines.push(`${excludedText}${pickJosa(excludedText, '은', '는')} 제외하고, 안심할 수 있는 재료만 엄선했습니다.`);
     }
   }
 
-  // 2. 건강 고민 근거
+  // 2. 건강 고민 — 성분 효과 (benefit 문장, {name} 치환)
   if (hasHealthConcerns) {
     const primaryConcern = profile.healthConcerns[0];
     const rationale = CONCERN_RATIONALE[primaryConcern];
-    if (rationale) sentences.push(rationale);
+    if (rationale) {
+      lines.push(rationale.benefit.replace('{name}', dogName));
+    }
   }
 
-  // 3. 시니어 근거
+  // 3. 시니어 — 식감 배려
   if (isSenior) {
-    sentences.push('부드럽고 소화가 편한 간식 위주로 구성했어요.');
+    lines.push(`나이가 있는 ${dogName}를 위해, 가장 부드러운 식감으로 준비했습니다.`);
   }
 
-  return sentences.join(' ');
+  // 4. 다정한 마무리 (건강 고민이 있으면 closing, 없으면 범용)
+  if (hasHealthConcerns) {
+    const primaryConcern = profile.healthConcerns[0];
+    const rationale = CONCERN_RATIONALE[primaryConcern];
+    if (rationale) {
+      lines.push(rationale.closing.replace('{name}', dogName));
+    }
+  } else {
+    lines.push(`${dogName}의 하루가 한결 편안해지길 바랍니다.`);
+  }
+
+  return lines.join('\n');
 }
 
 function getProductTags(product: Product, healthConcerns: string[], dislikedIngredients: string[]): string[] {
@@ -211,11 +267,15 @@ export default function RecommendPage() {
           {profile.weight ? ` · ${profile.weight}kg` : ''}
         </p>
 
-        {/* ── 큐레이션 근거 (Reason-to-believe) — 에디토리얼 큐레이터 노트 ── */}
+        {/* ── 큐레이션 근거 (Reason-to-believe) — 이솝 에디토리얼 큐레이터 노트 ── */}
         {curationRationale && !isSkipped && (
-          <p className="max-w-[420px] mx-auto mt-6 font-[var(--font-ui)] text-[14px] md:text-[14px] text-[var(--warm-taupe)] leading-[1.7] tracking-[0.03em]">
-            {curationRationale}
-          </p>
+          <div className="max-w-[420px] mx-auto mt-6 font-[var(--font-ui)] text-[14px] md:text-[15px] text-[var(--charcoal)] leading-[1.8] tracking-[0.03em]">
+            {curationRationale.split('\n').map((line, i) => (
+              <p key={i} className={i > 0 ? 'mt-2' : ''}>
+                {line}
+              </p>
+            ))}
+          </div>
         )}
 
         {/* 제외 성분 */}
