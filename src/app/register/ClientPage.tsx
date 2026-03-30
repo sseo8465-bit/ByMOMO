@@ -342,7 +342,7 @@ function TermsScrollBox({
       </button>
       {isOpen && (
         <div className="mt-3 border border-[var(--oatmeal)] bg-[var(--cream)] p-4 max-h-[200px] overflow-y-auto">
-          <p className="text-[11px] md:text-[12px] font-[var(--font-ui)] text-[var(--charcoal)] leading-[1.8] whitespace-pre-wrap">
+          <p className="text-[12px] md:text-[13px] font-[var(--font-ui)] text-[#2D221B] leading-[1.8] whitespace-pre-wrap">
             {content}
           </p>
         </div>
@@ -381,6 +381,7 @@ export default function RegisterClientPage() {
   const [agreedToMarketing, setAgreedToMarketing] = useState(false);
   const [termsOpen, setTermsOpen] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
+  const [marketingOpen, setMarketingOpen] = useState(false);
 
   // ── 평생회원 ──
   const [lifetimeMember, setLifetimeMember] = useState<'agree' | 'disagree' | null>(null);
@@ -736,23 +737,27 @@ export default function RegisterClientPage() {
               />
             </div>
 
-            {/* ── 평생회원 동의 ── */}
-            <div className="bg-[var(--cream)] border border-[var(--oatmeal)] p-5 md:p-6">
-              <h3 className="font-[var(--font-ui)] text-[12px] md:text-[13px] font-semibold text-[var(--charcoal)] tracking-[0.04em] mb-3">
-                평생회원 안내
+            {/* ── 평생회원 동의 — 이솝 스타일: 여백 중심, 구분선만 ── */}
+            <div className="border-t border-[var(--oatmeal)] pt-8 pb-8 border-b border-b-[var(--oatmeal)]">
+              <h3 className="font-[var(--font-ui)] text-[12px] md:text-[13px] font-semibold text-[#2D221B] tracking-[0.06em] mb-5">
+                평생회원 가입 안내
               </h3>
-              <p className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[var(--charcoal)] leading-[1.8] mb-1">
-                평생회원으로 가입하시면 By MOMO와 함께하는 소중한 인연이 오래도록 이어집니다.
-              </p>
-              <p className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[var(--charcoal)] leading-[1.8] mb-4">
-                가입 즉시 사용 가능한 쿠폰과 매달 찾아오는 정기 혜택, 그리고 신제품 우선 체험권을 선물로 드립니다.
-              </p>
-              <p className="font-[var(--font-ui)] text-[12px] text-[var(--charcoal)] opacity-70 leading-[1.7] mb-5">
-                평생회원으로 등록하시면 By MOMO의 새로운 소식과 혜택을 꾸준히 안내해 드립니다. 다만, 관련 법령에 따라 장기간 서비스를 이용하지 않으신 경우 별도 안내 후 개인정보가 분리 보관될 수 있습니다.
-              </p>
 
-              <div className="flex gap-6">
-                <label className="flex items-center gap-2 cursor-pointer">
+              <div className="space-y-2.5 mb-6">
+                <p className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[#2D221B] leading-[1.7] tracking-[0.02em]">
+                  · 휴면 전환 없이 소중한 인연이 오래도록 이어집니다.
+                </p>
+                <p className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[#2D221B] leading-[1.7] tracking-[0.02em]">
+                  · 평생회원 전용 할인 쿠폰 및 정기 혜택을 드립니다.
+                </p>
+                <p className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[#2D221B] leading-[1.7] tracking-[0.02em]">
+                  · 신제품 우선 체험권 선물을 드립니다.
+                </p>
+              </div>
+
+              {/* 동의 라디오 버튼 — 가로 정렬, 넉넉한 간격 */}
+              <div className="flex gap-10 mb-5">
+                <label className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="radio"
                     name="lifetimeMember"
@@ -760,11 +765,11 @@ export default function RegisterClientPage() {
                     onChange={() => setLifetimeMember('agree')}
                     className="w-[16px] h-[16px] accent-[var(--charcoal)] cursor-pointer"
                   />
-                  <span className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[var(--charcoal)] tracking-[0.02em]">
+                  <span className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[#2D221B] tracking-[0.02em]">
                     동의합니다
                   </span>
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer">
+                <label className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="radio"
                     name="lifetimeMember"
@@ -772,11 +777,16 @@ export default function RegisterClientPage() {
                     onChange={() => setLifetimeMember('disagree')}
                     className="w-[16px] h-[16px] accent-[var(--charcoal)] cursor-pointer"
                   />
-                  <span className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[var(--charcoal)] tracking-[0.02em]">
+                  <span className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[#2D221B] tracking-[0.02em]">
                     동의하지 않습니다
                   </span>
                 </label>
               </div>
+
+              {/* 법적 고지 — 시각적 방해 최소화 */}
+              <p className="font-[var(--font-ui)] text-[11px] text-[var(--warm-taupe)] leading-[1.6] tracking-[0.02em]">
+                ※ 관련 법령에 따라 장기간 서비스를 이용하지 않으신 경우, 별도 안내 후 개인정보가 분리 보관될 수 있습니다.
+              </p>
             </div>
           </div>
 
@@ -849,9 +859,14 @@ export default function RegisterClientPage() {
             {/* 전체 동의 */}
             <div className="bg-[var(--cream)] border border-[var(--oatmeal)] p-4 mb-5">
               <BrandCheckbox checked={allAgreed} onChange={handleAgreeAll} size="large">
-                <span className="font-[var(--font-ui)] text-[13px] md:text-[14px] font-semibold text-[var(--charcoal)] tracking-[0.02em]">
-                  전체 동의하기
-                </span>
+                <div>
+                  <span className="font-[var(--font-ui)] text-[13px] md:text-[14px] font-semibold text-[#2D221B] tracking-[0.02em]">
+                    전체 동의하기
+                  </span>
+                  <p className="font-[var(--font-ui)] text-[11px] md:text-[12px] text-[#2D221B] opacity-70 tracking-[0.02em] mt-1 leading-[1.6]">
+                    이용약관 및 개인정보수집 및 이용, 쇼핑정보 수신(선택)에 모두 동의합니다.
+                  </p>
+                </div>
               </BrandCheckbox>
             </div>
 
@@ -895,11 +910,19 @@ export default function RegisterClientPage() {
               {/* 쇼핑정보 수신 동의 (선택) */}
               <div>
                 <BrandCheckbox checked={agreedToMarketing} onChange={() => setAgreedToMarketing(!agreedToMarketing)}>
-                  <span className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[var(--charcoal)] tracking-[0.02em]">
+                  <span className="font-[var(--font-ui)] text-[12px] md:text-[13px] text-[#2D221B] tracking-[0.02em]">
                     <span className="text-[var(--warm-taupe)] font-medium">[선택]</span>{' '}
                     쇼핑정보 수신 동의 (SMS/이메일)
                   </span>
                 </BrandCheckbox>
+                <div className="ml-[28px]">
+                  <TermsScrollBox
+                    title="쇼핑정보 수신 동의"
+                    content={`할인 쿠폰, 이벤트, 신상품 소식 등 By MOMO의 따뜻한 소식을 SMS와 이메일로 받아보실 수 있습니다.\n\n할인쿠폰 및 혜택, 이벤트, 신상품 소식 등 쇼핑몰에서 제공하는 유익한 쇼핑정보를 SMS나 이메일로 받아보실 수 있습니다.\n\n단, 주문/거래 정보 및 주요 정책과 관련된 내용은 수신동의 여부와 관계없이 발송됩니다.\n\n※ 동의를 거부하실 수 있으며, 동의하지 않으셔도 회원가입 및 서비스 이용에는 제한이 없습니다.`}
+                    isOpen={marketingOpen}
+                    onToggle={() => setMarketingOpen(!marketingOpen)}
+                  />
+                </div>
               </div>
             </div>
 
@@ -932,24 +955,6 @@ export default function RegisterClientPage() {
           >
             {isSubmitting ? '가입 처리 중...' : 'By MOMO 가족 되기'}
           </button>
-
-          {/* ── 소셜 로그인 ── */}
-          <div className="mt-10">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="flex-1 border-t border-[var(--oatmeal)]" />
-              <span className="font-[var(--font-ui)] text-[10px] tracking-[0.1em] uppercase text-[var(--warm-taupe)]">
-                또는
-              </span>
-              <div className="flex-1 border-t border-[var(--oatmeal)]" />
-            </div>
-
-            <button
-              onClick={loginWithKakao}
-              className="w-full py-3.5 bg-[#FEE500] text-[#191919] text-[12px] md:text-[13px] font-[var(--font-ui)] font-medium tracking-[0.04em] hover:brightness-95 transition-all"
-            >
-              카카오로 시작하기
-            </button>
-          </div>
 
           {/* ── 로그인 링크 ── */}
           <div className="text-center mt-8 mb-4">
