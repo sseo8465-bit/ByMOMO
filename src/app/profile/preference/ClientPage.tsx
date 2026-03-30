@@ -89,7 +89,7 @@ export default function ProfileStep3() {
           onClick={handleRecommend}
           className="w-full py-4 bg-[var(--walnut)] text-[var(--cream)] text-[13px] font-[var(--font-ui)] font-medium tracking-[0.04em] hover:bg-[var(--walnut-dark)] transition-colors"
         >
-          {profile.name || '우리 아이'}의 간식 보러 가기
+          {profile.name || '우리 아이'}를 위한 간식 보기
         </button>
         <button
           onClick={handleSkip}
