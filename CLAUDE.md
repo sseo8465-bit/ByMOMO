@@ -223,6 +223,8 @@ src/
 - **비개발자 수정 매뉴얼**: `../bymomo-web-수정-매뉴얼.md` — 서영이 직접 카피/가격을 수정할 때 참조하는 가이드.
 - **관리자 권한 설정**: `docs/admin-auth-setup-guide.md` — admin 역할 부여 단계별 가이드 (비개발자용).
 - **서버사이드 Supabase**: `src/lib/supabase-server.ts` — middleware.ts, Server Component 전용. `checkIsAdmin()` 서버 검증 함수 포함.
+- **종합 평가 리포트**: `docs/evaluation-report-2026-03-30.html` — 디자인 크리틱 + UX Copy + SEO 통합 평가. 개선 작업 시 이 리포트의 지적 사항 해결 여부를 확인하라.
+- **개선 완료 보고서**: `docs/improvement-summary-2026-03-31.html` — 평가 리포트 기반 개선 완료 내역. 어떤 항목이 해결되었는지 추적할 때 참조.
 
 ## Common Pitfalls
 
@@ -312,3 +314,21 @@ src/
 - **근거**: 개인정보보호법 제16조 3항 — 필수 동의 거부 시 서비스 제한이 있음을 반드시 고지해야 함
 - **구현**: `PRIVACY_POLICY` 텍스트 최하단에 "※ 동의를 거부할 수 있으나 거부시 회원 가입이 불가능합니다." 문구 포함
 - **법정 보유기간 근거**: 전자상거래법 제6조 조문 번호가 각 항목에 병기되어 있는지 확인하라
+
+### ⚠️ Logo vs LogoStacked 혼용 주의 (2026-03-31 추가)
+- **Logo**: 수평형(A-01 Blade & Curve), GNB/Footer 전용
+- **LogoStacked**: 수직형(A-02 Stacked Couture), 패키지/팝업/가입완료 전용
+- 두 컴포넌트 모두 `size` prop(`'sm'|'md'|'lg'`) 지원. 잘못된 맥락에서 사용하면 브랜드 일관성 훼손.
+
+### ⚠️ not-found.tsx의 rounded-full 예외 (2026-03-31 추가)
+- `not-found.tsx`와 `error.tsx`의 아이콘 컨테이너에만 `rounded-full` 허용
+- 이 두 파일 외에서는 기존 `rounded-none` 원칙 유지. 새 페이지에서 이 파일을 복사할 때 `rounded-full`을 함께 가져가지 마라.
+
+### ⚠️ Supabase RPC 함수 미생성 상태 (2026-03-31 현재)
+- `find-id/ClientPage.tsx`(`find_email_by_name_phone`)와 `register/ClientPage.tsx`(`check_email_exists`)가 Supabase RPC를 호출하지만, SQL 함수가 아직 Supabase에 생성되지 않았을 수 있음.
+- 코드에 폴백 처리(고객센터 안내, graceful fallback)가 있으나, **실제 운영 전 반드시 SQL 함수 생성 필요**.
+- 생성 후 이 항목을 "해결됨"으로 업데이트하라.
+
+### ⚠️ PASSWORD_REGEX 분산 정의 (2026-03-31 발견)
+- `register/ClientPage.tsx`와 `reset-password/ClientPage.tsx`에 동일한 `PASSWORD_REGEX` (`/^(?=.*[A-Za-z])(?=.*\d).{8,}$/`)가 각각 별도 정의됨.
+- `formatPrice` 중복과 같은 패턴. 향후 `shared/utils/validation.ts`로 추출 권장.

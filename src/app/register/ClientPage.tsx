@@ -390,6 +390,7 @@ export default function RegisterClientPage() {
 
   // ── 평생회원 ──
   const [lifetimeMember, setLifetimeMember] = useState<'agree' | 'disagree' | null>(null);
+  const [showBankSection, setShowBankSection] = useState(false);
 
   // ── 주소 검색 모달 ──
   const [showPostcode, setShowPostcode] = useState(false);
@@ -670,9 +671,12 @@ export default function RegisterClientPage() {
             <p className="font-[var(--font-ui)] text-[10px] md:text-[11px] tracking-[0.2em] uppercase text-[var(--warm-taupe)] mb-4">
               Create Account
             </p>
-            <h1 className="font-[var(--font-serif)] text-[24px] md:text-[30px] font-medium text-[var(--charcoal)] tracking-[0.01em]">
+            <h1 className="font-[var(--font-serif)] text-[24px] md:text-[30px] font-medium text-[var(--charcoal)] tracking-[0.01em] mb-3">
               회원가입
             </h1>
+            <p className="font-[var(--font-ui)] text-[12px] text-[var(--warm-taupe)] tracking-[0.03em]">
+              2분이면 충분해요. 필수 항목만 입력하시면 됩니다.
+            </p>
           </div>
 
           {/* ════════════════════════════════════════════
@@ -941,54 +945,69 @@ export default function RegisterClientPage() {
                섹션 4: 추가 정보 (환불계좌 - 선택)
              ════════════════════════════════════════════ */}
           <div className="mb-10">
-            <h2 className="font-[var(--font-ui)] text-[12px] md:text-[13px] font-semibold text-[var(--charcoal)] tracking-[0.06em] mb-2">
-              추가 정보
-            </h2>
-            {/* response-drafting: 선택 항목임을 명확히 + 대안 경로 안내 */}
+            <button
+              type="button"
+              onClick={() => setShowBankSection((v) => !v)}
+              className="flex items-center justify-between w-full mb-2"
+            >
+              <h2 className="font-[var(--font-ui)] text-[12px] md:text-[13px] font-semibold text-[var(--charcoal)] tracking-[0.06em]">
+                추가 정보 <span className="font-normal text-[var(--warm-taupe)]">(선택)</span>
+              </h2>
+              <svg
+                width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="var(--warm-taupe)" strokeWidth="1.5" strokeLinecap="round"
+                className={`transition-transform ${showBankSection ? 'rotate-180' : ''}`}
+              >
+                <polyline points="3 5 6 8 9 5" />
+              </svg>
+            </button>
             <p className="font-[var(--font-ui)] text-[12px] text-[var(--charcoal)] opacity-70 tracking-[0.02em] mb-6 leading-[1.6]">
               환불 시 사용할 계좌 정보입니다. 지금 입력하지 않으셔도 마이페이지에서 언제든 등록하실 수 있습니다.
             </p>
 
-            <FormField
-              label="예금주명"
-              name="bankAccountHolder"
-              value={form.bankAccountHolder}
-              placeholder="예금주명을 입력해 주세요"
-              error={undefined}
-              touched={false}
-              onChange={handleChange}
-              onBlur={() => {}}
-            />
+            {showBankSection && (
+              <div className="animate-fade-in">
+                <FormField
+                  label="예금주명"
+                  name="bankAccountHolder"
+                  value={form.bankAccountHolder}
+                  placeholder="예금주명을 입력해 주세요"
+                  error={undefined}
+                  touched={false}
+                  onChange={handleChange}
+                  onBlur={() => {}}
+                />
 
-            <div className="mb-6 md:mb-8">
-              <label className="block font-[var(--font-ui)] text-[11px] md:text-[12px] tracking-[0.08em] text-[var(--charcoal)] mb-2 font-medium">
-                은행 선택
-              </label>
-              <select
-                name="bankName"
-                value={form.bankName}
-                onChange={(e) => setForm((prev) => ({ ...prev, bankName: e.target.value }))}
-                className="w-full bg-transparent border-0 border-b border-b-[var(--oatmeal)] focus:border-b-[var(--charcoal)] outline-none py-3 text-[13px] md:text-[14px] font-[var(--font-ui)] font-normal text-[var(--charcoal)] tracking-[0.02em] transition-colors cursor-pointer appearance-none"
-                style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%232D221B' stroke-width='1.2'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 4px center' }}
-              >
-                {BANK_LIST.map((bank) => (
-                  <option key={bank} value={bank === '선택해 주세요' ? '' : bank}>
-                    {bank}
-                  </option>
-                ))}
-              </select>
-            </div>
+                <div className="mb-6 md:mb-8">
+                  <label className="block font-[var(--font-ui)] text-[11px] md:text-[12px] tracking-[0.08em] text-[var(--charcoal)] mb-2 font-medium">
+                    은행 선택
+                  </label>
+                  <select
+                    name="bankName"
+                    value={form.bankName}
+                    onChange={(e) => setForm((prev) => ({ ...prev, bankName: e.target.value }))}
+                    className="w-full bg-transparent border-0 border-b border-b-[var(--oatmeal)] focus:border-b-[var(--charcoal)] outline-none py-3 text-[13px] md:text-[14px] font-[var(--font-ui)] font-normal text-[var(--charcoal)] tracking-[0.02em] transition-colors cursor-pointer appearance-none"
+                    style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%232D221B' stroke-width='1.2'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 4px center' }}
+                  >
+                    {BANK_LIST.map((bank) => (
+                      <option key={bank} value={bank === '선택해 주세요' ? '' : bank}>
+                        {bank}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-            <FormField
-              label="계좌번호"
-              name="bankAccount"
-              value={form.bankAccount}
-              placeholder="'-' 포함하여 입력해 주세요"
-              error={undefined}
-              touched={false}
-              onChange={handleChange}
-              onBlur={() => {}}
-            />
+                <FormField
+                  label="계좌번호"
+                  name="bankAccount"
+                  value={form.bankAccount}
+                  placeholder="'-' 포함하여 입력해 주세요"
+                  error={undefined}
+                  touched={false}
+                  onChange={handleChange}
+                  onBlur={() => {}}
+                />
+              </div>
+            )}
           </div>
 
           <div className="border-t border-[var(--oatmeal)] my-8 md:my-10" />

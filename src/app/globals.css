@@ -34,6 +34,9 @@
   --space-page-x: clamp(1.5rem, 5vw, 6rem);
   --space-section-y: clamp(2.5rem, 6vw, 5rem);
   --space-content-max: 1200px;
+
+  /* Product detail — 상품 정보 영역 일관된 여백 */
+  --space-product-info-y: clamp(2.5rem, 5vw, 4rem);
 }
 
 @theme inline {
@@ -60,7 +63,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-ui), var(--font-sans);
-  line-height: 1.7;
+  line-height: 1.8;
   -webkit-font-smoothing: antialiased;
   letter-spacing: 0.01em;
 }

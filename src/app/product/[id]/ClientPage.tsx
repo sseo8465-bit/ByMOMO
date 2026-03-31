@@ -9,7 +9,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import GNB from '@/shared/components/GNB';
 import Footer from '@/shared/components/Footer';
 import { MOCK_PRODUCTS } from '@/shared/mock/products';
@@ -148,6 +148,14 @@ export default function ProductDetailPage() {
   const [activeTab, setActiveTab] = useState<TabKey>('ingredients');
   const [isAdded, setIsAdded] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => setToastMessage(null), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
 
   const product = MOCK_PRODUCTS.find((p) => p.id === productId);
 
@@ -174,6 +182,7 @@ export default function ProductDetailPage() {
   const handleAddToCart = useCallback(() => {
     addItem({ product, quantity });
     setIsAdded(true);
+    setToastMessage('장바구니에 담았어요');
     setTimeout(() => setIsAdded(false), 2000);
   }, [addItem, product, quantity]);
 
@@ -193,6 +202,13 @@ export default function ProductDetailPage() {
     <>
       <GNB activeItem="shop" />
 
+      {/* 토스트 — 장바구니 담기 피드백 */}
+      {toastMessage && (
+        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 px-6 py-3 bg-[var(--walnut-dark)] text-[var(--cream)] text-[12px] font-[var(--font-ui)] tracking-[0.04em] shadow-lg animate-toast">
+          {toastMessage}
+        </div>
+      )}
+
       {/* ── 상품 히어로 — 모바일: 세로 / 데스크톱: 가로 6:4 ── */}
       <section className="md:flex md:min-h-[70vh]">
         {/* 이미지 (60%) */}
@@ -208,7 +224,7 @@ export default function ProductDetailPage() {
         </div>
 
         {/* 상품 정보 (40%) */}
-        <div className="md:w-[40%] page-padding py-10 md:py-16 md:flex md:flex-col md:justify-center">
+        <div className="md:w-[40%] page-padding py-[var(--space-product-info-y)] md:flex md:flex-col md:justify-center">
           {/* 뒤로 가기 */}
           <button
             onClick={() => router.back()}

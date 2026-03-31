@@ -6,13 +6,13 @@
 // 반응형: 모바일 1열 → 태블릿 2열 → 데스크톱 3~4열
 // ──────────────────────────────────────────────
 
+import { useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import GNB from '@/shared/components/GNB';
 import Footer from '@/shared/components/Footer';
 import { MOCK_PRODUCTS } from '@/shared/mock/products';
 import { useCart } from '@/domains/cart/cart.context';
-import { useState, useCallback } from 'react';
 
 // ── 카테고리 필터 ──
 const CATEGORIES = [
@@ -44,6 +44,14 @@ export default function ShopCollectionPage() {
   const { addItem } = useCart();
   const [activeCategory, setActiveCategory] = useState('all');
   const [addedIds, setAddedIds] = useState<Set<string>>(new Set());
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => setToastMessage(null), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
 
   const filteredProducts = activeCategory === 'all'
     ? MOCK_PRODUCTS
@@ -52,6 +60,7 @@ export default function ShopCollectionPage() {
   const handleAddToCart = useCallback((product: typeof MOCK_PRODUCTS[0]) => {
     addItem({ product, quantity: 1 });
     setAddedIds((prev) => new Set(prev).add(product.id));
+    setToastMessage('장바구니에 담았어요');
     // 2초 후 added 표시 해제
     setTimeout(() => {
       setAddedIds((prev) => {
@@ -65,6 +74,13 @@ export default function ShopCollectionPage() {
   return (
     <>
       <GNB activeItem="shop" />
+
+      {/* 토스트 — 장바구니 담기 피드백 */}
+      {toastMessage && (
+        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 px-6 py-3 bg-[var(--walnut-dark)] text-[var(--cream)] text-[12px] font-[var(--font-ui)] tracking-[0.04em] shadow-lg animate-toast">
+          {toastMessage}
+        </div>
+      )}
 
       {/* ── 페이지 헤더 — 이솝 스타일 넓은 여백 ── */}
       <section className="page-padding section-spacing text-center">

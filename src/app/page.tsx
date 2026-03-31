@@ -62,7 +62,7 @@ export default function HomePage() {
             </p>
             <Link
               href="/profile"
-              className="inline-block px-8 py-3.5 bg-[var(--cream)] text-[var(--walnut)] text-[12px] md:text-[13px] font-medium font-[var(--font-ui)] tracking-[0.06em] hover:bg-[var(--warm-white)] transition-colors"
+              className="inline-block px-8 py-4 min-h-[54px] bg-[var(--cream)] text-[var(--walnut)] text-[12px] md:text-[13px] font-medium font-[var(--font-ui)] tracking-[0.06em] hover:bg-[var(--warm-white)] transition-colors"
             >
               우리 아이 맞춤 추천 시작하기
             </Link>
@@ -138,12 +138,11 @@ export default function HomePage() {
         <p className="font-[var(--font-ui)] text-[10px] font-semibold tracking-[0.15em] uppercase text-[var(--warm-taupe)] mb-5">
           Our Story
         </p>
-        <p className="font-[var(--font-serif)] text-[20px] md:text-[26px] text-[var(--walnut)] italic leading-[1.6] mb-6 tracking-[0.02em]">
-          &ldquo;내 아이를 위한 고집이,
-          <br />
-          당신의 아이를 위한
-          <br />
-          기준이 되기까지.&rdquo;
+        <p className="font-[var(--font-serif)] text-[20px] md:text-[26px] text-[var(--walnut)] italic leading-[1.6] mb-4 tracking-[0.02em]">
+          &ldquo;성분표를 뒤집어 읽기 시작한 날이 있었습니다.&rdquo;
+        </p>
+        <p className="text-[13px] md:text-[14px] text-[var(--warm-gray)] leading-[1.8] mb-6 tracking-[0.02em] max-w-[380px] mx-auto">
+          그날 이후, 직접 고르고 만들기로 했습니다.
         </p>
         <Link
           href="/about"
