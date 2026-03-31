@@ -11,7 +11,9 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import GNB from '@/shared/components/GNB';
 import Footer from '@/shared/components/Footer';
+import Logo from '@/shared/components/Logo';
 import { useAuth } from '@/domains/auth/auth.context';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 
 // ── Daum 우편번호 API 타입 선언 ──
 // 카카오(Daum)에서 제공하는 주소 검색 서비스를 사용하기 위한 타입
@@ -73,7 +75,7 @@ const REGEX = {
   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   name: /^[가-힣a-zA-Z\s]{2,}$/,
   phone: /^010-\d{4}-\d{4}$/,
-  password: /^.{8,}$/,
+  password: /^(?=.*[A-Za-z])(?=.*\d).{8,}$/,
   consonantOnly: /^[ㄱ-ㅎ\s]+$/,
 };
 
@@ -92,7 +94,7 @@ const MESSAGES = {
   emailRequired: '이메일 주소를 입력해 주세요.',
   emailInvalid: '이메일 형식을 다시 확인해 주시겠어요? (예: name@example.com)',
   passwordRequired: '비밀번호를 입력해 주세요.',
-  passwordShort: '안전한 가입을 위해 비밀번호는 8자 이상으로 설정해 주세요.',
+  passwordShort: '안전한 가입을 위해 영문과 숫자를 포함하여 8자 이상으로 설정해 주세요.',
   passwordMismatch: '입력하신 비밀번호가 서로 다릅니다. 다시 확인해 주세요.',
   nameRequired: '이름을 입력해 주세요.',
   nameInvalid: '한글 또는 영문으로 2자 이상 입력해 주세요.',
@@ -356,7 +358,7 @@ function TermsScrollBox({
 
 export default function RegisterClientPage() {
   const router = useRouter();
-  const { signUp, loginWithKakao } = useAuth();
+  const { loginWithKakao } = useAuth();
 
   // ── 폼 상태 ──
   const [form, setForm] = useState<RegisterForm>({
@@ -398,6 +400,11 @@ export default function RegisterClientPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
   const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  // ── 이메일 중복 확인 상태 ──
+  // idle: 아직 확인 안 함 / checking: 서버 조회 중 / available: 사용 가능 / taken: 이미 가입됨
+  const [emailCheckStatus, setEmailCheckStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle');
+  const [emailCheckMessage, setEmailCheckMessage] = useState('');
 
   // ── Daum Postcode 스크립트 로드 ──
   // 페이지 진입 시 카카오 주소검색 스크립트를 한 번만 <head>에 추가
@@ -480,6 +487,45 @@ export default function RegisterClientPage() {
     return errs;
   }, [form]);
 
+  // ── 이메일 중복 확인 — Supabase RPC 호출 ──
+  // 이메일 필드에서 포커스가 벗어날 때 호출
+  // Supabase에 check_email_exists 함수가 없으면 조용히 실패 → 가입 시점에서 중복 체크됨
+  const checkEmailDuplicate = useCallback(async (email: string) => {
+    if (!email || !REGEX.email.test(email) || !isSupabaseConfigured) {
+      setEmailCheckStatus('idle');
+      setEmailCheckMessage('');
+      return;
+    }
+    setEmailCheckStatus('checking');
+    setEmailCheckMessage('확인 중...');
+    try {
+      const { data, error } = await supabase.rpc('check_email_exists', { check_email: email });
+      if (error) {
+        // RPC 함수가 아직 생성되지 않은 경우 — 가입 시점에서 중복 체크됨
+        setEmailCheckStatus('idle');
+        setEmailCheckMessage('');
+        return;
+      }
+      if (data) {
+        setEmailCheckStatus('taken');
+        setEmailCheckMessage('이미 가입된 이메일입니다. 로그인을 이용해 주세요.');
+      } else {
+        setEmailCheckStatus('available');
+        setEmailCheckMessage('사용 가능한 이메일입니다.');
+      }
+    } catch {
+      setEmailCheckStatus('idle');
+      setEmailCheckMessage('');
+    }
+  }, []);
+
+  // ── 비밀번호 일치 여부 실시간 계산 ──
+  // passwordConfirm에 값이 있을 때만 표시 (입력 전에는 null)
+  const passwordMatchStatus = useMemo(() => {
+    if (!form.passwordConfirm) return null;
+    return form.password === form.passwordConfirm ? 'match' : 'mismatch';
+  }, [form.password, form.passwordConfirm]);
+
   // ── 전체 동의 ──
   // "전체 동의하기" 체크 시 필수+선택 약관 모두 한 번에 토글
   // 개별 해제하면 전체 동의도 자동으로 풀림
@@ -493,7 +539,7 @@ export default function RegisterClientPage() {
   };
 
   // ── 폼 유효성 + 필수 약관 동의 여부 ──
-  // 이메일~주소까지 모든 필수 필드 + 이용약관/개인정보 동의 체크 시에만 가입 버튼 활성화
+  // 이메일~주소까지 모든 필수 필드 + 이용약관/개인정보 동의 + 이메일 중복 아님 + 비밀번호 일치
   // 평생회원, 마케팅 수신, 환불계좌는 필수가 아니므로 검증 대상 아님
   const isFormValid = useMemo(() => {
     const errs = validate();
@@ -502,31 +548,45 @@ export default function RegisterClientPage() {
       form.email.trim() !== '' &&
       form.password !== '' &&
       form.passwordConfirm !== '' &&
+      form.password === form.passwordConfirm &&
       form.name.trim() !== '' &&
       form.phone.trim() !== '' &&
       form.zipCode !== '' &&
       form.address.trim() !== '' &&
+      emailCheckStatus !== 'taken' &&
       agreedToTerms &&
       agreedToPrivacy
     );
-  }, [validate, form, agreedToTerms, agreedToPrivacy]);
+  }, [validate, form, agreedToTerms, agreedToPrivacy, emailCheckStatus]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name === 'phone') {
       setForm((prev) => ({ ...prev, phone: formatPhone(value) }));
     } else if (name === 'bankAccount') {
-      // 계좌번호는 숫자만
+      // 계좌번호는 숫자와 하이픈만 허용
       setForm((prev) => ({ ...prev, bankAccount: value.replace(/[^0-9-]/g, '') }));
     } else {
       setForm((prev) => ({ ...prev, [name]: value }));
     }
+
+    // 이메일 변경 시 → 이전 중복 확인 결과 초기화 (다시 blur 시 재확인)
+    if (name === 'email') {
+      setEmailCheckStatus('idle');
+      setEmailCheckMessage('');
+    }
+
     if (touched[name]) setErrors(validate());
   };
 
   const handleBlur = (fieldName: string) => {
     setTouched((prev) => ({ ...prev, [fieldName]: true }));
     setErrors(validate());
+
+    // 이메일 필드에서 포커스 벗어나면 → 형식이 유효할 때만 중복 확인 실행
+    if (fieldName === 'email' && form.email && REGEX.email.test(form.email)) {
+      checkEmailDuplicate(form.email);
+    }
   };
 
   const handleSubmit = async () => {
@@ -543,27 +603,56 @@ export default function RegisterClientPage() {
 
     setIsSubmitting(true);
 
-    // Supabase Auth로 회원가입 요청
-    // 주소는 "[우편번호] 기본주소 나머지주소" 형태로 합쳐서 저장
-    const result = await signUp({
-      email: form.email,
-      password: form.password,
-      name: form.name,
-      phone: form.phone,
-      address: `[${form.zipCode}] ${form.address} ${form.addressDetail}`.trim(),
-      dogName: form.dogName || undefined,
-    });
+    try {
+      // ── 1단계: 서버 API Route로 유저 생성 (service_role, email_confirm: true) ──
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: form.email,
+          password: form.password,
+          name: form.name,
+          phone: form.phone,
+          address: `[${form.zipCode}] ${form.address} ${form.addressDetail}`.trim(),
+          dogName: form.dogName || undefined,
+        }),
+      });
 
-    setIsSubmitting(false);
+      const data = await res.json();
 
-    if (result.success && !result.error) {
-      router.push('/');
-    } else if (result.success && result.error) {
-      setSubmitSuccess(true);
-      setSubmitMessage(result.error);
-    } else {
-      // response-drafting: 에러 시 공감 + 원인 + 해결법 구조
-      setSubmitMessage(result.error || '회원가입 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+      if (!data.success) {
+        // 가입 실패 — 서버에서 한글 에러 메시지를 보내줌
+        if (data.error?.includes('이미 가입된')) {
+          setEmailCheckStatus('taken');
+          setEmailCheckMessage(data.error);
+        }
+        setSubmitMessage(data.error || '회원가입 중 문제가 발생했습니다.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      // ── 2단계: 가입 성공 → 클라이언트에서 즉시 로그인 (세션 생성) ──
+      if (isSupabaseConfigured) {
+        const { error: loginError } = await supabase.auth.signInWithPassword({
+          email: form.email,
+          password: form.password,
+        });
+
+        if (loginError) {
+          // 로그인 실패해도 가입은 성공 — 웰컴 페이지로 이동 (로그인 안내)
+          console.warn('자동 로그인 실패:', loginError.message);
+        }
+      }
+
+      // ── 3단계: 웰컴 페이지로 이동 ──
+      const memberType = lifetimeMember === 'agree' ? '평생회원' : '일반회원';
+      router.push(
+        `/register/welcome?name=${encodeURIComponent(form.name)}&email=${encodeURIComponent(form.email)}&type=${encodeURIComponent(memberType)}`
+      );
+    } catch {
+      setSubmitMessage('네트워크 연결을 확인해 주세요. 잠시 후 다시 시도해 주세요.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -573,8 +662,11 @@ export default function RegisterClientPage() {
 
       <div className="page-padding section-spacing">
         <div className="max-w-[480px] mx-auto">
-          {/* ── 페이지 헤더 ── */}
+          {/* ── 페이지 헤더 — 로고 + 타이틀 ── */}
           <div className="text-center mb-12 md:mb-16">
+            <div className="flex justify-center mb-6">
+              <Logo size="lg" />
+            </div>
             <p className="font-[var(--font-ui)] text-[10px] md:text-[11px] tracking-[0.2em] uppercase text-[var(--warm-taupe)] mb-4">
               Create Account
             </p>
@@ -591,18 +683,47 @@ export default function RegisterClientPage() {
               기본 정보
             </h2>
 
-            {/* ux-writing: placeholder는 입력 예시를 보여주되, label과 중복하지 않음 */}
-            <FormField
-              label="이메일 *"
-              name="email"
-              type="email"
-              value={form.email}
-              placeholder="name@example.com"
-              error={errors.email}
-              touched={!!touched.email}
-              onChange={handleChange}
-              onBlur={() => handleBlur('email')}
-            />
+            {/* ── 이메일 필드 — 포커스 해제 시 중복 확인 결과 표시 ── */}
+            <div className="mb-6 md:mb-8">
+              <label className="block font-[var(--font-ui)] text-[11px] md:text-[12px] tracking-[0.08em] text-[var(--charcoal)] mb-2 font-medium">
+                이메일 *
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                onBlur={() => handleBlur('email')}
+                placeholder="name@example.com"
+                className={`w-full bg-transparent border-0 border-b ${
+                  touched.email && errors.email
+                    ? 'border-b-[var(--walnut)]'
+                    : emailCheckStatus === 'available'
+                    ? 'border-b-[#5B7553]'
+                    : emailCheckStatus === 'taken'
+                    ? 'border-b-[var(--walnut)]'
+                    : 'border-b-[var(--oatmeal)] focus:border-b-[var(--charcoal)]'
+                } outline-none py-3 text-[13px] md:text-[14px] font-[var(--font-ui)] font-normal text-[var(--charcoal)] placeholder:text-[var(--warm-taupe-light)] tracking-[0.02em] transition-colors`}
+              />
+              {/* 유효성 에러 (형식 오류) */}
+              {touched.email && errors.email && (
+                <p className="font-[var(--font-ui)] text-[12px] text-[var(--walnut)] mt-2 tracking-[0.02em] font-medium">
+                  {errors.email}
+                </p>
+              )}
+              {/* 이메일 중복 확인 결과 — 에러가 없을 때만 표시 */}
+              {emailCheckMessage && !(touched.email && errors.email) && (
+                <p className={`font-[var(--font-ui)] text-[12px] mt-2 tracking-[0.02em] font-medium ${
+                  emailCheckStatus === 'available'
+                    ? 'text-[#5B7553]'
+                    : emailCheckStatus === 'taken'
+                    ? 'text-[var(--walnut)]'
+                    : 'text-[var(--warm-taupe)]'
+                }`}>
+                  {emailCheckMessage}
+                </p>
+              )}
+            </div>
 
             <FormField
               label="비밀번호 *"
@@ -616,17 +737,37 @@ export default function RegisterClientPage() {
               onBlur={() => handleBlur('password')}
             />
 
-            <FormField
-              label="비밀번호 확인 *"
-              name="passwordConfirm"
-              type="password"
-              value={form.passwordConfirm}
-              placeholder="비밀번호를 다시 입력해 주세요"
-              error={errors.passwordConfirm}
-              touched={!!touched.passwordConfirm}
-              onChange={handleChange}
-              onBlur={() => handleBlur('passwordConfirm')}
-            />
+            {/* ── 비밀번호 확인 — 입력할 때마다 일치 여부 실시간 표시 ── */}
+            <div className="mb-6 md:mb-8">
+              <label className="block font-[var(--font-ui)] text-[11px] md:text-[12px] tracking-[0.08em] text-[var(--charcoal)] mb-2 font-medium">
+                비밀번호 확인 *
+              </label>
+              <input
+                type="password"
+                name="passwordConfirm"
+                value={form.passwordConfirm}
+                onChange={handleChange}
+                onBlur={() => handleBlur('passwordConfirm')}
+                placeholder="비밀번호를 다시 입력해 주세요"
+                className={`w-full bg-transparent border-0 border-b ${
+                  passwordMatchStatus === 'mismatch'
+                    ? 'border-b-[var(--walnut)]'
+                    : passwordMatchStatus === 'match'
+                    ? 'border-b-[#5B7553]'
+                    : 'border-b-[var(--oatmeal)] focus:border-b-[var(--charcoal)]'
+                } outline-none py-3 text-[13px] md:text-[14px] font-[var(--font-ui)] font-normal text-[var(--charcoal)] placeholder:text-[var(--warm-taupe-light)] tracking-[0.02em] transition-colors`}
+              />
+              {/* 비밀번호 일치 여부 — 입력 시작하면 바로 표시 */}
+              {passwordMatchStatus && (
+                <p className={`font-[var(--font-ui)] text-[12px] mt-2 tracking-[0.02em] font-medium ${
+                  passwordMatchStatus === 'match' ? 'text-[#5B7553]' : 'text-[var(--walnut)]'
+                }`}>
+                  {passwordMatchStatus === 'match'
+                    ? '비밀번호가 일치합니다.'
+                    : '비밀번호가 일치하지 않습니다.'}
+                </p>
+              )}
+            </div>
           </div>
 
           <div className="border-t border-[var(--oatmeal)] my-8 md:my-10" />
