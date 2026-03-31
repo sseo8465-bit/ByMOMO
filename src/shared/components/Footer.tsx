@@ -40,7 +40,7 @@ export default function Footer() {
           </div>
 
           {/* ── 네비게이션 링크 ── */}
-          <nav className="flex flex-wrap justify-center gap-6 md:gap-10 mb-12 text-[11px] md:text-[12px] tracking-[0.08em] uppercase">
+          <nav className="flex flex-wrap justify-center gap-6 md:gap-10 mb-12 text-[11px] md:text-[12px] tracking-[0.18em] uppercase">
             {NAV_LINKS.map(({ href, label }) => (
               <Link
                 key={href}

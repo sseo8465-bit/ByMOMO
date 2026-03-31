@@ -189,6 +189,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         email: payload.email,
         password: payload.password,
         options: {
+          // 이메일 인증 링크 클릭 시 이 URL로 리다이렉트 → auth code를 세션으로 교환
+          emailRedirectTo: `${typeof window !== 'undefined' ? window.location.origin : 'https://bymomo.vercel.app'}/auth/callback`,
           data: {
             name: payload.name,
             phone: payload.phone,

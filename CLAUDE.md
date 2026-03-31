@@ -2,7 +2,8 @@
 
 ## Tech Stack & Architecture
 
-- **프레임워크**: Next.js 15.5 (App Router) + React 19.1 + TypeScript 5
+- **프레임워크**: Next.js 15.3.2 (App Router) + React 19.1 + TypeScript 5
+- **패키지**: `@supabase/supabase-js` ^2.100.0 + `@supabase/ssr` ^0.9.0
 - **스타일링**: Tailwind CSS 4 (PostCSS, `@import "tailwindcss"` 방식)
 - **상태관리**: Context API + custom hooks (외부 라이브러리 없음)
 - **배포**: Vercel (GitHub 연동 자동 배포)
@@ -32,12 +33,18 @@ src/
 │   ├── order-complete/ # 주문 완료
 │   ├── signup/       # 회원가입
 │   ├── register/     # 신규 가입 (카카오 + 이메일)
+│   │   └── welcome/  # 가입 완료 웰컴 페이지
+│   ├── find-id/      # 아이디(이메일) 찾기 (Supabase RPC: find_email_by_name_phone)
+│   ├── find-password/ # 비밀번호 찾기 (resetPasswordForEmail)
+│   ├── reset-password/ # 비밀번호 재설정 (updateUser)
 │   ├── subscription/ # 구독 웨이트리스트
 │   ├── my/           # 마이페이지 (이솝 스타일 로그인)
 │   ├── faq/          # 자주 묻는 질문
 │   ├── terms/        # 이용약관
 │   ├── privacy/      # 개인정보처리방침
 │   ├── guide/        # 이용 가이드
+│   ├── error.tsx     # 글로벌 Error Boundary ('use client', reset prop)
+│   ├── not-found.tsx # 커스텀 404 (Server Component)
 │   └── admin/        # 어드민
 ├── domains/          # DDD 도메인별 분리
 │   ├── auth/         # auth.context.tsx, auth.types.ts
@@ -49,7 +56,7 @@ src/
 │   ├── profile/      # profile.context.tsx, profile.types.ts, profile.logic.ts
 │   └── subscription/ # (구독 관련)
 └── shared/           # 공유 리소스
-    ├── components/   # GNB, Footer, Button, BottomSheet, GiftPreview, BenefitList, IngredientTable, SafeFilter, StepIndicator (9개)
+    ├── components/   # GNB, Footer, Button, BottomSheet, GiftPreview, BenefitList, IngredientTable, SafeFilter, StepIndicator, Logo, LogoStacked (11개)
     ├── hooks/        # 커스텀 훅
     ├── mock/         # products.ts (더미 데이터)
     ├── styles/       # 추가 스타일
@@ -134,6 +141,14 @@ src/
   - 전체 동의: `allAgreed = agreedToTerms && agreedToPrivacy && agreedToMarketingSms && agreedToMarketingEmail`
   - 신규 폼에서 마케팅 동의 필드 추가 시 반드시 SMS/이메일 분리 패턴을 따르라
 - **`rounded-[2px]` 예외**: `rounded-none` 원칙의 유일한 허용 예외. 하단 고정 CTA 등 미세 곡률이 필요한 경우에만 `rounded-[2px]`까지 허용. `rounded-md` 이상은 금지.
+- **Logo 컴포넌트 사용 기준**:
+  - `Logo`(수평형, A-01 Blade & Curve): GNB, Footer 전용. size prop: `'sm'|'md'|'lg'`.
+  - `LogoStacked`(수직형, A-02 Stacked Couture): 가입 완료, 패키지 씰, 팝업 등 '정성' 강조 맥락. `goldFoil` prop으로 금박 효과 지원.
+  - 새 로고 배치 시 맥락에 맞는 컴포넌트를 선택하라. 두 로고 모두 SVG 기반, `aria-label` 포함.
+- **Error/404 페이지 패턴**: `error.tsx`(Client, `reset` prop 필수)와 `not-found.tsx`(Server)는 `rounded-full` 예외 허용 — 아이콘 컨테이너에만. `max-w-[400px]` 중앙 정렬. 이 두 파일 외에서는 `rounded-none` 원칙 유지.
+- **인증 플로우 페이지 공통 구조**: GNB → Logo → 폼(`max-w-[400px] mx-auto` + `page-padding`) → Footer. `find-id`, `find-password`, `reset-password`, `register` 모두 이 레이아웃을 따른다.
+- **Supabase RPC 호출 패턴**: `isSupabaseConfigured` 체크 → `supabase.rpc('function_name', params)` → 에러 시 한글 폴백 메시지. RPC 함수 미생성 시 `42883` 에러코드로 감지하여 고객센터 안내(`privacy@bymomo.kr`)로 폴백. (`find-id/ClientPage.tsx` 참조)
+- **API Route 에러 처리 패턴**: `ERROR_MESSAGES: Record<string, string>`로 Supabase 에러 → 한글 매핑. `getKoreanErrorMessage()` 변환 함수. 신규 API Route 작성 시 이 패턴을 따르라. (`api/auth/register/route.ts` 참조)
 
 ### 브랜드 디자인 토큰 (globals.css :root)
 - 배경 계층: `--warm-white`(#FDFAF5) → `--cream`(#F8F4ED) → `--oatmeal`(#EDE6D8)

@@ -39,7 +39,7 @@ export default function GNB({ activeItem }: GNBProps) {
             <Link
               key={key}
               href={href}
-              className={`relative font-[var(--font-ui)] text-[11px] md:text-[12px] tracking-[0.12em] uppercase transition-colors ${
+              className={`relative font-[var(--font-ui)] text-[11px] md:text-[12px] tracking-[0.18em] uppercase transition-colors ${
                 activeItem === key
                   ? 'text-[var(--walnut)] font-medium'
                   : 'text-[var(--warm-gray)] font-normal hover:text-[var(--walnut)]'
