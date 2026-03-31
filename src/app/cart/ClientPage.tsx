@@ -44,20 +44,30 @@ export default function CartPage() {
     router.push('/checkout');
   };
 
-  // ── 빈 장바구니 상태 ──
+  // ── 빈 장바구니 상태 — 듀얼 CTA (맞춤 추천 + 전체 제품) ──
   if (items.length === 0) {
     return (
       <>
         <GNB activeItem="cart" />
         <div className="flex-1 flex flex-col items-center justify-center page-padding py-20 min-h-[60vh]">
-          <p className="text-[14px] text-[var(--warm-gray)] mb-8 tracking-[0.03em]">
-            장바구니가 비어 있어요.
+          <p className="font-[var(--font-serif)] text-[18px] md:text-[22px] text-[var(--walnut)] mb-3 tracking-[0.02em]">
+            아직 장바구니가 비어 있어요.
           </p>
-          <Link href="/profile">
-            <Button variant="primary" className="min-w-[200px]">
-              맞춤 간식 찾기
-            </Button>
-          </Link>
+          <p className="text-[13px] text-[var(--warm-gray)] mb-8 tracking-[0.03em] leading-[1.6]">
+            우리 아이에게 맞는 간식을 골라볼까요?
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 w-full max-w-[360px]">
+            <Link href="/profile" className="flex-1">
+              <Button variant="primary" className="w-full">
+                맞춤 추천 받기
+              </Button>
+            </Link>
+            <Link href="/shop" className="flex-1">
+              <Button variant="secondary" className="w-full">
+                전체 제품 보기
+              </Button>
+            </Link>
+          </div>
         </div>
         <Footer />
       </>

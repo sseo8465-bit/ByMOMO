@@ -6,6 +6,33 @@ import GNB from "@/shared/components/GNB";
 import Footer from "@/shared/components/Footer";
 import { MOCK_PRODUCTS } from "@/shared/mock/products";
 
+// ── 상품별 해시태그 매핑 — 이솝 스타일 미니멀 태그 ──
+const PRODUCT_TAGS: Record<string, string[]> = {
+  'duck-single': ['#알러지프리', '#단일단백질'],
+  'salmon-omega': ['#피부건강', '#오메가3'],
+  'birthday-set': ['#선물추천', '#기념일'],
+  'beef-senior': ['#시니어케어', '#관절건강'],
+};
+
+// ── 인기 레시피 3종 (메인 하단 노출) ──
+const POPULAR_RECIPES = [
+  {
+    product: MOCK_PRODUCTS.find((p) => p.id === 'duck-single')!,
+    tags: ['#알러지케어', '#예민한아이'],
+    label: '알러지가 걱정될 때',
+  },
+  {
+    product: MOCK_PRODUCTS.find((p) => p.id === 'salmon-omega')!,
+    tags: ['#피부모질', '#윤기'],
+    label: '건조한 피부가 걱정될 때',
+  },
+  {
+    product: MOCK_PRODUCTS.find((p) => p.id === 'beef-senior')!,
+    tags: ['#노령견추천', '#관절케어'],
+    label: '나이 든 아이를 위해',
+  },
+];
+
 export default function HomePage() {
   const bestPicks = MOCK_PRODUCTS.slice(0, 3);
 
@@ -37,7 +64,7 @@ export default function HomePage() {
               href="/profile"
               className="inline-block px-8 py-3.5 bg-[var(--cream)] text-[var(--walnut)] text-[12px] md:text-[13px] font-medium font-[var(--font-ui)] tracking-[0.06em] hover:bg-[var(--warm-white)] transition-colors"
             >
-              맞춤 간식 찾기
+              우리 아이 맞춤 추천 시작하기
             </Link>
           </div>
         </div>
@@ -55,7 +82,7 @@ export default function HomePage() {
               href={`/product/${product.id}`}
               className="group"
             >
-              <div className="aspect-[4/3] relative bg-[var(--cream)] overflow-hidden mb-4">
+              <div className="aspect-[4/3] relative bg-[var(--cream)] overflow-hidden mb-4 rounded-[6px]">
                 <Image
                   src={product.imageUrl}
                   alt={product.imageAlt}
@@ -67,6 +94,19 @@ export default function HomePage() {
               <p className="text-[14px] font-medium text-[var(--charcoal)] leading-tight mb-1.5 tracking-[0.02em]">
                 {product.name}
               </p>
+              {/* ── 해시태그 ── */}
+              {PRODUCT_TAGS[product.id] && (
+                <div className="flex flex-wrap gap-1.5 mb-1.5">
+                  {PRODUCT_TAGS[product.id].map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-[10px] font-[var(--font-ui)] text-[var(--warm-taupe)] bg-[var(--cream)] px-2 py-0.5 rounded-full tracking-[0.02em]"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
               <p className="text-[13px] font-[var(--font-ui)] text-[var(--warm-taupe)] tracking-[0.03em]">
                 ₩{product.price.toLocaleString("ko-KR")}
               </p>
@@ -111,6 +151,61 @@ export default function HomePage() {
         >
           브랜드 스토리 보기 →
         </Link>
+      </section>
+
+      {/* ── 지금 가장 사랑받는 레시피 — 해시태그 카드 3종 ── */}
+      <section className="page-padding section-spacing">
+        <div className="text-center mb-10 md:mb-14">
+          <p className="font-[var(--font-ui)] text-[10px] font-semibold tracking-[0.15em] uppercase text-[var(--warm-taupe)] mb-3">
+            Popular Recipes
+          </p>
+          <h2 className="font-[var(--font-serif)] text-[20px] md:text-[26px] font-medium text-[var(--walnut)] tracking-[0.02em]">
+            지금 가장 사랑받는 레시피
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {POPULAR_RECIPES.map(({ product, tags, label }) => (
+            <Link
+              key={product.id}
+              href={`/product/${product.id}`}
+              className="group"
+            >
+              {/* 이미지 — 라운딩 + 호버 스케일 */}
+              <div className="aspect-[4/3] relative bg-[var(--cream)] overflow-hidden rounded-[6px] mb-4">
+                <Image
+                  src={product.imageUrl}
+                  alt={product.imageAlt}
+                  fill
+                  className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
+              </div>
+
+              {/* 상황 라벨 — "알러지가 걱정될 때" */}
+              <p className="text-[11px] font-[var(--font-ui)] text-[var(--warm-taupe)] tracking-[0.04em] mb-1">
+                {label}
+              </p>
+
+              {/* 상품명 */}
+              <p className="text-[15px] md:text-[16px] font-semibold text-[var(--charcoal)] leading-tight mb-2 tracking-[0.02em]">
+                {product.name}
+              </p>
+
+              {/* 해시태그 */}
+              <div className="flex flex-wrap gap-1.5">
+                {tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-[10px] font-[var(--font-ui)] text-[var(--warm-taupe)] bg-[var(--cream)] px-2.5 py-1 rounded-full tracking-[0.02em]"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </Link>
+          ))}
+        </div>
       </section>
 
       <Footer />

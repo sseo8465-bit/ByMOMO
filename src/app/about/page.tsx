@@ -1,8 +1,19 @@
 // About (Our Story) 페이지 — 이솝 잡지기사 스타일 브랜드 서사
 // 반응형 + 이솝 스타일: page-padding, section-spacing, 축소 폰트
 import Image from "next/image";
+import type { Metadata } from "next";
 import GNB from "@/shared/components/GNB";
 import Footer from "@/shared/components/Footer";
+
+export const metadata: Metadata = {
+  title: "Story — 모모의 이야기",
+  description: "알러지, 노화, 심장병. 시중의 어떤 제품도 대안이 되지 못했을 때, 직접 만든 단 하나뿐인 레시피. By MOMO의 브랜드 스토리.",
+  alternates: { canonical: "/about" },
+  openGraph: {
+    title: "모모의 이야기 — By MOMO",
+    description: "내 아이를 위한 고집이, 당신의 아이를 위한 기준이 되기까지.",
+  },
+};
 
 export default function AboutPage() {
   return (
@@ -124,9 +135,9 @@ export default function AboutPage() {
           문의는 카카오톡으로 받고 있습니다.
         </p>
         <p className="text-[11px] md:text-[12px] text-[var(--warm-gray)] leading-[1.8] mb-8 tracking-[0.03em]">
-          아이의 이름과 연락처를 남겨주시면
+          아이의 이름과 문의 내용을 남겨주시면,
           <br />
-          순서대로 답변드리겠습니다.
+          24시간 이내에 답변드리겠습니다.
         </p>
         <a
           href="https://pf.kakao.com/_placeholder"

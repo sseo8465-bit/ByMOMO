@@ -73,6 +73,32 @@ const NUTRITION_DATA: Record<string, { label: string; value: string }[]> = {
   ],
 };
 
+// ── 원재료 함량 비율 데이터 (이솝 스타일 Composition Graph) ──
+const COMPOSITION_DATA: Record<string, { name: string; percent: number; role: string }[]> = {
+  'duck-single': [
+    { name: '오리가슴살', percent: 72, role: 'Primary Protein' },
+    { name: '고구마', percent: 18, role: 'Complex Carbohydrate' },
+    { name: '블루베리', percent: 10, role: 'Antioxidant' },
+  ],
+  'salmon-omega': [
+    { name: '연어', percent: 68, role: 'Omega-3 Protein' },
+    { name: '귀리', percent: 20, role: 'Dietary Fiber' },
+    { name: '아마씨', percent: 12, role: 'Plant Omega-3' },
+  ],
+  'birthday-set': [
+    { name: '오리가슴살', percent: 35, role: 'Primary Protein' },
+    { name: '연어', percent: 25, role: 'Omega-3 Protein' },
+    { name: '소고기', percent: 20, role: 'Essential Amino' },
+    { name: '고구마', percent: 12, role: 'Complex Carbohydrate' },
+    { name: '블루베리', percent: 8, role: 'Antioxidant' },
+  ],
+  'beef-senior': [
+    { name: '소고기', percent: 65, role: 'Lean Protein' },
+    { name: '단호박', percent: 20, role: 'Beta-carotene' },
+    { name: '글루코사민', percent: 15, role: 'Joint Support' },
+  ],
+};
+
 // ── 급여 가이드 데이터 ──
 const FEEDING_GUIDE = [
   { weight: '~3kg', daily: '10~15g', note: '말티즈, 치와와' },
@@ -121,6 +147,7 @@ export default function ProductDetailPage() {
 
   const [activeTab, setActiveTab] = useState<TabKey>('ingredients');
   const [isAdded, setIsAdded] = useState(false);
+  const [quantity, setQuantity] = useState(1);
 
   const product = MOCK_PRODUCTS.find((p) => p.id === productId);
 
@@ -145,10 +172,10 @@ export default function ProductDetailPage() {
   }
 
   const handleAddToCart = useCallback(() => {
-    addItem({ product, quantity: 1 });
+    addItem({ product, quantity });
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 2000);
-  }, [addItem, product]);
+  }, [addItem, product, quantity]);
 
   const nutrition = NUTRITION_DATA[product.id] || NUTRITION_DATA['duck-single'];
   const reviews = MOCK_REVIEWS[product.id] || [];
@@ -187,7 +214,7 @@ export default function ProductDetailPage() {
             onClick={() => router.back()}
             className="font-[var(--font-ui)] text-[11px] tracking-[0.08em] uppercase text-[var(--warm-taupe)] hover:text-[var(--walnut)] mb-6 md:mb-8"
           >
-            ← Back
+            ← 제품 목록으로
           </button>
 
           {/* 상품명 */}
@@ -210,11 +237,38 @@ export default function ProductDetailPage() {
             {product.ingredients.join(' · ')}
           </p>
 
+          {/* ── 수량 선택 ── */}
+          <div className="flex items-center gap-4 mb-6">
+            <span className="font-[var(--font-ui)] text-[11px] tracking-[0.08em] uppercase text-[var(--warm-taupe)]">수량</span>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                className="w-8 h-8 flex items-center justify-center border border-[var(--oatmeal)] text-[14px] text-[var(--walnut)] hover:border-[var(--walnut)] transition-colors"
+                aria-label="수량 줄이기"
+              >
+                −
+              </button>
+              <span className="font-[var(--font-ui)] text-[14px] font-medium w-6 text-center text-[var(--charcoal)]">
+                {quantity}
+              </span>
+              <button
+                onClick={() => setQuantity((q) => Math.min(10, q + 1))}
+                className="w-8 h-8 flex items-center justify-center border border-[var(--oatmeal)] text-[14px] text-[var(--walnut)] hover:border-[var(--walnut)] transition-colors"
+                aria-label="수량 늘리기"
+              >
+                +
+              </button>
+            </div>
+            <span className="ml-auto font-[var(--font-ui)] text-[13px] font-medium text-[var(--charcoal)]">
+              ₩{(product.price * quantity).toLocaleString('ko-KR')}
+            </span>
+          </div>
+
           {/* 장바구니 담기 */}
           <button
             onClick={handleAddToCart}
             disabled={isAdded}
-            className={`w-full py-4 text-[12px] md:text-[13px] font-[var(--font-ui)] tracking-[0.08em] uppercase transition-colors ${
+            className={`w-full py-4 rounded-[4px] text-[12px] md:text-[13px] font-[var(--font-ui)] tracking-[0.08em] uppercase transition-colors ${
               isAdded
                 ? 'bg-[var(--cream)] text-[var(--warm-taupe)] cursor-default'
                 : 'bg-[var(--walnut)] text-[var(--cream)] hover:bg-[var(--walnut-dark)] cursor-pointer'
@@ -281,6 +335,65 @@ export default function ProductDetailPage() {
                   ))}
                 </div>
               </div>
+
+              {/* ── 원재료 함량 그래프 — 이솝 성분표 스타일 ── */}
+              {COMPOSITION_DATA[product.id] && (
+                <div className="mb-12">
+                  <p className="font-[var(--font-ui)] text-[10px] md:text-[11px] tracking-[0.15em] uppercase text-[var(--warm-taupe)] mb-6">
+                    Composition
+                  </p>
+
+                  {/* 전체 바 — 연속 수평 그래프 */}
+                  <div className="flex w-full h-[6px] rounded-full overflow-hidden mb-8">
+                    {COMPOSITION_DATA[product.id].map((item, i) => (
+                      <div
+                        key={item.name}
+                        className="h-full transition-all duration-700"
+                        style={{
+                          width: `${item.percent}%`,
+                          backgroundColor: i === 0 ? 'var(--walnut)' : i === 1 ? 'var(--warm-taupe)' : 'var(--oatmeal)',
+                          opacity: 1 - i * 0.15,
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  {/* 항목별 수치 — 정갈한 타이포그래피 */}
+                  <div className="space-y-5">
+                    {COMPOSITION_DATA[product.id].map((item, i) => (
+                      <div key={item.name} className="flex items-baseline justify-between">
+                        <div className="flex items-center gap-3">
+                          {/* 색상 인디케이터 */}
+                          <div
+                            className="w-2 h-2 rounded-full flex-shrink-0"
+                            style={{
+                              backgroundColor: i === 0 ? 'var(--walnut)' : i === 1 ? 'var(--warm-taupe)' : 'var(--oatmeal)',
+                              opacity: 1 - i * 0.15,
+                            }}
+                          />
+                          <div>
+                            <span className="font-[var(--font-ui)] text-[13px] md:text-[14px] font-medium text-[var(--charcoal)] tracking-[0.02em]">
+                              {item.name}
+                            </span>
+                            <span className="font-[var(--font-ui)] text-[9px] md:text-[10px] tracking-[0.1em] uppercase text-[var(--warm-taupe)] ml-2">
+                              {item.role}
+                            </span>
+                          </div>
+                        </div>
+                        {/* 퍼센트 — 숫자가 '작품'처럼 보이도록 Serif + 큰 사이즈 */}
+                        <span className="font-[var(--font-serif)] text-[20px] md:text-[24px] font-light text-[var(--walnut)] tabular-nums tracking-tight">
+                          {item.percent}
+                          <span className="text-[11px] md:text-[12px] font-[var(--font-ui)] tracking-[0.04em] text-[var(--warm-taupe)] ml-0.5">%</span>
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <p className="font-[var(--font-ui)] text-[10px] text-[var(--warm-taupe)] mt-6 tracking-[0.03em] leading-[1.6]">
+                    * 원재료 함량은 건조 중량 기준이며, 제조 과정에서 소폭 변동될 수 있습니다.
+                  </p>
+                </div>
+              )}
 
               {/* 원재료별 효능 상세 */}
               <div>

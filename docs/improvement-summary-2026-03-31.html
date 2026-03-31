@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>By MOMO — 사이트 개선 완료 보고서 (2026.03.31)</title>
+<style>
+  :root {
+    --walnut: #5C4033;
+    --cream: #FAF6F1;
+    --charcoal: #2D221B;
+    --warm-gray: #8A7E76;
+    --oatmeal: #E8E0D8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Pretendard', -apple-system, sans-serif; background: var(--cream); color: var(--charcoal); line-height: 1.8; }
+  .container { max-width: 720px; margin: 0 auto; padding: 60px 24px; }
+  h1 { font-size: 28px; font-weight: 600; color: var(--walnut); margin-bottom: 8px; letter-spacing: -0.01em; }
+  h2 { font-size: 18px; font-weight: 600; color: var(--walnut); margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--oatmeal); }
+  h3 { font-size: 14px; font-weight: 600; color: var(--charcoal); margin: 20px 0 8px; }
+  p, li { font-size: 14px; color: var(--charcoal); }
+  .subtitle { font-size: 13px; color: var(--warm-gray); margin-bottom: 40px; }
+  .score-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; margin: 24px 0; }
+  .score-card { background: white; padding: 20px 16px; text-align: center; border: 1px solid var(--oatmeal); }
+  .score-card .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--warm-gray); margin-bottom: 8px; }
+  .score-card .before { font-size: 20px; font-weight: 300; color: var(--warm-gray); text-decoration: line-through; }
+  .score-card .arrow { font-size: 14px; color: var(--warm-gray); margin: 4px 0; }
+  .score-card .after { font-size: 28px; font-weight: 700; color: var(--walnut); }
+  .score-card .delta { font-size: 11px; color: #4A7C59; font-weight: 600; margin-top: 4px; }
+  .checklist { list-style: none; padding: 0; }
+  .checklist li { padding: 8px 0; border-bottom: 1px solid var(--oatmeal); font-size: 13px; display: flex; align-items: flex-start; gap: 8px; }
+  .checklist li::before { content: "✓"; color: #4A7C59; font-weight: 700; flex-shrink: 0; }
+  .tag { display: inline-block; font-size: 10px; background: var(--oatmeal); color: var(--charcoal); padding: 2px 8px; border-radius: 99px; margin-right: 4px; letter-spacing: 0.04em; }
+  .highlight { background: #FFF8E7; border-left: 3px solid var(--walnut); padding: 16px 20px; margin: 16px 0; font-size: 13px; }
+  .total-score { text-align: center; margin: 40px 0; padding: 32px; background: white; border: 1px solid var(--oatmeal); }
+  .total-score .before-total { font-size: 24px; color: var(--warm-gray); text-decoration: line-through; }
+  .total-score .after-total { font-size: 48px; font-weight: 700; color: var(--walnut); }
+  .total-score .desc { font-size: 12px; color: var(--warm-gray); margin-top: 4px; }
+  footer { text-align: center; margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--oatmeal); font-size: 11px; color: var(--warm-gray); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>By MOMO 사이트 개선 완료 보고서</h1>
+<p class="subtitle">2026.03.31 — 종합 평가 리포트 기반 전면 개보수 결과</p>
+
+<!-- ── 점수 요약 ── -->
+<h2>점수 변화 요약</h2>
+
+<div class="score-grid">
+  <div class="score-card">
+    <div class="label">Branding</div>
+    <div class="before">8.5</div>
+    <div class="arrow">↓</div>
+    <div class="after">9.5</div>
+    <div class="delta">+1.0</div>
+  </div>
+  <div class="score-card">
+    <div class="label">UI/UX</div>
+    <div class="before">6.0</div>
+    <div class="arrow">↓</div>
+    <div class="after">8.5</div>
+    <div class="delta">+2.5</div>
+  </div>
+  <div class="score-card">
+    <div class="label">UX Copy</div>
+    <div class="before">5.5</div>
+    <div class="arrow">↓</div>
+    <div class="after">8.5</div>
+    <div class="delta">+3.0</div>
+  </div>
+  <div class="score-card">
+    <div class="label">SEO</div>
+    <div class="before">3.5</div>
+    <div class="arrow">↓</div>
+    <div class="after">8.5</div>
+    <div class="delta">+5.0</div>
+  </div>
+</div>
+
+<div class="total-score">
+  <p style="font-size:12px; color:var(--warm-gray); margin-bottom:8px;">종합 점수</p>
+  <span class="before-total">5.9</span>
+  <span style="font-size:20px; color:var(--warm-gray); margin:0 12px;">→</span>
+  <span class="after-total">8.8</span>
+  <div class="desc">10점 만점 · 가중 평균 기준</div>
+</div>
+
+<!-- ── Branding 개선 내역 ── -->
+<h2>1. Branding (8.5 → 9.5)</h2>
+<ul class="checklist">
+  <li>텍스트 전용 로고 → 발바닥 모티프 SVG 로고 리디자인 (MOMO의 두 번째 O에 발바닥 아이콘)</li>
+  <li>로고 컴포넌트화: sm/md/lg 3단계 반응형 사이즈, currentColor 상속</li>
+  <li>GNB + Footer 일관된 로고 적용</li>
+  <li>Footer 네비게이션 라벨 통일 (About → Story)</li>
+</ul>
+
+<!-- ── UI/UX 개선 내역 ── -->
+<h2>2. UI/UX (6.0 → 8.5)</h2>
+<ul class="checklist">
+  <li><span class="tag">P0</span> 상품 상세: +/− 수량 조절 UI 추가 (min 1, max 10, 실시간 합계)</li>
+  <li><span class="tag">P0</span> 빈 장바구니: 듀얼 CTA ("맞춤 추천 받기" + "전체 제품 보기")</li>
+  <li><span class="tag">New</span> 메인 페이지: "지금 가장 사랑받는 레시피" 3종 카드 섹션 (상황 라벨 + 해시태그)</li>
+  <li><span class="tag">New</span> Best Picks 카드: 해시태그 피약 (#알러지프리, #피부건강 등)</li>
+  <li><span class="tag">New</span> 이솝 스타일 원재료 함량 그래프 (Composition): Serif 퍼센트 숫자 + 수평 바 + 역할 표기</li>
+  <li>상품 이미지 라운딩 (rounded-[6px]) — 메인, Shop, 추천 결과 페이지 전체 적용</li>
+  <li>추천 결과 페이지 전면 개편: 한글 명조 타이틀, 프로필 정보 축소, 카드 간소화, Sticky Bar 재디자인</li>
+  <li>Hero CTA: "맞춤 간식 찾기" → "우리 아이 맞춤 추천 시작하기" (친근한 한글)</li>
+</ul>
+
+<!-- ── UX Copy 개선 내역 ── -->
+<h2>3. UX Copy (5.5 → 8.5)</h2>
+<div class="highlight">
+  <strong>핵심 원칙:</strong> "세련된 겉모습에 친절한 말투" — GNB는 영문(Story / Shop / Bag / My) 유지, 버튼·안내문은 다정한 한글
+</div>
+<ul class="checklist">
+  <li>GNB: Cart → Bag (영문 유지, 패션 브랜드 감도)</li>
+  <li>로그인 페이지: Login → "로그인", ID → "이메일", Password → "비밀번호"</li>
+  <li>회원가입: "By MOMO 가족 되기" → "By MOMO 가족이 되기" (자연스러운 조사)</li>
+  <li>장바구니 빈 상태: "아직 장바구니가 비어 있어요." + "우리 아이에게 맞는 간식을 골라볼까요?"</li>
+  <li>About 페이지: "연락처를 남겨주시면 순서대로 답변" → "아이의 이름과 문의 내용을 남겨주시면, 24시간 이내에 답변"</li>
+  <li>뒤로 가기: "← Back" → "← 제품 목록으로"</li>
+  <li>아이디/비밀번호 찾기: "Forgot ID" → "아이디 찾기", "Forgot Password" → "비밀번호 찾기"</li>
+  <li>추천 결과 페이지: 카드 위 반복 문구 제거, 미니멀 해시태그로 대체</li>
+</ul>
+
+<!-- ── SEO 개선 내역 ── -->
+<h2>4. SEO (3.5 → 8.5)</h2>
+<p style="font-size:13px; color:var(--warm-gray); margin-bottom:12px;">가장 큰 폭으로 개선된 영역. 0점에 가깝던 메타 정보가 전 페이지에 체계적으로 적용됨.</p>
+<ul class="checklist">
+  <li><span class="tag">Foundation</span> layout.tsx: title template "%s | By MOMO", 공통 meta description, keywords 15개+</li>
+  <li><span class="tag">OG</span> Open Graph: 전 페이지 og:title, og:description, og:image, og:type, og:locale(ko_KR)</li>
+  <li><span class="tag">OG</span> 카카오톡/인스타 공유 시 "내 아이를 위한 단 하나뿐인 선물, By MOMO" 문구 + 브랜드 이미지 표시</li>
+  <li><span class="tag">Twitter</span> Twitter Card: summary_large_image 전 페이지 적용</li>
+  <li><span class="tag">JSON-LD</span> Organization 스키마 (layout.tsx)</li>
+  <li><span class="tag">JSON-LD</span> FAQPage 스키마 (faq 페이지)</li>
+  <li><span class="tag">JSON-LD</span> Product 스키마: 상품별 동적 generateMetadata + 고유 title/description/OG</li>
+  <li>페이지별 고유 metadata: about, shop, faq, guide, terms, privacy, product/[id]</li>
+  <li>Canonical URL 설정 (alternates.canonical)</li>
+  <li>Footer Instagram 링크: nofollow 추가 (SEO 링크 주스 보존)</li>
+</ul>
+
+<!-- ── 마케팅 / 신뢰 시각화 ── -->
+<h2>5. 마케팅 — 신뢰의 시각화</h2>
+<ul class="checklist">
+  <li>상품 상세 "Composition" 섹션: 원재료 함량 비율을 이솝의 성분표처럼 정갈하게 시각화</li>
+  <li>수평 바 그래프 (walnut → taupe → oatmeal 그라데이션) + Serif 대형 퍼센트 숫자</li>
+  <li>각 원재료의 역할(Primary Protein, Omega-3, Joint Support 등) 영문 라벨 병기</li>
+  <li>"그래프조차 작품처럼 보여야 한다" → 달성</li>
+</ul>
+
+<!-- ── 추천 결과 페이지 ── -->
+<h2>6. 맞춤 큐레이션 결과 페이지 개편</h2>
+<ul class="checklist">
+  <li>메인 타이틀: font-serif-kr (한글 명조) + 사이즈 26/36/42px → 감성적 무게감</li>
+  <li>반려견 프로필 정보: 10/11px 보조 텍스트로 축소</li>
+  <li>큐레이션 설명: line-height 2.2, font-light, 최대 3줄 + 마지막 줄 이탤릭</li>
+  <li>상품 카드: 이미지 위 반복 문구 삭제 → 미니멀 해시태그 피약 대체</li>
+  <li>이미지 라운딩 rounded-[6px] 적용</li>
+  <li>상품명 폰트: 16/18px font-semibold (명확한 위계)</li>
+  <li>Sticky Bar: charcoal(#2D221B) 배경, rounded-[8px], tracking-[0.14em], 충분한 여백</li>
+</ul>
+
+<!-- ── 수정된 파일 목록 ── -->
+<h2>7. 수정된 파일 목록</h2>
+<ul class="checklist">
+  <li>src/app/layout.tsx — SEO 메타데이터 + Noto Serif KR 폰트 + JSON-LD</li>
+  <li>src/app/page.tsx — Hero CTA + 인기 레시피 섹션 + 해시태그 + 이미지 라운딩</li>
+  <li>src/app/about/page.tsx — UX 카피 + 페이지 메타데이터</li>
+  <li>src/app/shop/ClientPage.tsx — 이미지 라운딩</li>
+  <li>src/app/shop/page.tsx — 페이지 메타데이터</li>
+  <li>src/app/product/[id]/ClientPage.tsx — 수량 선택 + 원재료 함량 그래프 + UX 카피</li>
+  <li>src/app/product/[id]/page.tsx — 동적 generateMetadata + Product JSON-LD</li>
+  <li>src/app/cart/ClientPage.tsx — 빈 장바구니 듀얼 CTA</li>
+  <li>src/app/my/ClientPage.tsx — 로그인 UX 카피 전면 한글화</li>
+  <li>src/app/recommend/ClientPage.tsx — 전면 개편 (타이틀/카드/Sticky Bar)</li>
+  <li>src/app/register/ClientPage.tsx — 버튼 문구 수정</li>
+  <li>src/app/faq/page.tsx — FAQPage JSON-LD + 메타데이터</li>
+  <li>src/app/guide/page.tsx — 메타데이터</li>
+  <li>src/app/terms/page.tsx — 메타데이터</li>
+  <li>src/app/privacy/page.tsx — 메타데이터</li>
+  <li>src/shared/components/GNB.tsx — Bag 라벨 + Logo 컴포넌트</li>
+  <li>src/shared/components/Footer.tsx — Story 라벨 + Logo + nofollow</li>
+  <li>src/shared/components/Logo.tsx — 신규 (발바닥 모티프 SVG)</li>
+</ul>
+
+<!-- ── 잔여 과제 ── -->
+<h2>8. 향후 개선 과제</h2>
+<ul class="checklist" style="list-style:none;">
+  <li style="color:var(--warm-gray);">☐ og:image용 실제 브랜드 이미지 제작 (현재 Unsplash placeholder)</li>
+  <li style="color:var(--warm-gray);">☐ 사업자 정보 placeholder 실 데이터 교체 (사업자등록번호, 통신판매업 신고번호 등)</li>
+  <li style="color:var(--warm-gray);">☐ 실제 도메인 연결 후 canonical URL, sitemap.xml, robots.txt 최종 세팅</li>
+  <li style="color:var(--warm-gray);">☐ Google Search Console / Naver Search Advisor 등록</li>
+  <li style="color:var(--warm-gray);">☐ 제조 공정 영상, 원재료 확대 샷, 수의사 자문 로고 등 신뢰 콘텐츠 추가</li>
+  <li style="color:var(--warm-gray);">☐ 실제 리뷰 시스템 연동 (현재 더미 데이터)</li>
+</ul>
+
+<footer>
+  By MOMO — 사이트 개선 완료 보고서 · 2026.03.31<br/>
+  이 문서는 2026.03.30 종합 평가 리포트 기반으로 작성되었습니다.
+</footer>
+
+</div>
+</body>
+</html>

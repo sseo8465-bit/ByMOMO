@@ -5,9 +5,10 @@
 // 이솝 스타일: cream → oatmeal 톤으로 자연스러운 그라데이션
 // ──────────────────────────────────────────────
 import Link from 'next/link';
+import Logo from '@/shared/components/Logo';
 
 const NAV_LINKS = [
-  { href: '/about', label: 'About' },
+  { href: '/about', label: 'Story' },
   { href: '/shop', label: 'Shop' },
   { href: '/guide', label: '이용안내' },
   { href: '/faq', label: 'FAQ' },
@@ -30,9 +31,9 @@ export default function Footer() {
 
           {/* ── 브랜드 로고 + 태그라인 ── */}
           <div className="text-center mb-12">
-            <h3 className="font-[var(--font-serif)] text-[18px] md:text-[20px] font-semibold text-[var(--walnut)] mb-3 tracking-[0.02em]">
-              By MOMO
-            </h3>
+            <div className="flex justify-center mb-3">
+              <Logo size="md" className="text-[var(--walnut)]" />
+            </div>
             <p className="text-[12px] md:text-[13px] text-[var(--warm-taupe)] leading-[1.7] tracking-[0.04em]">
               내 아이를 위한 단 하나뿐인 선물
             </p>
@@ -52,7 +53,7 @@ export default function Footer() {
             <a
               href="https://instagram.com/bymomo.official"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener nofollow noreferrer"
               className="text-[var(--warm-taupe)] hover:text-[var(--walnut)] transition-colors"
             >
               Instagram

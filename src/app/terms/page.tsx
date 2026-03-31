@@ -1,8 +1,14 @@
 // 이용약관 페이지 — 반응형 + 이솝 스타일
+import type { Metadata } from "next";
 import GNB from '@/shared/components/GNB';
 import Footer from '@/shared/components/Footer';
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: "이용약관",
+  alternates: { canonical: "/terms" },
+};
 
 export default function TermsPage() {
   return (

@@ -1,8 +1,15 @@
 // FAQ 페이지 — 반응형 + 이솝 스타일
+import type { Metadata } from "next";
 import GNB from '@/shared/components/GNB';
 import Footer from '@/shared/components/Footer';
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: "자주 묻는 질문",
+  description: "By MOMO 수제간식의 유통기한, 알레르기, 배송, 구독 서비스 등 자주 묻는 질문과 답변.",
+  alternates: { canonical: "/faq" },
+};
 
 const FAQ_ITEMS = [
   {
@@ -31,6 +38,24 @@ export default function FaqPage() {
   return (
     <>
       <GNB />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: FAQ_ITEMS.map((item) => ({
+              "@type": "Question",
+              name: item.question,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: item.answer,
+              },
+            })),
+          }),
+        }}
+      />
 
       {/* ── 페이지 헤더 ── */}
       <section className="bg-[var(--cream)] page-padding pt-10 pb-8 md:pt-14 md:pb-10 text-center">

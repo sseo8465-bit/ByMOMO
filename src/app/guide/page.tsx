@@ -1,8 +1,15 @@
 // 이용안내 페이지 — 반응형 + 이솝 스타일
+import type { Metadata } from "next";
 import GNB from '@/shared/components/GNB';
 import Footer from '@/shared/components/Footer';
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: "이용안내",
+  description: "By MOMO 수제간식 배송, 교환·반품, 보관 방법 안내.",
+  alternates: { canonical: "/guide" },
+};
 
 export default function GuidePage() {
   return (

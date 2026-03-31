@@ -181,10 +181,10 @@ export default function MyPage() {
               {/* 페이지 타이틀 — A-2: 이솝 타이포 + 서브카피 / A-3: 상단 여백 2배 */}
               <div className="text-center mb-20 md:mb-28">
                 <p className="font-[var(--font-ui)] text-[10px] md:text-[11px] tracking-[0.2em] uppercase text-[var(--warm-taupe)] mb-3">
-                  Login
+                  My Page
                 </p>
                 <h1 className="font-[var(--font-serif)] text-[24px] md:text-[30px] font-medium text-[var(--walnut)] tracking-[0.15em]">
-                  회원 로그인
+                  로그인
                 </h1>
               </div>
 
@@ -193,7 +193,7 @@ export default function MyPage() {
                 {/* 이메일(아이디) */}
                 <div className="mb-5">
                   <label className="block font-[var(--font-ui)] text-[10px] tracking-[0.12em] uppercase text-[var(--warm-taupe)] mb-2">
-                    ID
+                    이메일
                   </label>
                   <input
                     type="email"
@@ -208,7 +208,7 @@ export default function MyPage() {
                 {/* 비밀번호 */}
                 <div className="mb-6">
                   <label className="block font-[var(--font-ui)] text-[10px] tracking-[0.12em] uppercase text-[var(--warm-taupe)] mb-2">
-                    Password
+                    비밀번호
                   </label>
                   <input
                     type="password"
@@ -233,7 +233,7 @@ export default function MyPage() {
                   disabled={isLoginLoading}
                   className="w-full py-3 rounded-[2px] bg-[var(--walnut)] text-[var(--cream)] text-[12px] font-[var(--font-ui)] font-medium tracking-[0.08em] uppercase hover:bg-[var(--walnut-dark)] disabled:opacity-60 transition-colors"
                 >
-                  {isLoginLoading ? '로그인 중...' : 'Login'}
+                  {isLoginLoading ? '로그인 중...' : '로그인'}
                 </button>
               </form>
 
@@ -279,14 +279,14 @@ export default function MyPage() {
                   href="/find-id"
                   className="font-[var(--font-ui)] text-[10px] tracking-[0.08em] uppercase text-[var(--warm-taupe)] hover:text-[var(--walnut)] transition-colors"
                 >
-                  Forgot ID
+                  아이디 찾기
                 </Link>
                 <span className="text-[var(--oatmeal)]">|</span>
                 <Link
                   href="/find-password"
                   className="font-[var(--font-ui)] text-[10px] tracking-[0.08em] uppercase text-[var(--warm-taupe)] hover:text-[var(--walnut)] transition-colors"
                 >
-                  Forgot Password
+                  비밀번호 찾기
                 </Link>
               </div>
 

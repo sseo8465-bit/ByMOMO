@@ -970,7 +970,7 @@ export default function RegisterClientPage() {
                 : 'bg-[var(--oatmeal)] text-[var(--warm-taupe)] cursor-not-allowed'
             }`}
           >
-            {isSubmitting ? '가입 처리 중...' : 'By MOMO 가족 되기'}
+            {isSubmitting ? '가입 처리 중...' : 'By MOMO 가족이 되기'}
           </button>
 
           {/* ── 로그인 링크 ── */}

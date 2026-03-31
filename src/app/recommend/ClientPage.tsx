@@ -249,34 +249,33 @@ export default function RecommendPage() {
         </div>
       )}
 
-      {/* ── 헤더 — 개인화된 큐레이션 문구 강조 ── */}
+      {/* ── 헤더 — 개인화된 큐레이션 문구 강조 (Serif 명조 + 위계 강화) ── */}
       <section className="page-padding section-spacing text-center">
         <p className="font-[var(--font-ui)] text-[10px] md:text-[11px] font-medium tracking-[0.2em] uppercase text-[var(--warm-taupe)] mb-5">
           {isSkipped ? 'Quick Picks' : 'Curated for You'}
         </p>
 
-        {/* 큐레이션 문구 — 가치 제안 먼저 (user-research-synthesis) */}
-        <h1 className="font-[var(--font-serif)] text-[24px] md:text-[32px] lg:text-[38px] font-medium text-[var(--walnut)] leading-[1.3] mb-4 tracking-[0.01em]">
+        {/* 큐레이션 문구 — Classic Serif(명조) + 크게 강조 */}
+        <h1 className="font-[var(--font-serif-kr)] text-[26px] md:text-[36px] lg:text-[42px] font-semibold text-[var(--walnut)] leading-[1.35] mb-5 tracking-[-0.01em]">
           {curationText}
         </h1>
 
-        {/* 프로필 요약 */}
-        <p className="font-[var(--font-ui)] text-[11px] md:text-[12px] text-[var(--warm-gray)] tracking-[0.06em]">
+        {/* 프로필 요약 — 보조 정보로 작게 */}
+        <p className="font-[var(--font-ui)] text-[10px] md:text-[11px] text-[var(--warm-taupe)] tracking-[0.06em]">
           {profile.breed && `${profile.breed}`}
           {profile.age ? ` · ${profile.age}세` : ''}
           {profile.weight ? ` · ${profile.weight}kg` : ''}
         </p>
 
-        {/* ── 큐레이션 근거 (Reason-to-believe) — 이솝 에디토리얼 큐레이터 노트 ── */}
+        {/* ── 큐레이션 근거 — 시적 여백 + 가벼운 행간 (4050 고객 배려) ── */}
         {curationRationale && !isSkipped && (
-          <div className="max-w-[420px] mx-auto mt-6 font-[var(--font-ui)] text-[14px] md:text-[15px] text-[var(--charcoal)] leading-[1.8] tracking-[0.03em]">
-            {curationRationale.split('\n').map((line, i, arr) => {
-              const isFirst = i === 0;
+          <div className="max-w-[420px] mx-auto mt-8 font-[var(--font-ui)] text-[13px] md:text-[14px] text-[var(--charcoal)] leading-[2.2] tracking-[0.03em] font-light">
+            {curationRationale.split('\n').slice(0, 3).map((line, i, arr) => {
               const isLast = i === arr.length - 1;
               return (
                 <p
                   key={i}
-                  className={`${i > 0 ? 'mt-2' : ''} ${isFirst ? 'font-medium' : ''} ${isLast ? 'underline underline-offset-4 decoration-[var(--oatmeal)]' : ''}`}
+                  className={`${i > 0 ? 'mt-3' : ''} ${isLast ? 'text-[var(--warm-taupe)] italic' : ''}`}
                 >
                   {line}
                 </p>
@@ -323,23 +322,9 @@ export default function RecommendPage() {
 
               return (
                 <article key={product.id} className="group text-center">
-                  {/* 추천 태그 */}
-                  {productTags.length > 0 && (
-                    <div className="flex flex-wrap justify-center gap-1.5 mb-4">
-                      {productTags.map((tag, idx) => (
-                        <span
-                          key={tag}
-                          className={`font-[var(--font-ui)] text-[9px] md:text-[10px] tracking-[0.1em] uppercase text-[var(--walnut)] ${idx === 0 ? 'font-semibold underline underline-offset-4 decoration-[var(--oatmeal)]' : 'font-medium'}`}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* 이미지 — 테두리 없이, cream 배경 위에 부유하는 느낌 */}
+                  {/* 이미지 — 살짝 둥근 모서리 + cream 배경 */}
                   <Link href={`/product/${product.id}`} className="block">
-                    <div className="relative aspect-square bg-[var(--cream)] mb-5 md:mb-6 overflow-hidden">
+                    <div className="relative aspect-square bg-[var(--cream)] mb-5 md:mb-6 overflow-hidden rounded-[6px]">
                       <Image
                         src={product.imageUrl}
                         alt={product.imageAlt}
@@ -350,17 +335,26 @@ export default function RecommendPage() {
                     </div>
                   </Link>
 
-                  {/* 상품명 */}
+                  {/* 상품명 — 폰트 대비 강화 */}
                   <Link href={`/product/${product.id}`}>
-                    <h3 className="font-[var(--font-serif)] text-[15px] md:text-[17px] font-medium text-[var(--walnut-dark)] mb-2 tracking-[0.01em] hover:text-[var(--walnut)] transition-colors">
+                    <h3 className="font-[var(--font-serif)] text-[16px] md:text-[18px] font-semibold text-[var(--walnut-dark)] mb-2 tracking-[0.01em] hover:text-[var(--walnut)] transition-colors">
                       {product.name}
                     </h3>
                   </Link>
 
-                  {/* 원재료 — 이솝 성분 표기 */}
-                  <p className="font-[var(--font-ui)] text-[10px] md:text-[11px] text-[var(--warm-gray)] mb-4 tracking-[0.04em]">
-                    {product.ingredients.join(' · ')}
-                  </p>
+                  {/* 미니멀 해시태그 — 이미지 위 문구 대신 정갈한 태그 */}
+                  {productTags.length > 0 && (
+                    <div className="flex flex-wrap justify-center gap-1.5 mb-3">
+                      {productTags.slice(0, 2).map((tag) => (
+                        <span
+                          key={tag}
+                          className="font-[var(--font-ui)] text-[9px] md:text-[10px] tracking-[0.04em] text-[var(--warm-taupe)] bg-[var(--cream)] px-2.5 py-0.5 rounded-full"
+                        >
+                          #{tag.replace(/\s/g, '')}
+                        </span>
+                      ))}
+                    </div>
+                  )}
 
                   {/* 장바구니 담기 — 텍스트 버튼 */}
                   <button
@@ -410,14 +404,14 @@ export default function RecommendPage() {
         </div>
       )}
 
-      {/* ── 하단 고정 CTA ── */}
+      {/* ── 하단 고정 CTA — 딥 에스프레소 + 넓은 자간 + 둥근 모서리 ── */}
       {recommendations.length > 0 && (
-        <div className="sticky bottom-0 bg-[var(--warm-white)]/95 backdrop-blur-sm border-t border-[var(--oatmeal)] page-padding py-4">
-          <div className="max-w-[480px] mx-auto">
+        <div className="sticky bottom-0 bg-[var(--warm-white)]/95 backdrop-blur-sm border-t border-[var(--oatmeal)] page-padding py-5">
+          <div className="max-w-[420px] mx-auto">
             {addedCount > 0 ? (
               <Link
                 href="/cart"
-                className="block w-full py-3.5 rounded-[2px] bg-[var(--walnut-dark)] text-[var(--cream)] text-[13px] md:text-[14px] font-[var(--font-ui)] font-semibold tracking-[0.06em] uppercase text-center hover:bg-[var(--walnut)] transition-colors"
+                className="block w-full py-4 rounded-[8px] bg-[var(--charcoal)] text-[var(--cream)] text-[13px] md:text-[14px] font-[var(--font-ui)] font-medium tracking-[0.14em] uppercase text-center hover:bg-[var(--walnut-dark)] transition-colors"
               >
                 장바구니 보기 ({addedCount})
               </Link>
@@ -425,7 +419,7 @@ export default function RecommendPage() {
               <button
                 type="button"
                 onClick={handleAddAll}
-                className="w-full py-3.5 rounded-[2px] bg-[var(--walnut-dark)] text-[var(--cream)] text-[13px] md:text-[14px] font-[var(--font-ui)] font-semibold tracking-[0.06em] uppercase hover:bg-[var(--walnut)] transition-colors"
+                className="w-full py-4 rounded-[8px] bg-[var(--charcoal)] text-[var(--cream)] text-[13px] md:text-[14px] font-[var(--font-ui)] font-medium tracking-[0.14em] uppercase hover:bg-[var(--walnut-dark)] transition-colors"
               >
                 {profile.name ? `${profile.name}${pickJosa(profile.name, '을', '를')} 위해 고른 간식 모두 담기` : '고른 간식 모두 담기'} ({recommendations.length})
               </button>

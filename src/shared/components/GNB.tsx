@@ -7,6 +7,7 @@
 // ──────────────────────────────────────────────
 import Link from 'next/link';
 import { useCart } from '@/domains/cart/cart.context';
+import Logo from '@/shared/components/Logo';
 
 interface GNBProps {
   activeItem?: 'story' | 'shop' | 'cart' | 'my';
@@ -16,7 +17,7 @@ interface GNBProps {
 const MENU_ITEMS = [
   { key: 'story', href: '/about', label: 'Story' },
   { key: 'shop', href: '/shop', label: 'Shop' },
-  { key: 'cart', href: '/cart', label: 'Cart' },
+  { key: 'cart', href: '/cart', label: 'Bag' },
   { key: 'my', href: '/my', label: 'My' },
 ] as const;
 
@@ -27,12 +28,9 @@ export default function GNB({ activeItem }: GNBProps) {
   return (
     <nav className="border-b border-[var(--oatmeal)] bg-[var(--warm-white)]">
       <div className="flex items-center justify-between page-padding py-5 md:py-6">
-        {/* ── 로고 — 세리프 (Cormorant Garamond) ── */}
-        <Link
-          href="/"
-          className="font-[var(--font-serif)] text-[18px] md:text-[20px] font-semibold text-[var(--walnut)] hover:text-[var(--walnut-dark)] transition-colors tracking-[0.02em]"
-        >
-          By MOMO
+        {/* ── 로고 — By MOMO Logo Component ── */}
+        <Link href="/" className="hover:opacity-80 transition-opacity">
+          <Logo size="sm" className="text-[var(--walnut)]" />
         </Link>
 
         {/* ── 메뉴 — DM Sans, 넓은 자간 ── */}

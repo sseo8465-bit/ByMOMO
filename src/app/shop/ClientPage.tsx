@@ -128,7 +128,7 @@ export default function ShopCollectionPage() {
               <article key={product.id} className="group">
                 {/* ── 상품 이미지 — 테두리/그림자 없음, 공중에 떠 있는 느낌 ── */}
                 <Link href={`/product/${product.id}`} className="block">
-                  <div className="relative aspect-square bg-[var(--cream)] mb-5 md:mb-6 overflow-hidden">
+                  <div className="relative aspect-square bg-[var(--cream)] mb-5 md:mb-6 overflow-hidden rounded-[6px]">
                     <Image
                       src={product.imageUrl}
                       alt={product.imageAlt}
