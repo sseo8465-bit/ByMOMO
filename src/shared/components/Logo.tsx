@@ -19,7 +19,6 @@ const SIZE_CONFIG = {
 
 export default function Logo({ size = 'md', className = '' }: LogoProps) {
   const config = SIZE_CONFIG[size];
-  const scale = config.width / 100;
 
   return (
     <svg
@@ -32,50 +31,66 @@ export default function Logo({ size = 'md', className = '' }: LogoProps) {
       }}
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* ── "By" 텍스트 — 작고 가는 무게 ── */}
+      {/* ── "By" 텍스트 — 가볍고 우아한 무게 ── */}
       <text
-        x="0"
-        y="12"
-        fontSize={config.byFontSize}
+        x="50"
+        y="11"
+        fontSize="9"
         fontFamily="Cormorant Garamond, Georgia, serif"
         fontWeight="300"
-        letterSpacing="0.5"
+        letterSpacing="1.5"
+        textAnchor="middle"
         fill="currentColor"
       >
         By
       </text>
 
-      {/* ── "MOMO" 텍스트 — "MOM" 부분 ── */}
+      {/* ── "M" (첫 번째) ── */}
       <text
-        x="18"
-        y="28"
-        fontSize={config.momoFontSize}
+        x="14"
+        y="32"
+        fontSize="20"
         fontFamily="Cormorant Garamond, Georgia, serif"
         fontWeight="600"
-        letterSpacing="0.8"
+        letterSpacing="1"
         fill="currentColor"
       >
-        MOM
+        M
       </text>
 
-      {/* ── 발자국 원 (두 번째 O를 대체) ── */}
-      {/* 발자국 패드: 한 개의 큰 원 + 4개의 작은 원 */}
-      <g transform={`translate(${52 * scale}, ${28 * scale})`}>
-        {/* 메인 발자국 원 (엄지발가락 위치) */}
-        <circle cx="0" cy="-5.5" r="3.5" fill="currentColor" opacity="0.9" />
+      {/* ── 발바닥 모티프 (첫 번째 O 자리, x≈30~42) ── */}
+      <g transform="translate(36, 25)">
+        {/* 메인 패드 — 하트형 타원 */}
+        <ellipse cx="0" cy="1.5" rx="3.2" ry="2.8" fill="currentColor" />
+        {/* 발가락 4개 — 위쪽 부채꼴, 간격 충분히 */}
+        <circle cx="-3.8" cy="-2.8" r="1.5" fill="currentColor" />
+        <circle cx="-1.4" cy="-4.2" r="1.5" fill="currentColor" />
+        <circle cx="1.4" cy="-4.2" r="1.5" fill="currentColor" />
+        <circle cx="3.8" cy="-2.8" r="1.5" fill="currentColor" />
+      </g>
 
-        {/* 발가락 4개 - 부채 모양 배치 */}
-        {/* 좌상단 발가락 */}
-        <circle cx="-3" cy="1" r="2.8" fill="currentColor" opacity="0.85" />
+      {/* ── "M" (두 번째) ── */}
+      <text
+        x="43"
+        y="32"
+        fontSize="20"
+        fontFamily="Cormorant Garamond, Georgia, serif"
+        fontWeight="600"
+        letterSpacing="1"
+        fill="currentColor"
+      >
+        M
+      </text>
 
-        {/* 좌하단 발가락 */}
-        <circle cx="-1.5" cy="4.5" r="2.8" fill="currentColor" opacity="0.85" />
-
-        {/* 우하단 발가락 */}
-        <circle cx="1.5" cy="4.5" r="2.8" fill="currentColor" opacity="0.85" />
-
-        {/* 우상단 발가락 */}
-        <circle cx="3" cy="1" r="2.8" fill="currentColor" opacity="0.85" />
+      {/* ── 발바닥 모티프 (두 번째 O 자리, x≈59~71) ── */}
+      <g transform="translate(65, 25)">
+        {/* 메인 패드 */}
+        <ellipse cx="0" cy="1.5" rx="3.2" ry="2.8" fill="currentColor" />
+        {/* 발가락 4개 */}
+        <circle cx="-3.8" cy="-2.8" r="1.5" fill="currentColor" />
+        <circle cx="-1.4" cy="-4.2" r="1.5" fill="currentColor" />
+        <circle cx="1.4" cy="-4.2" r="1.5" fill="currentColor" />
+        <circle cx="3.8" cy="-2.8" r="1.5" fill="currentColor" />
       </g>
     </svg>
   );
